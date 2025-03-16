@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": " ▶ Run client",
+            "type": "shell",
+            "command": "${command:osPlatform}",
+            "args": [],
+            "windows": {
+                "command": "fnm use 22 ; pnpm run dev"
+            },
+            "linux": {
+                "command": "fnm use 22 && pnpm run dev"
+            },
+            "osx": {
+                "command": "fnm use 22 && pnpm run dev"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}
