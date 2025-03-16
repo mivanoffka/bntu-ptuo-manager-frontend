@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
 import { Dayjs } from "dayjs"; // Предполагается, что Dayjs импортируется
-import { useEmployeeUpdater } from "@/controller/contexts/employee/updaters/EmployeeUpdaterContext";
+import { useEmployeeUpdater } from "@/controller/employee/updaters/EmployeeUpdaterContext";
 import { TradeUnionPosition } from "@/model";
-import { createHook } from "@/controller/contexts/utils";
+import { createHook } from "@/controller/utils";
 
 enum Fields {
     TradeUnionPositions = "tradeUnionPositions",

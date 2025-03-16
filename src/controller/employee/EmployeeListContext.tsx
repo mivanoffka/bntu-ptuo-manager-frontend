@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
-import { Employee } from "../../../model";
-import { createHook } from "@/controller/contexts/utils";
+import { Employee } from "../../model";
+import { createHook } from "@/controller/utils";
 
 export interface IEmployeeList {
     list: Employee[];

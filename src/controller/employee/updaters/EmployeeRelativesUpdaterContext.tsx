@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { useEmployeeUpdater } from "@/controller/contexts/employee/updaters/EmployeeUpdaterContext";
-import { createHook } from "@/controller/contexts/utils";
+import { useEmployeeUpdater } from "@/controller/employee/updaters/EmployeeUpdaterContext";
+import { createHook } from "@/controller/utils";
 import { Relative } from "@/model";
 
 enum Fields {

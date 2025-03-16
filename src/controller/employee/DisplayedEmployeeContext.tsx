@@ -1,8 +1,8 @@
-import { useEditMode } from "@/controller/contexts/employee/EditModeContext";
-import { useEmployeeList } from "@/controller/contexts/employee/EmployeeListContext";
-import { useEmployeesSelection } from "@/controller/contexts/employee/EmployeesSelectionContext";
-import { getCopy, getNewEmployee } from "@/controller/contexts/employee/utils";
-import { createHook } from "@/controller/contexts/utils";
+import { useEditMode } from "@/controller/employee/EditModeContext";
+import { useEmployeeList } from "@/controller/employee/EmployeeListContext";
+import { useEmployeesSelection } from "@/controller/employee/EmployeesSelectionContext";
+import { getCopy, getNewEmployee } from "@/controller/employee/utils";
+import { createHook } from "@/controller/utils";
 import { Employee } from "@/model";
 import { createContext, useContext, useEffect, useState } from "react";
 

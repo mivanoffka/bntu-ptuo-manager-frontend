@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
 import { Dayjs } from "dayjs";
-import { useEmployeeUpdater } from "@/controller/contexts/employee/updaters/EmployeeUpdaterContext";
+import { useEmployeeUpdater } from "@/controller/employee/updaters/EmployeeUpdaterContext";
 import { Name, HistoryItem } from "@/model";
-import { createHook } from "@/controller/contexts/utils";
+import { createHook } from "@/controller/utils";
 
 export interface IEmployeeCommonUpdater {
     name: Name | null;

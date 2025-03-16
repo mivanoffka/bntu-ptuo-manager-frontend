@@ -1,4 +1,4 @@
-import { createHook } from "@/controller/contexts/utils";
+import { createHook } from "@/controller/utils";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export interface IEditMode {

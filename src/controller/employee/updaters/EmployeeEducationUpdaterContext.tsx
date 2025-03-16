@@ -1,5 +1,5 @@
-import { useEmployeeUpdater } from "@/controller/contexts/employee/updaters/EmployeeUpdaterContext";
-import { createHook } from "@/controller/contexts/utils";
+import { useEmployeeUpdater } from "@/controller/employee/updaters/EmployeeUpdaterContext";
+import { createHook } from "@/controller/utils";
 import { createContext } from "react";
 
 enum Fields {

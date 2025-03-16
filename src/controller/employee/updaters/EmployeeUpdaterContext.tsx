@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { DisplayedEmployee } from "../DisplayedEmployeeContext";
-import { createHook } from "@/controller/contexts/utils";
+import { createHook } from "@/controller/utils";
 import {
     EmployeeBNTU,
     EmployeeCommon,
