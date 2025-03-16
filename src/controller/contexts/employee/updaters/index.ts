@@ -1,0 +1,9 @@
+export { useEmployeeBntuUpdater } from "@/controller/contexts/employee/updaters/EmployeeBntuUpdaterContext";
+export { useEmployeeCommonUpdater } from "@/controller/contexts/employee/updaters/EmployeeCommonUpdaterContext";
+export { useEmployeeContactsUpdater } from "@/controller/contexts/employee/updaters/EmployeeContactsUpdaterContext";
+export { useEmployeeEducationUpdater } from "@/controller/contexts/employee/updaters/EmployeeEducationUpdaterContext";
+export { useEmployeeOtherUpdater } from "@/controller/contexts/employee/updaters/EmployeeOtherUpdaterContext";
+export { useEmployeeRelativesUpdater } from "@/controller/contexts/employee/updaters/EmployeeRelativesUpdaterContext";
+export { useEmployeeRewardsUpdater } from "@/controller/contexts/employee/updaters/EmployeeRewardsUpdaterContext";
+export { useEmployeeUpdater } from "@/controller/contexts/employee/updaters/EmployeeUpdaterContext";
+export { useEmployeePtuoUpdater } from "@/controller/contexts/employee/updaters/EmployeePtuoUpdaterContext";
