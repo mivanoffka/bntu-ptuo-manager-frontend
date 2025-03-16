@@ -14,4 +14,5 @@ export { EmployeePTUO, TradeUnionPosition } from "@/model/employee/ptuo";
 export { EmployeeRelatives, Relative } from "@/model/employee/relatives";
 export { EmployeeRewards, Reward } from "@/model/employee/rewards";
 
-export { IHistoryItem as HistoryItem } from "@/model/history.item";
+export { IHistoryItem } from "@/model/history.item";
+export { IPagination } from "@/model/pagination.item";
