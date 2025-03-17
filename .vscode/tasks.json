@@ -13,7 +13,7 @@
                 "command": "fnm use 22 && pnpm run dev"
             },
             "osx": {
-                "command": "fnm use 22 && pnpm run dev"
+                "command": "source ~/.zshrc && fnm use 22 && sudo pnpm run dev"
             },
             "group": {
                 "kind": "build",
