@@ -1,21 +1,21 @@
 import { createContext } from "react";
 import { useEmployeeUpdater } from "@/controller/employee/updaters/EmployeeUpdaterContext";
-import { WorkPosition } from "@/model";
+import { BntuPosition } from "@/model";
 import { createHook } from "@/controller/utils";
 
 enum Fields {
-    WorkPositions = "workPositions",
+    BntuPositions = "bntuPositions",
 }
 
 export interface IEmployeeBntuUpdater {
-    workPositions: WorkPosition[] | null;
+    bntuPositions: BntuPosition[] | null;
 
-    updateWorkPositions: (value: WorkPosition[]) => void;
+    updateBntuPositions: (value: BntuPosition[]) => void;
 }
 
 export const EmployeeBntuUpdater = createContext<IEmployeeBntuUpdater>({
-    workPositions: [],
-    updateWorkPositions: () => {},
+    bntuPositions: [],
+    updateBntuPositions: () => {},
 });
 
 export function EmployeeBntuUpdaterProvider({
@@ -25,23 +25,23 @@ export function EmployeeBntuUpdaterProvider({
 }) {
     const { bntu, updateBNTU } = useEmployeeUpdater();
 
-    const workPositions = bntu?.workPositions || null;
+    const bntuPositions = bntu?.bntuPositions || null;
 
     function updateField<T>(fieldName: Fields, value: T) {
         if (!bntu) {
             return;
         }
 
-        updateBNTU({ ...bntu, [fieldName]: value as WorkPosition[] });
+        updateBNTU({ ...bntu, [fieldName]: value as BntuPosition[] });
     }
 
-    function updateWorkPositions(value: WorkPosition[]) {
-        updateField<WorkPosition[]>(Fields.WorkPositions, value);
+    function updateBntuPositions(value: BntuPosition[]) {
+        updateField<BntuPosition[]>(Fields.BntuPositions, value);
     }
 
     const context: IEmployeeBntuUpdater = {
-        workPositions,
-        updateWorkPositions,
+        bntuPositions,
+        updateBntuPositions,
     };
 
     return (

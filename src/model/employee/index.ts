@@ -1,20 +1,9 @@
-import { EmployeeBNTU } from "@/model/employee/bntu";
-import { EmployeeCommon } from "@/model/employee/common";
-import { EmployeeContacts } from "@/model/employee/contacts";
-import { EmployeeEducation } from "@/model/employee/education";
-import { EmployeeOther } from "@/model/employee/other";
-import { EmployeePTUO } from "@/model/employee/ptuo";
-import { EmployeeRelatives } from "@/model/employee/relatives";
-import { EmployeeRewards } from "@/model/employee/rewards";
-
-export interface Employee {
-    id: number | null;
-    common: EmployeeCommon;
-    bntu: EmployeeBNTU;
-    ptuo: EmployeePTUO;
-    education: EmployeeEducation;
-    contacts: EmployeeContacts;
-    relatives: EmployeeRelatives;
-    rewards: EmployeeRewards;
-    other: EmployeeOther;
-}
+export { Relative, Reward } from "@/model/employee/other";
+export { BntuPosition } from "@/model/employee/bntu";
+export { Genders, Name } from "@/model/employee/common";
+export { Address, Email, PhoneNumber } from "@/model/employee/contacts";
+export { EducationLevels, AcademicDegrees } from "@/model/employee/education";
+export { TradeUnionPosition } from "@/model/employee/trade-union";
+export { History } from "@/model/history";
+export { IHistoryItem } from "@/model/history.item";
+export { IEmployee } from "@/model/employee/employee";

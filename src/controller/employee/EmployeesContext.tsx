@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Employee, IPagination } from "@/model";
 import { createHook } from "@/controller/utils";
 
@@ -19,6 +19,7 @@ export const Employees = createContext<IEmployees>({
 });
 
 export function EmployeesProvider() {
+    const [serverList, setServerList] = useState<Employee[]>([]);
     const [list, setList] = useState<Employee[]>([]);
     const [pagination, setPagination] = useState<IPagination>({
         current: 0,
@@ -26,8 +27,19 @@ export function EmployeesProvider() {
         size: 10,
     });
 
+    useEffect(() => {}, []);
+
     async function setPage(page: number) {
         setPagination({ ...pagination, current: page });
+    }
+
+    async function __fetchEmployeesMock(page: number, limit: number) {
+        return serverList.slice(page * limit, page * (limit + 1));
+    }
+
+    async function fetchEmployees() {
+        const employees = await __fetchEmployeesMock(1, 10);
+        setList(employees);
     }
 
     async function push(employee: Employee) {}

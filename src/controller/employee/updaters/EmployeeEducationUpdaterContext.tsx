@@ -5,13 +5,13 @@ import { createContext } from "react";
 enum Fields {
     GraduatedFrom = "graduatedFrom",
     EducationLevelId = "educationLevelId",
-    ScientificDegreeId = "scientificDegreeId",
+    ScientificDegreeId = "academicDegreeId",
 }
 
 export interface IEmployeeEducationUpdater {
     graduatedFrom: string[] | null;
     educationLevelId: number | null;
-    scientificDegreeId: number | null;
+    academicDegreeId: number | null;
 
     updateGraduatedFrom: (value: string[]) => void;
     updateEducationLevelId: (value: number | null) => void;
@@ -30,7 +30,7 @@ export function EmployeeEducationUpdaterProvider({
 
     const graduatedFrom = education?.graduatedFrom || null;
     const educationLevelId = education?.educationLevelId || null;
-    const scientificDegreeId = education?.scientificDegreeId || null;
+    const academicDegreeId = education?.academicDegreeId || null;
 
     function updateField<T>(fieldName: Fields, value: T) {
         if (!education) {
@@ -54,7 +54,7 @@ export function EmployeeEducationUpdaterProvider({
     const context: IEmployeeEducationUpdater = {
         graduatedFrom,
         educationLevelId,
-        scientificDegreeId,
+        academicDegreeId,
         updateGraduatedFrom,
         updateEducationLevelId,
         updateScientificDegreeId,

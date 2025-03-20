@@ -1,7 +1,5 @@
-import { WorkPosition } from "@/model/employee/bntu/work.position";
+import { BntuPosition } from "@/model/employee/bntu/position";
 
-export interface EmployeeBNTU {
-    workPositions: WorkPosition[];
-}
+export interface EmployeeBNTU {}
 
-export { WorkPosition };
+export { BntuPosition };

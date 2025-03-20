@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
 
-export interface WorkPosition {
+export interface BntuPosition {
     departmentId: number | null;
     name: string | null;
     hiredAt: Dayjs | null;
