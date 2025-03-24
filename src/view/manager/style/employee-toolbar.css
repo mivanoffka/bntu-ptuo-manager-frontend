@@ -1,0 +1,17 @@
+.employee-toolbar {
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 500;
+    height: 40px;
+    /* background-color: #f8f8f8; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toolbar-menu {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Ширина меню */
+}

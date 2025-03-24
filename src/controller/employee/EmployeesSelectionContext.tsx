@@ -1,5 +1,11 @@
 import { createHook } from "@/controller/utils";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import {
+    createContext,
+    ReactNode,
+    useEffect,
+    useState,
+    useCallback,
+} from "react";
 
 export interface IEmployeesSelection {
     selectedIds: number[];
@@ -9,6 +15,7 @@ export interface IEmployeesSelection {
     addToSelection: (id: number) => void;
     removeFromSelection: (id: number) => void;
     selectMany: (ids: number[]) => void;
+    clearSelection: () => void; // Добавлено
 }
 
 export const EmployeesSelection = createContext<IEmployeesSelection>({
@@ -19,6 +26,7 @@ export const EmployeesSelection = createContext<IEmployeesSelection>({
     addToSelection: () => {},
     removeFromSelection: () => {},
     selectMany: () => {},
+    clearSelection: () => {}, // Добавлено
 });
 
 export function EmployeesSelectionProvider({
@@ -32,43 +40,39 @@ export function EmployeesSelectionProvider({
         console.log(selectedIds);
     }, [selectedIds]);
 
-    async function selectOne(id: number) {
+    const selectOne = useCallback((id: number) => {
         setSelectedIds([id]);
-    }
+    }, []);
 
-    async function clearSelection() {
+    const clearSelection = useCallback(() => {
         setSelectedIds([]);
-    }
+    }, []);
 
-    async function addToSelection(id: number) {
-        const extendedIds = [...selectedIds, id];
+    const addToSelection = useCallback((id: number) => {
+        setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    }, []);
 
-        setSelectedIds(extendedIds);
-    }
+    const removeFromSelection = useCallback((id: number) => {
+        setSelectedIds((prev) => prev.filter((item) => item !== id));
+    }, []);
 
-    async function removeFromSelection(id: number) {
-        setSelectedIds(selectedIds.filter((item) => item !== id));
-    }
+    const toggleMultipleSelection = useCallback((id: number) => {
+        setSelectedIds((prev) =>
+            prev.includes(id)
+                ? prev.filter((item) => item !== id)
+                : [...prev, id]
+        );
+    }, []);
 
-    async function toggleMultipleSelection(id: number) {
-        if (selectedIds.includes(id)) {
-            removeFromSelection(id);
-        } else {
-            addToSelection(id);
-        }
-    }
+    const toggleSingularSelection = useCallback((id: number) => {
+        setSelectedIds((prev) =>
+            prev.includes(id) && prev.length === 1 ? [] : [id]
+        );
+    }, []);
 
-    async function toggleSingularSelection(id: number) {
-        if (selectedIds.includes(id)) {
-            clearSelection();
-        } else {
-            selectOne(id);
-        }
-    }
-
-    async function selectMany(ids: number[]) {
+    const selectMany = useCallback((ids: number[]) => {
         setSelectedIds(ids);
-    }
+    }, []);
 
     const context: IEmployeesSelection = {
         selectedIds,
@@ -78,6 +82,7 @@ export function EmployeesSelectionProvider({
         removeFromSelection,
         toggleMultipleSelection,
         toggleSingularSelection,
+        clearSelection, // Добавлено
     };
 
     return (

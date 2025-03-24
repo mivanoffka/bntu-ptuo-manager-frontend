@@ -89,17 +89,17 @@ export function EmployeesList() {
                 pagination={{ position: ["none", "none"] }}
                 onRow={(employee) => ({
                     onClick: (e) => {
-                        if (employee.id) {
-                            if (
-                                selectedIds.length > 1 ||
-                                e.shiftKey ||
-                                e.button === 1
-                            ) {
-                                toggleMultipleSelection(employee.id);
-                            }
-                            {
-                                toggleSingularSelection(employee.id);
-                            }
+                        if (!employee.id) return;
+
+                        if (
+                            e.shiftKey ||
+                            e.ctrlKey ||
+                            e.metaKey ||
+                            selectedIds.length >= 2
+                        ) {
+                            toggleMultipleSelection(employee.id);
+                        } else {
+                            toggleSingularSelection(employee.id);
                         }
                     },
                 })}
