@@ -10,12 +10,15 @@
             "console": "integratedTerminal",
 
             "windows": {
+                "runtimeExecutable": "powershell.exe",
                 "runtimeArgs": ["-c", "fnm use 22 ; pnpm run dev"]
             },
             "osx": {
+                "runtimeExecutable": "/bin/bash",
                 "runtimeArgs": ["-c", "fnm use 22 && sudo pnpm run dev"]
             },
             "linux": {
+                "runtimeExecutable": "/bin/bash",
                 "runtimeArgs": ["-c", "fnm use 22 && pnpm run dev"]
             }
         }
