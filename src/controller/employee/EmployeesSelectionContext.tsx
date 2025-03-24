@@ -1,5 +1,5 @@
 import { createHook } from "@/controller/utils";
-import { createContext, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
 export interface IEmployeesSelection {
     selectedIds: number[];
@@ -21,8 +21,16 @@ export const EmployeesSelection = createContext<IEmployeesSelection>({
     selectMany: () => {},
 });
 
-export function EmployeesSelectionProvider() {
+export function EmployeesSelectionProvider({
+    children,
+}: {
+    children: ReactNode;
+}) {
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+    useEffect(() => {
+        console.log(selectedIds);
+    }, [selectedIds]);
 
     async function selectOne(id: number) {
         setSelectedIds([id]);
@@ -33,7 +41,9 @@ export function EmployeesSelectionProvider() {
     }
 
     async function addToSelection(id: number) {
-        setSelectedIds([...selectedIds, id]);
+        const extendedIds = [...selectedIds, id];
+
+        setSelectedIds(extendedIds);
     }
 
     async function removeFromSelection(id: number) {
@@ -50,9 +60,9 @@ export function EmployeesSelectionProvider() {
 
     async function toggleSingularSelection(id: number) {
         if (selectedIds.includes(id)) {
-            selectOne(id);
-        } else {
             clearSelection();
+        } else {
+            selectOne(id);
         }
     }
 
@@ -71,9 +81,9 @@ export function EmployeesSelectionProvider() {
     };
 
     return (
-        <EmployeesSelection.Provider
-            value={context}
-        ></EmployeesSelection.Provider>
+        <EmployeesSelection.Provider value={context}>
+            {children}
+        </EmployeesSelection.Provider>
     );
 }
 

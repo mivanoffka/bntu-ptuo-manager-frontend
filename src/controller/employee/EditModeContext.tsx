@@ -1,5 +1,11 @@
 import { createHook } from "@/controller/utils";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
 
 export interface IEditMode {
     editModeEnabled: boolean;
@@ -15,7 +21,7 @@ export const EditMode = createContext<IEditMode>({
     toggleEditMode: () => {},
 });
 
-export function EditModeProvider() {
+export function EditModeProvider({ children }: { children: ReactNode }) {
     const [editModeEnabled, setEditModeEnabled] = useState(false);
 
     function enableEditMode() {
@@ -37,7 +43,7 @@ export function EditModeProvider() {
         toggleEditMode,
     };
 
-    return <EditMode.Provider value={context}></EditMode.Provider>;
+    return <EditMode.Provider value={context}>{children}</EditMode.Provider>;
 }
 
 export const useEditMode = createHook(EditMode);

@@ -1,4 +1,3 @@
-export enum EducationLevels {
-    PRIMARY = 0,
-    MIDDLE = 1,
-}
+import { Enumeration } from "@/model/enumeration";
+
+export interface EducationLevel extends Enumeration {}

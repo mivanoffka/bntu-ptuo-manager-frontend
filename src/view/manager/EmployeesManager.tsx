@@ -1,7 +1,9 @@
 import React from "react";
-import { Splitter } from "antd";
+import { Button, Flex, Splitter } from "antd";
 
 import "@/view/manager/style/employees-manager.css";
+import { EmployeesList } from "@/view/manager/EmployeesList";
+import { EmployeesViewer } from "@/view/manager/EmployeeViewer";
 
 export function EmployeesManager() {
     const [sizes, setSizes] = React.useState<(number | string)[]>([
@@ -13,9 +15,19 @@ export function EmployeesManager() {
         <div className="employees-manager-splitter">
             <Splitter onResize={setSizes}>
                 <Splitter.Panel size={sizes[0]} resizable>
-                    1
+                    <div className="splitter-content-wrapper">
+                        <div className="splitter-content">
+                            <EmployeesList></EmployeesList>
+                        </div>
+                    </div>
                 </Splitter.Panel>
-                <Splitter.Panel size={sizes[1]}>2</Splitter.Panel>
+                <Splitter.Panel size={sizes[1]}>
+                    <div className="splitter-content-wrapper">
+                        <div className="splitter-content">
+                            <EmployeesViewer></EmployeesViewer>
+                        </div>
+                    </div>
+                </Splitter.Panel>
             </Splitter>
         </div>
     );

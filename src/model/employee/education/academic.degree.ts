@@ -1,4 +1,3 @@
-export enum AcademicDegrees {
-    A = 0,
-    B = 1,
-}
+import { Enumeration } from "@/model/enumeration";
+
+export interface AcademicDegree extends Enumeration {}

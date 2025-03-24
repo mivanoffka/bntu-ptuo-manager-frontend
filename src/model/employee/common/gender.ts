@@ -1,4 +1,3 @@
-export enum Genders {
-    MALE = 0,
-    FEMALE = 1,
-}
+import { Enumeration } from "@/model/enumeration";
+
+export interface Gender extends Enumeration {}

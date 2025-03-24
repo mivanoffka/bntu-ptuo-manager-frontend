@@ -1,8 +1,8 @@
-import { RelativeTypes } from "@/model/employee/other/relative.types";
+import { RelativeType } from "@/model/employee/other/relative.type";
 
 export interface Relative {
     id: number | null;
     fullName: string;
-    type: RelativeTypes;
+    type: RelativeType | null;
     comment: string | null;
 }

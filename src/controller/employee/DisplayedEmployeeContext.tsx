@@ -1,10 +1,16 @@
 import { useEditMode } from "@/controller/employee/EditModeContext";
-import { useEmployeeList } from "@/controller/employee/EmployeesContext";
+import { useEmployees } from "@/controller/employee/EmployeesContext";
 import { useEmployeesSelection } from "@/controller/employee/EmployeesSelectionContext";
 import { getCopy, getNewEmployee } from "@/controller/employee/utils";
 import { createHook } from "@/controller/utils";
 import { Employee } from "@/model";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
 
 export interface IDisplayedEmployee {
     displayedEmployee: Employee | null;
@@ -24,9 +30,13 @@ export const DisplayedEmployee = createContext<IDisplayedEmployee>({
     update: () => {},
 });
 
-export function DisplayedEmployeeProvider() {
+export function DisplayedEmployeeProvider({
+    children,
+}: {
+    children: ReactNode;
+}) {
     const { selectedIds } = useEmployeesSelection();
-    const { list, push } = useEmployeeList();
+    const { list, push } = useEmployees();
     const { editModeEnabled, enableEditMode, disableEditMode } = useEditMode();
 
     const [displayedEmployee, setDisplayedEmployee] = useState<Employee | null>(
@@ -104,9 +114,9 @@ export function DisplayedEmployeeProvider() {
     };
 
     return (
-        <DisplayedEmployee.Provider
-            value={context}
-        ></DisplayedEmployee.Provider>
+        <DisplayedEmployee.Provider value={context}>
+            {children}
+        </DisplayedEmployee.Provider>
     );
 }
 

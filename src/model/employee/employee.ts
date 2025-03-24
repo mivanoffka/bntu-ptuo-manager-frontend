@@ -1,22 +1,23 @@
 import { Relative, Reward } from "@/model/employee/other";
 import { BntuPosition } from "@/model/employee/bntu";
-import { Genders, Name } from "@/model/employee/common";
+import { Gender, Name } from "@/model/employee/common";
 import { Address, Email, PhoneNumber } from "@/model/employee/contacts";
-import { EducationLevels, AcademicDegrees } from "@/model/employee/education";
+import { EducationLevel, AcademicDegree } from "@/model/employee/education";
 import { TradeUnionPosition } from "@/model/employee/trade-union";
 import { History } from "@/model/history";
 import { Dayjs } from "dayjs";
+import { DateTimeString } from "@/model/date.time.string";
 
-export interface IEmployee {
+export interface Employee {
     id: number | null;
 
     // Common
 
-    names: History<Name>[];
+    names: History<Name>;
 
-    birthdate: Dayjs | null;
+    birthdate: DateTimeString | null;
     birthplace: string | null;
-    gender: Genders | null;
+    gender: Gender | null;
 
     // BNTU
 
@@ -25,11 +26,11 @@ export interface IEmployee {
     // TradeUnion
 
     tradeUnionPositions: TradeUnionPosition[];
-    joinedAt: Dayjs | null;
+    joinedAt: DateTimeString | null;
     isArchived: boolean | null;
-    archivedAt: Dayjs | null;
+    archivedAt: DateTimeString | null;
     isRetired: boolean | null;
-    retiredAt: Dayjs | null;
+    retiredAt: DateTimeString | null;
 
     // Contacts
 
@@ -39,9 +40,9 @@ export interface IEmployee {
 
     // Education
 
-    graduatedFrom: string[];
-    academicDegree: AcademicDegrees;
-    educationLevel: EducationLevels;
+    educationInstitutions: string[];
+    academicDegree: AcademicDegree | null;
+    educationLevel: EducationLevel | null;
 
     // Other
 

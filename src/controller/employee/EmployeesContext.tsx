@@ -1,6 +1,7 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { Employee, IPagination } from "@/model";
 import { createHook } from "@/controller/utils";
+import { useApi } from "@/controller/api";
 
 export interface IEmployees {
     list: Employee[];
@@ -18,7 +19,7 @@ export const Employees = createContext<IEmployees>({
     remove: () => {},
 });
 
-export function EmployeesProvider() {
+export function EmployeesProvider({ children }: { children: ReactNode }) {
     const [serverList, setServerList] = useState<Employee[]>([]);
     const [list, setList] = useState<Employee[]>([]);
     const [pagination, setPagination] = useState<IPagination>({
@@ -27,19 +28,27 @@ export function EmployeesProvider() {
         size: 10,
     });
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        fetchEmployees();
+    }, []);
+
+    const { axiosInstance } = useApi();
 
     async function setPage(page: number) {
         setPagination({ ...pagination, current: page });
     }
 
-    async function __fetchEmployeesMock(page: number, limit: number) {
-        return serverList.slice(page * limit, page * (limit + 1));
-    }
-
     async function fetchEmployees() {
-        const employees = await __fetchEmployeesMock(1, 10);
-        setList(employees);
+        await axiosInstance
+            .get("employees/spreadsheet")
+            .then((response) => {
+                const employees = response.data.employees;
+                setList(employees);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     async function push(employee: Employee) {}
@@ -54,7 +63,7 @@ export function EmployeesProvider() {
         remove,
     };
 
-    return <Employees.Provider value={context}></Employees.Provider>;
+    return <Employees.Provider value={context}>{children}</Employees.Provider>;
 }
 
-export const useEmployeeList = createHook(Employees);
+export const useEmployees = createHook(Employees);
