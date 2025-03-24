@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug frontend",
+            "runtimeExecutable": "/bin/bash",
+            "skipFiles": ["<node_internals>/**"],
+            "console": "integratedTerminal",
+
+            "windows": {
+                "runtimeArgs": ["-c", "fnm use 22 ; pnpm run dev"]
+            },
+            "osx": {
+                "runtimeArgs": ["-c", "fnm use 22 && sudo pnpm run dev"]
+            },
+            "linux": {
+                "runtimeArgs": ["-c", "fnm use 22 && pnpm run dev"]
+            }
+        }
+    ]
+}
