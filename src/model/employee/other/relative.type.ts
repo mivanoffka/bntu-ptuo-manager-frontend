@@ -1,3 +1,3 @@
-import { Enumeration } from "@/model/enumeration";
+import { EnumerationItem } from "@/model/enumeration";
 
-export interface RelativeType extends Enumeration {}
+export interface RelativeType extends EnumerationItem {}

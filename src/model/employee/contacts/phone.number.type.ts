@@ -1,3 +1,3 @@
-import { Enumeration } from "@/model/enumeration";
+import { EnumerationItem } from "@/model/enumeration";
 
-export interface PhoneNumberType extends Enumeration {}
+export interface PhoneNumberType extends EnumerationItem {}

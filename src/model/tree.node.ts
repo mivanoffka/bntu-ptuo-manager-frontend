@@ -1,6 +1,6 @@
-import { Enumeration } from "@/model/enumeration";
+import { EnumerationItem } from "@/model/enumeration";
 
-export interface TreeNode extends Enumeration {
+export interface TreeNode extends EnumerationItem {
     path: string;
     hierarchy: string[];
 }

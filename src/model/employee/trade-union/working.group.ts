@@ -1,3 +1,3 @@
-import { Enumeration } from "@/model/enumeration";
+import { EnumerationItem } from "@/model/enumeration";
 
-export interface WorkingGroup extends Enumeration {}
+export interface WorkingGroup extends EnumerationItem {}

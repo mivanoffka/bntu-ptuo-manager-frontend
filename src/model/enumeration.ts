@@ -1,4 +1,4 @@
-export interface Enumeration {
-    id: number;
+export interface EnumerationItem {
+    value: number;
     label: string;
 }

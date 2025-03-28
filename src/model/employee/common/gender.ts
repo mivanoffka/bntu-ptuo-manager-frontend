@@ -1,3 +1,3 @@
-import { Enumeration } from "@/model/enumeration";
+import { EnumerationItem } from "@/model/enumeration";
 
-export interface Gender extends Enumeration {}
+export interface Gender extends EnumerationItem {}

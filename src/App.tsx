@@ -10,39 +10,50 @@ import { EmployeesManager } from "@/view/manager";
 import { EmployeesProvider } from "@/controller/employee/EmployeesContext";
 import { EmployeesSelectionProvider } from "@/controller/employee/EmployeesSelectionContext";
 import { DisplayedEmployeeProvider } from "@/controller/employee/DisplayedEmployeeContext";
+import { EditModeProvider } from "@/controller/employee/EditModeContext";
+import {
+    EmployeeUpdater,
+    EmployeeUpdaterProvider,
+} from "@/controller/employee/EmployeeUpdaterContext";
 
 const App: React.FC = () => {
     return (
         <BrowserRouter>
             <ApiProvider>
                 <AuthProvider>
-                    <EmployeesSelectionProvider>
-                        <EmployeesProvider>
-                            <DisplayedEmployeeProvider>
-                                <PageContainer>
-                                    <TopBar></TopBar>
-                                    <Content>
-                                        <Routes>
-                                            <Route
-                                                path="/employees"
-                                                element={<EmployeesManager />}
-                                            ></Route>
-                                            <Route
-                                                path="/auth/sign-in"
-                                                element={<SignIn />}
-                                            />
-                                            <Route
-                                                path="*"
-                                                element={
-                                                    <Navigate to="/employees" />
-                                                }
-                                            />
-                                        </Routes>
-                                    </Content>
-                                </PageContainer>
-                            </DisplayedEmployeeProvider>
-                        </EmployeesProvider>
-                    </EmployeesSelectionProvider>
+                    <EditModeProvider>
+                        <EmployeesSelectionProvider>
+                            <EmployeesProvider>
+                                <DisplayedEmployeeProvider>
+                                    <EmployeeUpdaterProvider>
+                                        <PageContainer>
+                                            <TopBar></TopBar>
+                                            <Content>
+                                                <Routes>
+                                                    <Route
+                                                        path="/employees"
+                                                        element={
+                                                            <EmployeesManager />
+                                                        }
+                                                    ></Route>
+                                                    <Route
+                                                        path="/auth/sign-in"
+                                                        element={<SignIn />}
+                                                    />
+                                                    <Route
+                                                        path="*"
+                                                        element={
+                                                            <Navigate to="/employees" />
+                                                        }
+                                                    />
+                                                </Routes>
+                                            </Content>
+                                        </PageContainer>
+                                    </EmployeeUpdaterProvider>
+                                </DisplayedEmployeeProvider>
+                            </EmployeesProvider>
+                        </EmployeesSelectionProvider>
+                    </EditModeProvider>
                 </AuthProvider>
             </ApiProvider>
         </BrowserRouter>

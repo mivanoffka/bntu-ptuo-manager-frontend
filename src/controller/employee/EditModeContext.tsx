@@ -24,6 +24,10 @@ export const EditMode = createContext<IEditMode>({
 export function EditModeProvider({ children }: { children: ReactNode }) {
     const [editModeEnabled, setEditModeEnabled] = useState(false);
 
+    useEffect(() => {
+        console.log(editModeEnabled);
+    }, [editModeEnabled]);
+
     function enableEditMode() {
         setEditModeEnabled(true);
     }
@@ -33,6 +37,7 @@ export function EditModeProvider({ children }: { children: ReactNode }) {
     }
 
     function toggleEditMode() {
+        console.log("!");
         setEditModeEnabled(!editModeEnabled);
     }
 

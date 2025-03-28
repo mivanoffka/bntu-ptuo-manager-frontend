@@ -64,7 +64,11 @@ export function DisplayedEmployeeProvider({
         const newEmployee = getNewEmployee();
         setDisplayedEmployee(newEmployee);
 
-        startEdit();
+        if (!displayedEmployee) {
+            return;
+        }
+
+        enableEditMode();
     }
 
     function startEdit() {
