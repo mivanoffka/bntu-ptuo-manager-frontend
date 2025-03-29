@@ -1,4 +1,4 @@
-import { useDisplayedEmployee } from "@/controller/employee/DisplayedEmployeeContext";
+import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { useEditMode } from "@/controller/employee/EditModeContext";
 import "@/view/manager/style/employee-toolbar.css";
 import {
@@ -14,8 +14,7 @@ import { Button } from "antd";
 export function EmployeeToolbar() {
     const { editModeEnabled } = useEditMode();
 
-    const { applyEdit, cancelEdit, startEdit, createNew } =
-        useDisplayedEmployee();
+    const { applyEdit, cancelEdit, startEdit, createNew } = useEmployeeEditor();
 
     const defaultMenu = (
         <div className="toolbar-menu">

@@ -9,12 +9,8 @@ import { Content } from "@/view/content";
 import { EmployeesManager } from "@/view/manager";
 import { EmployeesProvider } from "@/controller/employee/EmployeesContext";
 import { EmployeesSelectionProvider } from "@/controller/employee/EmployeesSelectionContext";
-import { DisplayedEmployeeProvider } from "@/controller/employee/DisplayedEmployeeContext";
+import { EmployeeEditorProvider } from "@/controller/employee/EmployeeEditorContext";
 import { EditModeProvider } from "@/controller/employee/EditModeContext";
-import {
-    EmployeeUpdater,
-    EmployeeUpdaterProvider,
-} from "@/controller/employee/EmployeeUpdaterContext";
 
 const App: React.FC = () => {
     return (
@@ -24,33 +20,31 @@ const App: React.FC = () => {
                     <EditModeProvider>
                         <EmployeesSelectionProvider>
                             <EmployeesProvider>
-                                <DisplayedEmployeeProvider>
-                                    <EmployeeUpdaterProvider>
-                                        <PageContainer>
-                                            <TopBar></TopBar>
-                                            <Content>
-                                                <Routes>
-                                                    <Route
-                                                        path="/employees"
-                                                        element={
-                                                            <EmployeesManager />
-                                                        }
-                                                    ></Route>
-                                                    <Route
-                                                        path="/auth/sign-in"
-                                                        element={<SignIn />}
-                                                    />
-                                                    <Route
-                                                        path="*"
-                                                        element={
-                                                            <Navigate to="/employees" />
-                                                        }
-                                                    />
-                                                </Routes>
-                                            </Content>
-                                        </PageContainer>
-                                    </EmployeeUpdaterProvider>
-                                </DisplayedEmployeeProvider>
+                                <EmployeeEditorProvider>
+                                    <PageContainer>
+                                        <TopBar></TopBar>
+                                        <Content>
+                                            <Routes>
+                                                <Route
+                                                    path="/employees"
+                                                    element={
+                                                        <EmployeesManager />
+                                                    }
+                                                ></Route>
+                                                <Route
+                                                    path="/auth/sign-in"
+                                                    element={<SignIn />}
+                                                />
+                                                <Route
+                                                    path="*"
+                                                    element={
+                                                        <Navigate to="/employees" />
+                                                    }
+                                                />
+                                            </Routes>
+                                        </Content>
+                                    </PageContainer>
+                                </EmployeeEditorProvider>
                             </EmployeesProvider>
                         </EmployeesSelectionProvider>
                     </EditModeProvider>

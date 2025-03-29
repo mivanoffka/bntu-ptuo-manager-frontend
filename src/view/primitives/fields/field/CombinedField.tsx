@@ -1,8 +1,7 @@
-import { Flex, Typography } from "antd";
-import "./style/field.css";
 import { ReactNode } from "react";
 import { useEditMode } from "@/controller/employee/EditModeContext";
-import { Field } from "@/view/field/Field";
+import { Field } from "@/view/primitives/fields/field/Field";
+import "./style/field.css";
 
 export interface ICombinedFieldProps {
     title?: string;

@@ -1,23 +1,63 @@
-import { useDisplayedEmployee } from "@/controller/employee/DisplayedEmployeeContext";
+import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { useEmployeeUpdater } from "@/controller/employee/EmployeeUpdaterContext";
-import { CombinedField } from "@/view/field/CombinedField";
-import { Field } from "@/view/field/Field";
-import { FieldTitle } from "@/view/field/FieldTitle";
-import { Label } from "@/view/field/Label";
-import { TextInput } from "@/view/field/TextInput";
+import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
+import { Field } from "@/view/primitives/fields/field/Field";
+import { FieldTitle } from "@/view/primitives/fields/field/FieldTitle";
+import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
+import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import { Dropdown, Flex, MenuProps, Space } from "antd";
 import dayjs from "dayjs";
 
 export function NameField() {
-    const { displayedEmployee } = useDisplayedEmployee();
-    const { updateFirstName, updateLastName, updateMiddleName } =
-        useEmployeeUpdater();
+    const { displayedEmployee, update, updateField, getField } =
+        useEmployeeEditor();
 
     const { firstName, lastName, middleName } =
         displayedEmployee?.names?.relevant ?? {};
 
-    const fullName = <Label> {`${lastName} ${firstName} ${middleName}`}</Label>;
+    const fullName = (
+        <LabelField> {`${lastName} ${firstName} ${middleName}`}</LabelField>
+    );
+
+    function updateNamePart(fieldName: string, value: string) {
+        if (!displayedEmployee) {
+            return;
+        }
+
+        const { names } = displayedEmployee;
+        const { relevant, history } = names;
+
+        let newRelevant = relevant;
+
+        if (!newRelevant) {
+            newRelevant = {
+                firstName: null,
+                lastName: null,
+                middleName: null,
+            };
+        }
+
+        update({
+            ...displayedEmployee,
+            names: {
+                relevant: { ...newRelevant, [fieldName]: value },
+                history,
+            },
+        });
+    }
+
+    function updateFirstName(value: string) {
+        updateNamePart("firstName", value);
+    }
+
+    function updateLastName(value: string) {
+        updateNamePart("lastName", value);
+    }
+
+    function updateMiddleName(value: string) {
+        updateNamePart("middleName", value);
+    }
 
     const historyItems: MenuProps["items"] =
         displayedEmployee?.names?.history.map((item, index) => {
@@ -33,9 +73,9 @@ export function NameField() {
                             gap: 20,
                         }}
                     >
-                        <Label>
+                        <LabelField>
                             {`${lastName} ${firstName} ${middleName}`}
-                        </Label>
+                        </LabelField>
                         <FieldTitle>
                             (до {dayjs(item.updatedAt).format("DD.MM.YYYY")})
                         </FieldTitle>
@@ -65,25 +105,25 @@ export function NameField() {
     const editField = (
         <Flex gap="small">
             <Field title="Фамилия">
-                <TextInput
+                <InputField
                     value={lastName}
                     onChange={updateLastName}
                     placeholder="Фамилия"
-                ></TextInput>
+                ></InputField>
             </Field>
             <Field title="Имя">
-                <TextInput
+                <InputField
                     value={firstName}
                     onChange={updateFirstName}
                     placeholder="Имя"
-                ></TextInput>
+                ></InputField>
             </Field>
             <Field title="Отчество">
-                <TextInput
+                <InputField
                     value={middleName}
                     onChange={updateMiddleName}
                     placeholder="Отчество"
-                ></TextInput>
+                ></InputField>
             </Field>
         </Flex>
     );

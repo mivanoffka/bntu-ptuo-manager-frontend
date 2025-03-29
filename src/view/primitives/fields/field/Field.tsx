@@ -1,7 +1,7 @@
 import { Flex, Typography } from "antd";
 import "./style/field.css";
 import { ReactNode } from "react";
-import { FieldTitle } from "@/view/field/FieldTitle";
+import { FieldTitle } from "@/view/primitives/fields/field/FieldTitle";
 
 export interface IFieldProps {
     title?: ReactNode;

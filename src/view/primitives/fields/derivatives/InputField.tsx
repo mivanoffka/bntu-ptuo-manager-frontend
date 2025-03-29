@@ -1,18 +1,17 @@
 import { Input } from "antd";
-import "./style/field.css";
 import { ReactNode } from "react";
 
-export interface ITextInputProps {
+export interface IInputFieldProps {
     title?: ReactNode;
     value: string | null;
     onChange: (value: string) => void;
-    placeholder?: string; // Добавляем опциональный плейсхолдер
+    placeholder?: string;
 }
 
-export function TextInput(props: ITextInputProps) {
+export function InputField(props: IInputFieldProps) {
     const { onChange, value, placeholder = "Не выбрано" } = props;
 
-    const displayValue = value ?? null; // null покажет placeholder
+    const displayValue = value ?? null;
 
     return (
         <Input

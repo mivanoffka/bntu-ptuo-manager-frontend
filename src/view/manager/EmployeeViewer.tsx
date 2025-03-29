@@ -1,11 +1,11 @@
 import "@/view/manager/style/employee-viewer.css";
-import { useDisplayedEmployee } from "@/controller/employee/DisplayedEmployeeContext";
+import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { Flex, Typography } from "antd";
 import { EmployeeToolbar } from "@/view/manager/EmployeeToolbar";
-import { DisplayedEmployee } from "@/view/employee/Employee";
+import { Employee } from "@/view/employee/Employee";
 
 export function EmployeesViewer() {
-    const { displayedEmployee } = useDisplayedEmployee();
+    const { displayedEmployee } = useEmployeeEditor();
 
     const emptyContent = (
         <Typography.Text type="secondary">
@@ -17,7 +17,7 @@ export function EmployeesViewer() {
         <div className="container">
             <EmployeeToolbar></EmployeeToolbar>
             <div className="inner-container">
-                {displayedEmployee ? <DisplayedEmployee /> : emptyContent}
+                {displayedEmployee ? <Employee /> : emptyContent}
             </div>
         </div>
     );

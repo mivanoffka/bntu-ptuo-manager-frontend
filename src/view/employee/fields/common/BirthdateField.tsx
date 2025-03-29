@@ -1,13 +1,11 @@
-import { useDisplayedEmployee } from "@/controller/employee/DisplayedEmployeeContext";
-import { useEmployeeUpdater } from "@/controller/employee/EmployeeUpdaterContext";
-import { CombinedField } from "@/view/field/CombinedField";
-import { Label } from "@/view/field/Label";
+import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
+import { DateTimeString } from "@/model/date.time.string";
+import { CombinedField, LabelField } from "@/view/primitives";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 
 export function BirthdateField() {
-    const { displayedEmployee } = useDisplayedEmployee();
-    const { updateBirthdate } = useEmployeeUpdater();
+    const { displayedEmployee, updateField } = useEmployeeEditor();
 
     const getBirthdateValue = () => {
         const rawDate = displayedEmployee?.birthdate;
@@ -18,10 +16,17 @@ export function BirthdateField() {
 
     const birthdate = getBirthdateValue();
 
+    const updateBirthdate = (date: dayjs.Dayjs | null) => {
+        updateField<DateTimeString | null>(
+            "birthdate",
+            date?.toISOString() as DateTimeString
+        );
+    };
+
     const displayField = (
-        <Label>
+        <LabelField>
             {birthdate ? birthdate.format("DD.MM.YYYY") : "Не указано"}
-        </Label>
+        </LabelField>
     );
 
     const editField = (

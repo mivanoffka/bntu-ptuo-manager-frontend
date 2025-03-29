@@ -3,7 +3,7 @@ import { useEmployees } from "@/controller/employee/EmployeesContext";
 import { useEmployeesSelection } from "@/controller/employee/EmployeesSelectionContext";
 import { getCopy, getNewEmployee } from "@/controller/employee/utils";
 import { createHook } from "@/controller/utils";
-import { Employee } from "@/model";
+import { Employee, Identifiable } from "@/model";
 import {
     createContext,
     ReactNode,
@@ -12,29 +12,38 @@ import {
     useState,
 } from "react";
 
-export interface IDisplayedEmployee {
+export interface IEmployeeEditor {
     displayedEmployee: Employee | null;
     createNew: () => void;
     startEdit: () => void;
     cancelEdit: () => void;
     applyEdit: () => void;
     update: (employee: Employee) => void;
+    removeFromList: <T extends Identifiable>(
+        fieldName: string,
+        value: T
+    ) => void;
+    getField: <T>(fieldName: string) => T | null;
+    updateList: <T extends Identifiable>(fieldName: string, value: T) => void;
+    getList: <T extends Identifiable>(fieldName: string) => T[];
+    updateField: <T>(fieldName: string, value: T) => void;
 }
 
-export const DisplayedEmployee = createContext<IDisplayedEmployee>({
+export const EmployeeEditor = createContext<IEmployeeEditor>({
     displayedEmployee: null,
     createNew: () => {},
     startEdit: () => {},
     cancelEdit: () => {},
     applyEdit: () => {},
     update: () => {},
+    removeFromList: () => {},
+    updateList: () => {},
+    getList: () => [],
+    updateField: () => {},
+    getField: () => null,
 });
 
-export function DisplayedEmployeeProvider({
-    children,
-}: {
-    children: ReactNode;
-}) {
+export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
     const { selectedIds } = useEmployeesSelection();
     const { list, push } = useEmployees();
     const { editModeEnabled, enableEditMode, disableEditMode } = useEditMode();
@@ -108,20 +117,88 @@ export function DisplayedEmployeeProvider({
         setDisplayedEmployee(employee);
     }
 
-    const context: IDisplayedEmployee = {
+    function getField<T>(fieldName: string): T | null {
+        if (!displayedEmployee) {
+            return null;
+        }
+
+        return displayedEmployee[fieldName] as T;
+    }
+
+    function updateField<T>(fieldName: string, value: T) {
+        if (!displayedEmployee) {
+            return;
+        }
+
+        update({ ...displayedEmployee, [fieldName]: value });
+    }
+
+    function getList<T extends Identifiable>(fieldName: string): T[] {
+        if (!displayedEmployee) {
+            return [];
+        }
+
+        const list = (displayedEmployee[fieldName] as T[]) || ([] as T[]);
+
+        list.sort((a, b) => b.id - a.id);
+
+        return list;
+    }
+
+    function updateList<T extends Identifiable>(fieldName: string, value: T) {
+        if (!displayedEmployee) {
+            return;
+        }
+
+        const list = (displayedEmployee[fieldName] as T[]) || ([] as T[]);
+
+        update({
+            ...displayedEmployee,
+            [fieldName]: [
+                ...list.filter((item) => item.id !== value.id),
+                value,
+            ],
+        });
+    }
+
+    function removeFromList<T extends Identifiable>(
+        fieldName: string,
+        value: T
+    ) {
+        if (!displayedEmployee) {
+            return;
+        }
+
+        const list = (displayedEmployee[fieldName] as T[]) || ([] as T[]);
+
+        console.log(value);
+        console.log(list);
+
+        update({
+            ...displayedEmployee,
+            [fieldName]: list.filter((item) => item.id !== value.id),
+        });
+    }
+
+    const context: IEmployeeEditor = {
         displayedEmployee,
         startEdit,
         applyEdit,
         cancelEdit,
         createNew,
         update,
+        removeFromList,
+        updateList,
+        getList,
+        updateField,
+        getField,
     };
 
     return (
-        <DisplayedEmployee.Provider value={context}>
+        <EmployeeEditor.Provider value={context}>
             {children}
-        </DisplayedEmployee.Provider>
+        </EmployeeEditor.Provider>
     );
 }
 
-export const useDisplayedEmployee = createHook(DisplayedEmployee);
+export const useEmployeeEditor = createHook(EmployeeEditor);

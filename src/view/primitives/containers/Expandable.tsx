@@ -1,14 +1,14 @@
-import { FieldTitle } from "@/view/field/FieldTitle";
-import { Label } from "@/view/field/Label";
+import { FieldTitle } from "@/view/primitives/fields/field/FieldTitle";
+import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
 import { Collapse, Flex } from "antd";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 export interface IDropDownProps {
     title: ReactNode;
-    children: ReactNode;
+    children?: ReactNode;
 }
 
-export function DropDown(props: IDropDownProps) {
+export function Expandable(props: IDropDownProps) {
     const { title, children } = props;
 
     const item = {

@@ -1,18 +1,20 @@
-import { useDisplayedEmployee } from "@/controller/employee/DisplayedEmployeeContext";
+import { Flex, Image } from "antd";
+
+import {
+    NameField,
+    PhoneNumbersList,
+    EmailsList,
+    AddressesList,
+    BirthplaceField,
+    BirthdateField,
+    GenderField,
+} from "@/view/employee/fields";
+
+import { Expandable } from "@/view/primitives";
+
 import "./style/employee.css";
-import { CombinedField } from "@/view/field/CombinedField";
-import { Flex, Image, Typography } from "antd";
-import { NameField } from "@/view/employee/fields";
-import { BirthdateField } from "@/view/employee/fields/BirthdateField";
-import { GenderField } from "@/view/employee/fields/GenderField";
-import { NameHistory } from "@/view/employee/fields/NameHistory";
-import { DropDown } from "@/view/field/DropDown";
-import { BirthplaceField } from "@/view/employee/fields/BirthplaceField";
-import { EmailsList } from "@/view/employee/fields/EmailsList";
 
-export function DisplayedEmployee() {
-    const { displayedEmployee } = useDisplayedEmployee();
-
+export function Employee() {
     return (
         <Flex
             vertical
@@ -68,19 +70,19 @@ export function DisplayedEmployee() {
                 justify="center"
                 style={{ width: "90%" }}
             >
-                <DropDown title="Контакты">
+                <Expandable title="Контакты">
                     <Flex
                         vertical
                         align="center"
                         justify="center"
                         style={{ width: "90%" }}
                     >
+                        <PhoneNumbersList></PhoneNumbersList>
                         <EmailsList></EmailsList>
-                        <DropDown title="Номера телефонов"></DropDown>
-                        <DropDown title="Адреса"></DropDown>
+                        <AddressesList></AddressesList>
                     </Flex>
-                </DropDown>
-                <DropDown title="БНТУ"></DropDown>
+                </Expandable>
+                <Expandable title="БНТУ"></Expandable>
             </Flex>
         </Flex>
     );

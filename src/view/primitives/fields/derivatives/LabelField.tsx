@@ -1,13 +1,12 @@
-import { Flex, Typography } from "antd";
-import "./style/field.css";
+import { Typography } from "antd";
 import { ReactNode } from "react";
 
-export interface ILabelProps {
+export interface ILabelFieldProps {
     children?: ReactNode;
     placeholder?: string;
 }
 
-export function Label(props: ILabelProps) {
+export function LabelField(props: ILabelFieldProps) {
     const { children, placeholder = "Не указано" } = props;
 
     return (
