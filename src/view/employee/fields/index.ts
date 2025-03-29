@@ -10,3 +10,5 @@ export {
     EmailsList,
     AddressesList,
 } from "@/view/employee/fields/contacts";
+
+export { CommentsList, RelativesList } from "@/view/employee/fields/other";

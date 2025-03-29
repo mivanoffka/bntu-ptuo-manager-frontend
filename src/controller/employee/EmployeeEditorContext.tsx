@@ -132,7 +132,6 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
 
         update({ ...displayedEmployee, [fieldName]: value });
     }
-
     function getList<T extends Identifiable>(fieldName: string): T[] {
         if (!displayedEmployee) {
             return [];
@@ -140,7 +139,15 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
 
         const list = (displayedEmployee[fieldName] as T[]) || ([] as T[]);
 
-        list.sort((a, b) => b.id - a.id);
+        list.sort((a, b) => {
+            if (a.id > 0 && b.id > 0) {
+                return a.id - b.id;
+            }
+            if (a.id < 0 && b.id < 0) {
+                return b.id - a.id;
+            }
+            return a.id > 0 ? -1 : 1;
+        });
 
         return list;
     }

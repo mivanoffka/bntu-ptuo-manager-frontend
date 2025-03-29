@@ -11,6 +11,7 @@ import { EmployeesProvider } from "@/controller/employee/EmployeesContext";
 import { EmployeesSelectionProvider } from "@/controller/employee/EmployeesSelectionContext";
 import { EmployeeEditorProvider } from "@/controller/employee/EmployeeEditorContext";
 import { EditModeProvider } from "@/controller/employee/EditModeContext";
+import { EnumerationsProvider } from "@/controller/enumerations/EnumerationsContext";
 
 const App: React.FC = () => {
     return (
@@ -18,35 +19,37 @@ const App: React.FC = () => {
             <ApiProvider>
                 <AuthProvider>
                     <EditModeProvider>
-                        <EmployeesSelectionProvider>
-                            <EmployeesProvider>
-                                <EmployeeEditorProvider>
-                                    <PageContainer>
-                                        <TopBar></TopBar>
-                                        <Content>
-                                            <Routes>
-                                                <Route
-                                                    path="/employees"
-                                                    element={
-                                                        <EmployeesManager />
-                                                    }
-                                                ></Route>
-                                                <Route
-                                                    path="/auth/sign-in"
-                                                    element={<SignIn />}
-                                                />
-                                                <Route
-                                                    path="*"
-                                                    element={
-                                                        <Navigate to="/employees" />
-                                                    }
-                                                />
-                                            </Routes>
-                                        </Content>
-                                    </PageContainer>
-                                </EmployeeEditorProvider>
-                            </EmployeesProvider>
-                        </EmployeesSelectionProvider>
+                        <EnumerationsProvider>
+                            <EmployeesSelectionProvider>
+                                <EmployeesProvider>
+                                    <EmployeeEditorProvider>
+                                        <PageContainer>
+                                            <TopBar></TopBar>
+                                            <Content>
+                                                <Routes>
+                                                    <Route
+                                                        path="/employees"
+                                                        element={
+                                                            <EmployeesManager />
+                                                        }
+                                                    ></Route>
+                                                    <Route
+                                                        path="/auth/sign-in"
+                                                        element={<SignIn />}
+                                                    />
+                                                    <Route
+                                                        path="*"
+                                                        element={
+                                                            <Navigate to="/employees" />
+                                                        }
+                                                    />
+                                                </Routes>
+                                            </Content>
+                                        </PageContainer>
+                                    </EmployeeEditorProvider>
+                                </EmployeesProvider>
+                            </EmployeesSelectionProvider>
+                        </EnumerationsProvider>
                     </EditModeProvider>
                 </AuthProvider>
             </ApiProvider>

@@ -11,33 +11,37 @@ export interface ISelectFieldProps {
     placeholder?: string;
 }
 
-const Display = ({
+const Display: React.FC<{ value: EnumerationItem; placeholder?: string }> = ({
     value,
     placeholder,
-}: {
-    value: EnumerationItem;
-    placeholder?: string;
-}) => <LabelField>{value?.label ?? placeholder ?? ""}</LabelField>;
+}) => {
+    return <LabelField>{value?.label}</LabelField>;
+};
 
-const Edit = ({
-    value,
-    onChange,
-    enumeration,
-}: {
+const Edit: React.FC<{
     value: EnumerationItem;
     onChange: (value: EnumerationItem) => void;
     enumeration: EnumerationItem[];
-}) => (
-    <Select
-        allowClear
-        style={{ textAlign: "left" }}
-        size="small"
-        value={value ?? undefined}
-        onChange={onChange}
-        options={enumeration}
-        placeholder="Не выбрано"
-    />
-);
+}> = ({ value, onChange, enumeration }) => {
+    function enumToOptions() {
+        return enumeration.map((item) => ({
+            value: item.id,
+            label: item.label,
+        }));
+    }
+
+    return (
+        <Select
+            allowClear
+            style={{ textAlign: "left" }}
+            size="small"
+            value={value ?? undefined}
+            onChange={onChange}
+            options={enumToOptions()}
+            placeholder="Не выбрано"
+        />
+    );
+};
 
 export function SelectField(props: ISelectFieldProps) {
     const { title, enumeration, onChange, value } = props;

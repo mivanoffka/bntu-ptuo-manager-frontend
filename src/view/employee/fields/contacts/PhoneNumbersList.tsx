@@ -14,7 +14,7 @@ export function PhoneNumbersList() {
             id: tempIds.generate(),
             value: null,
             comment: null,
-            type: null,
+            phoneNumberType: null,
         });
 
     const updatePhoneNumber = (phoneNumber: PhoneNumber) =>

@@ -1,5 +1,5 @@
 import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
-import { useEmployeeUpdater } from "@/controller/employee/EmployeeUpdaterContext";
+
 import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { Field } from "@/view/primitives/fields/field/Field";
 import { FieldTitle } from "@/view/primitives/fields/field/FieldTitle";
@@ -8,6 +8,7 @@ import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import { Dropdown, Flex, MenuProps, Space } from "antd";
 import dayjs from "dayjs";
+import { Commented } from "@/view/primitives/containers";
 
 export function NameField() {
     const { displayedEmployee, update, updateField, getField } =
@@ -59,14 +60,13 @@ export function NameField() {
         updateNamePart("middleName", value);
     }
 
-    const historyItems: MenuProps["items"] =
-        displayedEmployee?.names?.history.map((item, index) => {
-            const { firstName, lastName, middleName } = item.item;
-            return {
-                key: index,
-
-                label: (
-                    <div
+    const historyItems = (
+        <ul>
+            {displayedEmployee?.names?.history.map((item, index) => {
+                const { firstName, lastName, middleName } = item.item;
+                return (
+                    <li
+                        key={index}
                         style={{
                             display: "flex",
                             justifyContent: "space-between",
@@ -79,28 +79,24 @@ export function NameField() {
                         <FieldTitle>
                             (до {dayjs(item.updatedAt).format("DD.MM.YYYY")})
                         </FieldTitle>
-                    </div>
-                ),
-            };
-        });
+                    </li>
+                );
+            })}
+        </ul>
+    );
 
     const singularDisplayField = <Field title="Полное имя">{fullName}</Field>;
 
     const multipleDisplayField = (
         <Field title="Полное имя">
-            <Dropdown trigger={["click"]} menu={{ items: historyItems }}>
-                <a onClick={(e) => e.preventDefault()}>
-                    <Flex gap="small">
-                        {fullName}
-                        <DownOutlined />
-                    </Flex>
-                </a>
-            </Dropdown>
+            <Commented comment={historyItems}>{fullName}</Commented>
         </Field>
     );
 
     const displayField =
-        historyItems.length > 0 ? multipleDisplayField : singularDisplayField;
+        displayedEmployee?.names?.history?.length > 0
+            ? multipleDisplayField
+            : singularDisplayField;
 
     const editField = (
         <Flex gap="small">

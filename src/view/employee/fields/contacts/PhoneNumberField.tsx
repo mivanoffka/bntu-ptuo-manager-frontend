@@ -3,7 +3,9 @@ import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { Field } from "@/view/primitives/fields/field/Field";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { Flex, Typography } from "antd";
-import { SelectField } from "@/view/primitives";
+import { FieldTitle, SelectField } from "@/view/primitives";
+import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
+import { Commented } from "@/view/primitives/containers";
 
 export interface IPhoneNumberFieldProps {
     item: PhoneNumber;
@@ -12,13 +14,17 @@ export interface IPhoneNumberFieldProps {
 
 export function PhoneNumberField(props: IPhoneNumberFieldProps) {
     const { item, onChange } = props;
+    const { phoneNumberTypes } = useEnumerations();
+
+    console.log(item);
 
     const displayField = (
-        <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
-            <Typography.Text>{item.value}</Typography.Text>
-            <SelectField.Display value={item.type} />
-            <Typography.Text type="secondary">{item.comment}</Typography.Text>
-        </Flex>
+        <Commented comment={item.comment}>
+            <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
+                <Typography.Text>{item.value}</Typography.Text>
+                <FieldTitle>{item.phoneNumberType?.label}</FieldTitle>
+            </Flex>
+        </Commented>
     );
 
     const editField = (
@@ -31,12 +37,11 @@ export function PhoneNumberField(props: IPhoneNumberFieldProps) {
             </Field>
             <Field title="Тип">
                 <SelectField.Edit
-                    value={item.type}
-                    onChange={(type) => onChange({ ...item, type })}
-                    enumeration={[
-                        { label: "Мобильный", value: 0 },
-                        { label: "Домашний", value: 1 },
-                    ]}
+                    value={item.phoneNumberType}
+                    onChange={(phoneNumberType) =>
+                        onChange({ ...item, phoneNumberType })
+                    }
+                    enumeration={phoneNumberTypes}
                 ></SelectField.Edit>
             </Field>
             <Field title="Комментарий">

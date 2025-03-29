@@ -10,11 +10,13 @@ export function FieldTitle(props: IFieldTitleProps) {
     const { children } = props;
 
     return (
-        <Typography.Text
-            style={{ fontSize: "12px", textAlign: "left" }}
-            type="secondary"
-        >
-            {children}
-        </Typography.Text>
+        <Flex align="center">
+            <Typography.Text
+                style={{ fontSize: "12px", textAlign: "left" }}
+                type="secondary"
+            >
+                {children}
+            </Typography.Text>
+        </Flex>
     );
 }

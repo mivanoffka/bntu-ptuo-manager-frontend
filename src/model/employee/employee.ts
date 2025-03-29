@@ -5,8 +5,8 @@ import { Address, Email, PhoneNumber } from "@/model/employee/contacts";
 import { EducationLevel, AcademicDegree } from "@/model/employee/education";
 import { TradeUnionPosition } from "@/model/employee/trade-union";
 import { History } from "@/model/history";
-import { Dayjs } from "dayjs";
 import { DateTimeString } from "@/model/date.time.string";
+import { EducationalInstitution } from "@/model/employee/education/educational.institution";
 
 export interface Employee {
     [key: string]: any;
@@ -42,7 +42,7 @@ export interface Employee {
 
     // Education
 
-    educationInstitutions: string[];
+    educationInstitutions: EducationalInstitution[];
     academicDegree: AcademicDegree | null;
     educationLevel: EducationLevel | null;
 

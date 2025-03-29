@@ -1,8 +1,8 @@
 import { DateTimeString } from "@/model/date.time.string";
 
-export interface Reward {
+export interface EducationalInstitution {
     id: number;
     label: string | null;
-    grantedAt: DateTimeString | null;
+    graduatedAt: DateTimeString | null;
     comment: string | null;
 }
