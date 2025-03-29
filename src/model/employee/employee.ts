@@ -9,6 +9,8 @@ import { Dayjs } from "dayjs";
 import { DateTimeString } from "@/model/date.time.string";
 
 export interface Employee {
+    [key: string]: any;
+
     id: number | null;
 
     // Common

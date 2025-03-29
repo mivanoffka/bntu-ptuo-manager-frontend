@@ -4,7 +4,7 @@ import { Collapse, Flex } from "antd";
 import { ReactNode } from "react";
 
 export interface IDropDownProps {
-    title: string;
+    title: ReactNode;
     children: ReactNode;
 }
 
@@ -13,17 +13,17 @@ export function DropDown(props: IDropDownProps) {
 
     const item = {
         id: 0,
-        label: <FieldTitle>{title}</FieldTitle>,
+        label: (
+            <Flex vertical align="left" style={{ width: "100%" }}>
+                <FieldTitle>{title}</FieldTitle>
+            </Flex>
+        ),
+
         children,
     };
 
     return (
-        <Flex
-            vertical
-            align="center"
-            justify="center"
-            style={{ width: "100%" }}
-        >
+        <Flex vertical align="left" justify="left" style={{ width: "100%" }}>
             <Collapse
                 ghost
                 size="small"

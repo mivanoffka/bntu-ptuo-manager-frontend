@@ -12,8 +12,10 @@ import {
     Relative,
     Reward,
     TradeUnionPosition,
+    Employee,
 } from "@/model";
 import { DateTimeString } from "@/model/date.time.string";
+import { tempIds } from "@/controller/employee/utils";
 
 export interface IEmployeeUpdater {
     updateGender(value: Gender): void;
@@ -34,10 +36,17 @@ export interface IEmployeeUpdater {
     updateAcademicDegree(value: AcademicDegree): void;
     updatePhoneNumbers(value: PhoneNumber[]): void;
     updateAddresses(value: Address[]): void;
-    updateEmails(value: Email[]): void;
+    getEmails(): Email[];
+    addEmail(): void;
+    updateEmail(value: Email): void;
+    removeEmail(value: Email): void;
     updateComments(value: Comment[]): void;
     updateRewards(value: Reward[]): void;
     updateRelatives(value: Relative[]): void;
+}
+
+interface Identifiable {
+    id: any;
 }
 
 export const EmployeeUpdater = createContext<IEmployeeUpdater>(
@@ -57,6 +66,49 @@ export function EmployeeUpdaterProvider({
         }
 
         update({ ...displayedEmployee, [fieldName]: value });
+    }
+
+    function getList<T extends Identifiable>(fieldName: string): T[] {
+        if (!displayedEmployee) {
+            return [];
+        }
+
+        return (displayedEmployee[fieldName] as T[]) || ([] as T[]);
+    }
+
+    function updateList<T extends Identifiable>(fieldName: string, value: T) {
+        if (!displayedEmployee) {
+            return;
+        }
+
+        const list = (displayedEmployee[fieldName] as T[]) || ([] as T[]);
+
+        update({
+            ...displayedEmployee,
+            [fieldName]: [
+                ...list.filter((item) => item.id !== value.id),
+                value,
+            ],
+        });
+    }
+
+    function removeFromList<T extends Identifiable>(
+        fieldName: string,
+        value: T
+    ) {
+        if (!displayedEmployee) {
+            return;
+        }
+
+        const list = (displayedEmployee[fieldName] as T[]) || ([] as T[]);
+
+        console.log(value);
+        console.log(list);
+
+        update({
+            ...displayedEmployee,
+            [fieldName]: list.filter((item) => item.id !== value.id),
+        });
     }
 
     // region Common
@@ -172,8 +224,24 @@ export function EmployeeUpdaterProvider({
         updateField<Address[]>("addresses", value);
     }
 
-    function updateEmails(value: Email[]) {
-        updateField<Email[]>("emails", value);
+    function getEmails() {
+        return getList<Email>("emails");
+    }
+
+    function addEmail() {
+        updateList<Email>("emails", {
+            id: tempIds.generate(),
+            value: "",
+            comment: "",
+        });
+    }
+
+    function updateEmail(email: Email) {
+        updateList<Email>("emails", email);
+    }
+
+    function removeEmail(email: Email) {
+        removeFromList<Email>("emails", email);
     }
 
     function updatePhoneNumbers(value: PhoneNumber[]) {
@@ -217,7 +285,10 @@ export function EmployeeUpdaterProvider({
         updateAcademicDegree,
         updatePhoneNumbers,
         updateAddresses,
-        updateEmails,
+        getEmails,
+        addEmail,
+        updateEmail,
+        removeEmail,
         updateComments,
         updateRewards,
         updateRelatives,

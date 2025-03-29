@@ -1,7 +1,9 @@
 import { Input } from "antd";
 import "./style/field.css";
+import { ReactNode } from "react";
 
 export interface ITextInputProps {
+    title?: ReactNode;
     value: string | null;
     onChange: (value: string) => void;
     placeholder?: string; // Добавляем опциональный плейсхолдер

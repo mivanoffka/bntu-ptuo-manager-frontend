@@ -1,5 +1,5 @@
 export interface Email {
     id: number | null;
-    email: string | null;
+    value: string | null;
     comment: string | null;
 }
