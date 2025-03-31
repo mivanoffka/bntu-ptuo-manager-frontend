@@ -10,6 +10,9 @@ import {
     GenderField,
     CommentsList,
     RelativesList,
+    EducationalInstitutionsList,
+    EducationLevelField,
+    AcademicDegreeField,
 } from "@/view/employee/fields";
 
 import { Expandable } from "@/view/primitives";
@@ -82,6 +85,13 @@ export function Employee() {
                     <PhoneNumbersList></PhoneNumbersList>
                     <EmailsList></EmailsList>
                     <AddressesList></AddressesList>
+                </Expandable>
+                <Expandable title="Образование">
+                    <Flex gap="small" style={{ width: "100%" }}>
+                        <EducationLevelField></EducationLevelField>
+                        <AcademicDegreeField></AcademicDegreeField>
+                    </Flex>
+                    <EducationalInstitutionsList></EducationalInstitutionsList>
                 </Expandable>
                 <Expandable title="Прочее">
                     <RelativesList></RelativesList>

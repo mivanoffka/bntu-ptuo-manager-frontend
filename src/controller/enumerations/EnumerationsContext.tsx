@@ -5,7 +5,7 @@ import { useApi } from "@/controller/api";
 interface IEnumerationsContext {
     genders: { id: number; label: string }[];
     phoneNumberTypes: { id: number; label: string }[];
-    educationLevel: { id: number; label: string }[];
+    educationLevels: { id: number; label: string }[];
     academicDegrees: { id: number; label: string }[];
     workingGroups: { id: number; label: string }[];
     relativeTypes: { id: number; label: string }[];
@@ -20,7 +20,7 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
     const { axiosInstance } = useApi();
     const [genders, setGenders] = useState([]);
     const [phoneNumberTypes, setPhoneNumberTypes] = useState([]);
-    const [educationLevel, setEducationLevel] = useState([]);
+    const [educationLevels, setEducationLevel] = useState([]);
     const [academicDegrees, setAcademicDegrees] = useState([]);
     const [workingGroups, setWorkingGroups] = useState([]);
     const [relativeTypes, setRelativeTypes] = useState([]);
@@ -34,7 +34,7 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
             const response = await axiosInstance.get("/employees/enumerations");
             setGenders(response.data.genders || []);
             setPhoneNumberTypes(response.data.phoneNumberTypes || []);
-            setEducationLevel(response.data.educationLevel || []);
+            setEducationLevel(response.data.educationLevels || []);
             setAcademicDegrees(response.data.academicDegrees || []);
             setWorkingGroups(response.data.workingGroups || []);
             setRelativeTypes(response.data.relativeTypes || []);
@@ -52,7 +52,7 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
     const context: IEnumerationsContext = {
         genders,
         phoneNumberTypes,
-        educationLevel,
+        educationLevels,
         academicDegrees,
         workingGroups,
         relativeTypes,

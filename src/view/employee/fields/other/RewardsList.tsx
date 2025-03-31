@@ -7,21 +7,21 @@ import { RewardField } from "@/view/employee/fields/other/RewardField";
 export function RewardsList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
 
-    const getRewards = () => getList<Reward>("comments");
+    const getRewards = () => getList<Reward>("rewards");
 
     const addReward = () =>
-        updateList<Reward>("comments", {
+        updateList<Reward>("rewards", {
             id: tempIds.generate(),
             label: null,
             grantedAt: null,
             comment: null,
         });
 
-    const updateReward = (comment: Reward) =>
-        updateList<Reward>("comments", comment);
+    const updateReward = (reward: Reward) =>
+        updateList<Reward>("rewards", reward);
 
-    const removeReward = (comment: Reward) =>
-        removeFromList<Reward>("comments", comment);
+    const removeReward = (reward: Reward) =>
+        removeFromList<Reward>("rewards", reward);
 
     return (
         <Listed
