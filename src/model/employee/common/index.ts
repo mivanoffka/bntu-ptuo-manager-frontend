@@ -1,2 +1,2 @@
-export { IName } from "@/model/employee/common/name";
-export { Gender } from "@/model/employee/common/gender";
+export * from "@/model/employee/common/name";
+export * from "@/model/employee/common/gender";

@@ -2,7 +2,7 @@ import { useApi } from "@/controller/api";
 import { useOneSelectedEmployee } from "@/controller/employee/OneSelectedEmployeeContext";
 import { createHook } from "@/controller/utils";
 import { IEmployeeVersion } from "@/model";
-import { DateTimeString } from "@/model/date.time.string";
+import { DateTimeString } from "@/model";
 import dayjs from "dayjs";
 import {
     createContext,

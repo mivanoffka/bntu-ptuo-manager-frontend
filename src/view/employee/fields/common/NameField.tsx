@@ -8,101 +8,117 @@ import { Dropdown, Flex, MenuProps, Space } from "antd";
 import dayjs from "dayjs";
 import { Commented } from "@/view/primitives/containers";
 import { useEmployeeEditor } from "@/controller/employee";
+import { IName, History } from "@/model";
 
 export function NameField() {
-    // const { employeeVersion, updateField, getField } =
-    //     useEmployeeEditor();
+    const { updateField, getList } = useEmployeeEditor();
 
-    // const { firstName, lastName, middleName } =
-    //     employeeVersion?.names? ?? {};
+    const names = getList<IName>("names");
+    const namesHistory = History.fromCollection<IName>(names);
 
-    // const fullName = (
-    //     <LabelField> {`${lastName} ${firstName} ${middleName}`}</LabelField>
-    // );
+    const { firstName, lastName, middleName } = namesHistory.relevant ?? {
+        firstName: "",
+        lastName: "",
+        middleName: "",
+    };
 
-    // function updateNamePart(fieldName: string, value: string) {}
+    const fullName = (
+        <LabelField> {`${lastName} ${firstName} ${middleName}`}</LabelField>
+    );
 
-    // function updateFirstName(value: string) {
-    //     updateNamePart("firstName", value);
-    // }
+    function updateNamePart(fieldName: string, value: string) {
+        const { relevant } = namesHistory;
 
-    // function updateLastName(value: string) {
-    //     updateNamePart("lastName", value);
-    // }
+        const name = { ...relevant, [fieldName]: value };
 
-    // function updateMiddleName(value: string) {
-    //     updateNamePart("middleName", value);
-    // }
+        const updatedHistory = History.updatedByReplace<IName>(
+            namesHistory,
+            name as IName
+        );
 
-    // const historyItems = (
-    //     <ul>
-    //         {employeeVersion?.names?.map((item, index) => {
-    //             const { firstName, lastName, middleName } = item;
-    //             return (
-    //                 <li
-    //                     key={index}
-    //                     style={{
-    //                         display: "flex",
-    //                         justifyContent: "space-between",
-    //                         gap: 20,
-    //                     }}
-    //                 >
-    //                     <LabelField>
-    //                         {`${lastName} ${firstName} ${middleName}`}
-    //                     </LabelField>
-    //                     <FieldTitle>
-    //                         ({dayjs(item.createdAt).format("DD.MM.YYYY")})
-    //                     </FieldTitle>
-    //                 </li>
-    //             );
-    //         })}
-    //     </ul>
-    // );
+        const updatedNames = History.toCollection<IName>(updatedHistory);
 
-    // const singularDisplayField = <Field title="Полное имя">{fullName}</Field>;
+        updateField("names", updatedNames);
+    }
 
-    // const multipleDisplayField = (
-    //     <Field title="Полное имя">
-    //         <Commented comment={historyItems}>{fullName}</Commented>
-    //     </Field>
-    // );
+    function updateFirstName(value: string) {
+        updateNamePart("firstName", value);
+    }
 
-    // const displayField =
-    //     employeeVersion?.names?.history?.length > 0
-    //         ? multipleDisplayField
-    //         : singularDisplayField;
+    function updateLastName(value: string) {
+        updateNamePart("lastName", value);
+    }
 
-    // const editField = (
-    //     <Flex gap="small">
-    //         <Field title="Фамилия">
-    //             <InputField
-    //                 value={lastName}
-    //                 onChange={updateLastName}
-    //                 placeholder="Фамилия"
-    //             ></InputField>
-    //         </Field>
-    //         <Field title="Имя">
-    //             <InputField
-    //                 value={firstName}
-    //                 onChange={updateFirstName}
-    //                 placeholder="Имя"
-    //             ></InputField>
-    //         </Field>
-    //         <Field title="Отчество">
-    //             <InputField
-    //                 value={middleName}
-    //                 onChange={updateMiddleName}
-    //                 placeholder="Отчество"
-    //             ></InputField>
-    //         </Field>
-    //     </Flex>
-    // );
+    function updateMiddleName(value: string) {
+        updateNamePart("middleName", value);
+    }
+
+    const historyItems = (
+        <ul>
+            {namesHistory.history.map((item, index) => {
+                const { firstName, lastName, middleName } = item.item;
+                return (
+                    <li
+                        key={index}
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            gap: 20,
+                        }}
+                    >
+                        <LabelField>
+                            {`${lastName} ${firstName} ${middleName}`}
+                        </LabelField>
+                        <FieldTitle>
+                            (до {dayjs(item.updatedAt).format("DD.MM.YYYY")})
+                        </FieldTitle>
+                    </li>
+                );
+            })}
+        </ul>
+    );
+
+    const singularDisplayField = <Field title="Полное имя">{fullName}</Field>;
+
+    const multipleDisplayField = (
+        <Field title="Полное имя">
+            <Commented comment={historyItems}>{fullName}</Commented>
+        </Field>
+    );
+
+    const displayField =
+        names.length > 1 ? multipleDisplayField : singularDisplayField;
+
+    const editField = (
+        <Flex gap="small">
+            <Field title="Фамилия">
+                <InputField
+                    value={lastName}
+                    onChange={updateLastName}
+                    placeholder="Фамилия"
+                ></InputField>
+            </Field>
+            <Field title="Имя">
+                <InputField
+                    value={firstName}
+                    onChange={updateFirstName}
+                    placeholder="Имя"
+                ></InputField>
+            </Field>
+            <Field title="Отчество">
+                <InputField
+                    value={middleName}
+                    onChange={updateMiddleName}
+                    placeholder="Отчество"
+                ></InputField>
+            </Field>
+        </Flex>
+    );
 
     return (
-        // <CombinedField
-        //     displayField={displayField}
-        //     editField={editField}
-        // ></CombinedField>
-        <>?</>
+        <CombinedField
+            displayField={displayField}
+            editField={editField}
+        ></CombinedField>
     );
 }

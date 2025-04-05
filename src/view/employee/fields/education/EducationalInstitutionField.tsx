@@ -1,7 +1,7 @@
 import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { DatePicker, Flex, Typography } from "antd";
-import { IEducationalInstitution } from "@/model";
+import { DateTimeString, IEducationalInstitution } from "@/model";
 import { Commented } from "@/view/primitives/containers";
 import { Field, FieldTitle } from "@/view/primitives";
 import dayjs from "dayjs";
@@ -22,7 +22,7 @@ export function EducationalInstitutionField(
                 <Typography.Text>{item.label}</Typography.Text>
                 {item.graduatedAt && (
                     <FieldTitle>
-                        окончено в {dayjs(item.graduatedAt).format("YYYY")}
+                        окончено в {dayjs(item?.graduatedAt).format("YYYY")}
                     </FieldTitle>
                 )}
             </Flex>
@@ -41,9 +41,13 @@ export function EducationalInstitutionField(
                 <Field title="Год окончания">
                     <DatePicker
                         size="small"
-                        value={item.graduatedAt}
+                        value={dayjs(item.graduatedAt)}
                         onChange={(graduatedAt) =>
-                            onChange({ ...item, graduatedAt })
+                            onChange({
+                                ...item,
+                                graduatedAt:
+                                    graduatedAt.toISOString() as DateTimeString,
+                            })
                         }
                     ></DatePicker>
                 </Field>

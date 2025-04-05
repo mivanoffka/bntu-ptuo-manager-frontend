@@ -1,6 +1,8 @@
-export interface IHistoryItem<T> {
-    id: number;
+import { DateTimeString } from "@/model/date.time.string";
+import { ITimeStamped } from "@/model/timestamped";
+
+export interface IHistoryItem<T extends ITimeStamped> {
     item: T;
 
-    createdAt: Date;
+    updatedAt: DateTimeString | null;
 }
