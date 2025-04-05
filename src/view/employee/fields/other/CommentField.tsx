@@ -1,11 +1,11 @@
 import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { Flex, Typography } from "antd";
-import { Comment } from "@/model";
+import { IComment } from "@/model";
 
 export interface ICommentFieldProps {
-    item: Comment;
-    onChange: (item: Comment) => void;
+    item: IComment;
+    onChange: (item: IComment) => void;
 }
 
 export function CommentField(props: ICommentFieldProps) {

@@ -1,10 +1,11 @@
 import { useEmployees } from "@/controller/employee/EmployeesContext";
-import { Employee, Name } from "@/model";
+import { IEmployeeVersion, IName } from "@/model";
 import { Table, Button, Pagination, Card } from "antd";
 
 import "@/view/manager/style/employees-list.css";
 import dayjs from "dayjs";
-import { useEmployeesSelection } from "@/controller/employee/EmployeesSelectionContext";
+import { useSelectedEmployees } from "@/controller/employee/SelectedEmployeesContext";
+import { useEffect } from "react";
 
 export function EmployeesList() {
     const { list } = useEmployees();
@@ -16,7 +17,7 @@ export function EmployeesList() {
         addToSelection,
         removeFromSelection,
         selectMany,
-    } = useEmployeesSelection();
+    } = useSelectedEmployees();
 
     const columns = [
         // {
@@ -27,43 +28,46 @@ export function EmployeesList() {
         {
             title: "Имя",
             key: "name",
-            render: (item: Employee) => {
-                if (item.names.relevant) {
-                    const { firstName, lastName, middleName } =
-                        item.names.relevant;
+            render: (item: IEmployeeVersion) => {
+                if (!item) {
+                    return;
+                }
+                const { names } = item;
+                if (names) {
+                    const { firstName, lastName, middleName } = names[0];
 
                     return `${lastName} ${firstName} ${middleName}`;
                 }
             },
             width: "200px",
         },
-        {
-            title: "Дата рождения",
-            key: "birthdate",
-            render: (item: Employee) => {
-                if (item.birthdate) {
-                    return dayjs(item.birthdate).format("DD.MM.YYYY");
-                }
-            },
-            width: "150px",
-        },
-        {
-            title: "Место рождения",
-            key: "birthplace",
-            render: (item: Employee) => {
-                if (item.birthplace) {
-                    return item.birthplace;
-                }
-            },
-            width: "150px",
-        },
-        {
-            title: "Полнота",
-            key: "fullfilled",
-            render: () => {
-                return "+";
-            },
-        },
+        // {
+        //     title: "Дата рождения",
+        //     key: "birthdate",
+        //     render: (item: IEmployeeVersion) => {
+        //         if (item.birthdate) {
+        //             return dayjs(item.birthdate).format("DD.MM.YYYY");
+        //         }
+        //     },
+        //     width: "150px",
+        // },
+        // {
+        //     title: "Место рождения",
+        //     key: "birthplace",
+        //     render: (item: IEmployeeVersion) => {
+        //         if (item.birthplace) {
+        //             return item.birthplace;
+        //         }
+        //     },
+        // width: "150px",
+        // },
+        // {
+        // title: "Полнота",
+        // key: "fullfilled",
+        // render: () => {
+        //     return "+";
+        // },
+        // },
     ];
 
     const rowSelection = {
@@ -85,7 +89,7 @@ export function EmployeesList() {
                 rowSelection={rowSelection}
                 size="small"
                 columns={columns}
-                dataSource={list}
+                dataSource={list?.map((item) => item.latestEmployeeVersion)}
                 pagination={{ position: ["none", "none"] }}
                 onRow={(employee) => ({
                     onClick: (e) => {
@@ -105,7 +109,7 @@ export function EmployeesList() {
                 })}
             />
             <div className="pagination-row">
-                <Pagination size="small" total={list.length} />
+                <Pagination size="small" total={list?.length} />
             </div>
         </div>
         // </div>

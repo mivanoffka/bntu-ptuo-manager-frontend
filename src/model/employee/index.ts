@@ -1,13 +1,10 @@
-export { Relative, Reward, Comment } from "@/model/employee/other";
-export { BntuPosition } from "@/model/employee/bntu";
-export { Gender, Name } from "@/model/employee/common";
-export { Address, Email, PhoneNumber } from "@/model/employee/contacts";
-export {
-    EducationLevel,
-    AcademicDegree,
-    EducationalInstitution,
-} from "@/model/employee/education";
-export { TradeUnionPosition } from "@/model/employee/trade-union";
-export { History } from "@/model/history";
-export { IHistoryItem } from "@/model/history.item";
-export { Employee } from "@/model/employee/employee";
+export * from "@/model/employee/other";
+export * from "@/model/employee/bntu";
+export * from "@/model/employee/common";
+export * from "@/model/employee/contacts";
+export * from "@/model/employee/education";
+export * from "@/model/employee/trade-union";
+export * from "@/model/history";
+export * from "@/model/history.item";
+export * from "@/model/employee/employee";
+export * from "@/model/employee/employee.version";

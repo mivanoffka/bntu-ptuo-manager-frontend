@@ -7,7 +7,7 @@ import {
     useCallback,
 } from "react";
 
-export interface IEmployeesSelection {
+export interface ISelectedEmployees {
     selectedIds: number[];
     selectOne: (id: number) => void;
     toggleSingularSelection: (id: number) => void;
@@ -18,7 +18,7 @@ export interface IEmployeesSelection {
     clearSelection: () => void; // Добавлено
 }
 
-export const EmployeesSelection = createContext<IEmployeesSelection>({
+export const SelectedEmployeesContext = createContext<ISelectedEmployees>({
     selectedIds: [],
     selectOne: () => {},
     toggleSingularSelection: () => {},
@@ -29,16 +29,12 @@ export const EmployeesSelection = createContext<IEmployeesSelection>({
     clearSelection: () => {}, // Добавлено
 });
 
-export function EmployeesSelectionProvider({
+export function SelectedEmployeesProvider({
     children,
 }: {
     children: ReactNode;
 }) {
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
-    useEffect(() => {
-        console.log(selectedIds);
-    }, [selectedIds]);
 
     const selectOne = useCallback((id: number) => {
         setSelectedIds([id]);
@@ -74,7 +70,7 @@ export function EmployeesSelectionProvider({
         setSelectedIds(ids);
     }, []);
 
-    const context: IEmployeesSelection = {
+    const context: ISelectedEmployees = {
         selectedIds,
         selectMany,
         selectOne,
@@ -82,14 +78,14 @@ export function EmployeesSelectionProvider({
         removeFromSelection,
         toggleMultipleSelection,
         toggleSingularSelection,
-        clearSelection, // Добавлено
+        clearSelection,
     };
 
     return (
-        <EmployeesSelection.Provider value={context}>
+        <SelectedEmployeesContext.Provider value={context}>
             {children}
-        </EmployeesSelection.Provider>
+        </SelectedEmployeesContext.Provider>
     );
 }
 
-export const useEmployeesSelection = createHook(EmployeesSelection);
+export const useSelectedEmployees = createHook(SelectedEmployeesContext);

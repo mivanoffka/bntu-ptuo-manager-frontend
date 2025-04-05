@@ -1,10 +1,9 @@
 import { DateTimeString } from "@/model/date.time.string";
-import { RelativeType } from "@/model/employee/other/relative.type";
+import { IPrimaryKeyed } from "@/model/primary.keyed";
 
-export interface Relative {
-    id: number;
+export interface IRelative extends IPrimaryKeyed {
     fullName: string;
     birthdate: DateTimeString | null;
-    relativeType: RelativeType | null;
+    relativeTypeId: number | null;
     comment: string | null;
 }

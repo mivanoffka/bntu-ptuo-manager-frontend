@@ -1,9 +1,10 @@
 import { useEditMode } from "@/controller/employee/EditModeContext";
 import { useEmployees } from "@/controller/employee/EmployeesContext";
-import { useEmployeesSelection } from "@/controller/employee/EmployeesSelectionContext";
+import { useOneSelectedEmployeeVersion } from "@/controller/employee/OneSelectedEmployeeVersionContext";
+import { useSelectedEmployees } from "@/controller/employee/SelectedEmployeesContext";
 import { getCopy, getNewEmployee } from "@/controller/employee/utils";
 import { createHook } from "@/controller/utils";
-import { Employee, Identifiable } from "@/model";
+import { IEmployeeVersion, IPrimaryKeyed } from "@/model";
 import {
     createContext,
     ReactNode,
@@ -12,30 +13,28 @@ import {
     useState,
 } from "react";
 
-export interface IEmployeeEditor {
-    displayedEmployee: Employee | null;
+export interface IEmployeeEditorContext {
+    employeeVersion: IEmployeeVersion | null;
     createNew: () => void;
     startEdit: () => void;
     cancelEdit: () => void;
     applyEdit: () => void;
-    update: (employee: Employee) => void;
-    removeFromList: <T extends Identifiable>(
+    removeFromList: <T extends IPrimaryKeyed>(
         fieldName: string,
         value: T
     ) => void;
     getField: <T>(fieldName: string) => T | null;
-    updateList: <T extends Identifiable>(fieldName: string, value: T) => void;
-    getList: <T extends Identifiable>(fieldName: string) => T[];
+    updateList: <T extends IPrimaryKeyed>(fieldName: string, value: T) => void;
+    getList: <T extends IPrimaryKeyed>(fieldName: string) => T[];
     updateField: <T>(fieldName: string, value: T) => void;
 }
 
-export const EmployeeEditor = createContext<IEmployeeEditor>({
-    displayedEmployee: null,
+export const EmployeeEditorContext = createContext<IEmployeeEditorContext>({
+    employeeVersion: null,
     createNew: () => {},
     startEdit: () => {},
     cancelEdit: () => {},
     applyEdit: () => {},
-    update: () => {},
     removeFromList: () => {},
     updateList: () => {},
     getList: () => [],
@@ -44,36 +43,21 @@ export const EmployeeEditor = createContext<IEmployeeEditor>({
 });
 
 export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
-    const { selectedIds } = useEmployeesSelection();
+    const { selectedIds } = useSelectedEmployees();
     const { list, push } = useEmployees();
     const { editModeEnabled, enableEditMode, disableEditMode } = useEditMode();
 
-    const [displayedEmployee, setDisplayedEmployee] = useState<Employee | null>(
-        null
-    );
+    const { employeeVersion, setEmployeeVersion } =
+        useOneSelectedEmployeeVersion();
 
-    const [displayedEmployeeBackUp, setDisplayedEmployeeBackUp] =
-        useState<Employee | null>(null);
-
-    useEffect(() => {
-        if (editModeEnabled) {
-            return;
-        }
-
-        if (selectedIds) {
-            const lastAddedId = selectedIds[selectedIds.length - 1];
-            const employee = list[lastAddedId];
-            setDisplayedEmployee(employee);
-        } else {
-            setDisplayedEmployee(null);
-        }
-    }, [selectedIds]);
+    const [employeeVersionBackUp, setEmployeeVersionBackUp] =
+        useState<IEmployeeVersion | null>(null);
 
     function createNew() {
         const newEmployee = getNewEmployee();
-        setDisplayedEmployee(newEmployee);
+        setEmployeeVersion(newEmployee);
 
-        if (!displayedEmployee) {
+        if (!employeeVersion) {
             return;
         }
 
@@ -81,63 +65,55 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
     }
 
     function startEdit() {
-        if (!displayedEmployee) {
+        if (!employeeVersion) {
             return;
         }
 
         enableEditMode();
-        setDisplayedEmployeeBackUp(displayedEmployee);
-        setDisplayedEmployee(getCopy(displayedEmployee));
+        setEmployeeVersionBackUp(employeeVersion);
+        setEmployeeVersion(getCopy(employeeVersion));
     }
 
     function cancelEdit() {
-        if (!displayedEmployee) {
+        if (!employeeVersion) {
             return;
         }
 
-        setDisplayedEmployee(displayedEmployeeBackUp);
-        setDisplayedEmployeeBackUp(null);
+        setEmployeeVersion(employeeVersionBackUp);
+        setEmployeeVersionBackUp(null);
         disableEditMode();
     }
 
     async function applyEdit() {
-        if (!displayedEmployee) {
+        if (!employeeVersion) {
             return;
         }
 
-        await push(displayedEmployee);
+        await push(employeeVersion);
         disableEditMode();
     }
 
-    function update(employee: Employee) {
-        if (!editModeEnabled) {
-            return;
-        }
-
-        setDisplayedEmployee(employee);
-    }
-
     function getField<T>(fieldName: string): T | null {
-        if (!displayedEmployee) {
+        if (!employeeVersion) {
             return null;
         }
 
-        return displayedEmployee[fieldName] as T;
+        return employeeVersion[fieldName] as T;
     }
 
     function updateField<T>(fieldName: string, value: T) {
-        if (!displayedEmployee) {
+        if (!employeeVersion) {
             return;
         }
 
-        update({ ...displayedEmployee, [fieldName]: value });
+        setEmployeeVersion({ ...employeeVersion, [fieldName]: value });
     }
-    function getList<T extends Identifiable>(fieldName: string): T[] {
-        if (!displayedEmployee) {
+    function getList<T extends IPrimaryKeyed>(fieldName: string): T[] {
+        if (!employeeVersion) {
             return [];
         }
 
-        const list = (displayedEmployee[fieldName] as T[]) || ([] as T[]);
+        const list = (employeeVersion[fieldName] as T[]) || ([] as T[]);
 
         list.sort((a, b) => {
             if (a.id > 0 && b.id > 0) {
@@ -152,15 +128,15 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         return list;
     }
 
-    function updateList<T extends Identifiable>(fieldName: string, value: T) {
-        if (!displayedEmployee) {
+    function updateList<T extends IPrimaryKeyed>(fieldName: string, value: T) {
+        if (!employeeVersion) {
             return;
         }
 
-        const list = (displayedEmployee[fieldName] as T[]) || ([] as T[]);
+        const list = (employeeVersion[fieldName] as T[]) || ([] as T[]);
 
-        update({
-            ...displayedEmployee,
+        setEmployeeVersion({
+            ...employeeVersion,
             [fieldName]: [
                 ...list.filter((item) => item.id !== value.id),
                 value,
@@ -168,32 +144,28 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         });
     }
 
-    function removeFromList<T extends Identifiable>(
+    function removeFromList<T extends IPrimaryKeyed>(
         fieldName: string,
         value: T
     ) {
-        if (!displayedEmployee) {
+        if (!employeeVersion) {
             return;
         }
 
-        const list = (displayedEmployee[fieldName] as T[]) || ([] as T[]);
+        const list = (employeeVersion[fieldName] as T[]) || ([] as T[]);
 
-        console.log(value);
-        console.log(list);
-
-        update({
-            ...displayedEmployee,
+        setEmployeeVersion({
+            ...employeeVersion,
             [fieldName]: list.filter((item) => item.id !== value.id),
         });
     }
 
-    const context: IEmployeeEditor = {
-        displayedEmployee,
+    const context: IEmployeeEditorContext = {
+        employeeVersion,
         startEdit,
         applyEdit,
         cancelEdit,
         createNew,
-        update,
         removeFromList,
         updateList,
         getList,
@@ -202,10 +174,10 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
     };
 
     return (
-        <EmployeeEditor.Provider value={context}>
+        <EmployeeEditorContext.Provider value={context}>
             {children}
-        </EmployeeEditor.Provider>
+        </EmployeeEditorContext.Provider>
     );
 }
 
-export const useEmployeeEditor = createHook(EmployeeEditor);
+export const useEmployeeEditor = createHook(EmployeeEditorContext);

@@ -1,5 +1,3 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
-
 import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { Field } from "@/view/primitives/fields/field/Field";
 import { FieldTitle } from "@/view/primitives/fields/field/FieldTitle";
@@ -9,125 +7,102 @@ import { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import { Dropdown, Flex, MenuProps, Space } from "antd";
 import dayjs from "dayjs";
 import { Commented } from "@/view/primitives/containers";
+import { useEmployeeEditor } from "@/controller/employee";
 
 export function NameField() {
-    const { displayedEmployee, update, updateField, getField } =
-        useEmployeeEditor();
+    // const { employeeVersion, updateField, getField } =
+    //     useEmployeeEditor();
 
-    const { firstName, lastName, middleName } =
-        displayedEmployee?.names?.relevant ?? {};
+    // const { firstName, lastName, middleName } =
+    //     employeeVersion?.names? ?? {};
 
-    const fullName = (
-        <LabelField> {`${lastName} ${firstName} ${middleName}`}</LabelField>
-    );
+    // const fullName = (
+    //     <LabelField> {`${lastName} ${firstName} ${middleName}`}</LabelField>
+    // );
 
-    function updateNamePart(fieldName: string, value: string) {
-        if (!displayedEmployee) {
-            return;
-        }
+    // function updateNamePart(fieldName: string, value: string) {}
 
-        const { names } = displayedEmployee;
-        const { relevant, history } = names;
+    // function updateFirstName(value: string) {
+    //     updateNamePart("firstName", value);
+    // }
 
-        let newRelevant = relevant;
+    // function updateLastName(value: string) {
+    //     updateNamePart("lastName", value);
+    // }
 
-        if (!newRelevant) {
-            newRelevant = {
-                firstName: null,
-                lastName: null,
-                middleName: null,
-            };
-        }
+    // function updateMiddleName(value: string) {
+    //     updateNamePart("middleName", value);
+    // }
 
-        update({
-            ...displayedEmployee,
-            names: {
-                relevant: { ...newRelevant, [fieldName]: value },
-                history,
-            },
-        });
-    }
+    // const historyItems = (
+    //     <ul>
+    //         {employeeVersion?.names?.map((item, index) => {
+    //             const { firstName, lastName, middleName } = item;
+    //             return (
+    //                 <li
+    //                     key={index}
+    //                     style={{
+    //                         display: "flex",
+    //                         justifyContent: "space-between",
+    //                         gap: 20,
+    //                     }}
+    //                 >
+    //                     <LabelField>
+    //                         {`${lastName} ${firstName} ${middleName}`}
+    //                     </LabelField>
+    //                     <FieldTitle>
+    //                         ({dayjs(item.createdAt).format("DD.MM.YYYY")})
+    //                     </FieldTitle>
+    //                 </li>
+    //             );
+    //         })}
+    //     </ul>
+    // );
 
-    function updateFirstName(value: string) {
-        updateNamePart("firstName", value);
-    }
+    // const singularDisplayField = <Field title="Полное имя">{fullName}</Field>;
 
-    function updateLastName(value: string) {
-        updateNamePart("lastName", value);
-    }
+    // const multipleDisplayField = (
+    //     <Field title="Полное имя">
+    //         <Commented comment={historyItems}>{fullName}</Commented>
+    //     </Field>
+    // );
 
-    function updateMiddleName(value: string) {
-        updateNamePart("middleName", value);
-    }
+    // const displayField =
+    //     employeeVersion?.names?.history?.length > 0
+    //         ? multipleDisplayField
+    //         : singularDisplayField;
 
-    const historyItems = (
-        <ul>
-            {displayedEmployee?.names?.history.map((item, index) => {
-                const { firstName, lastName, middleName } = item.item;
-                return (
-                    <li
-                        key={index}
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            gap: 20,
-                        }}
-                    >
-                        <LabelField>
-                            {`${lastName} ${firstName} ${middleName}`}
-                        </LabelField>
-                        <FieldTitle>
-                            (до {dayjs(item.updatedAt).format("DD.MM.YYYY")})
-                        </FieldTitle>
-                    </li>
-                );
-            })}
-        </ul>
-    );
-
-    const singularDisplayField = <Field title="Полное имя">{fullName}</Field>;
-
-    const multipleDisplayField = (
-        <Field title="Полное имя">
-            <Commented comment={historyItems}>{fullName}</Commented>
-        </Field>
-    );
-
-    const displayField =
-        displayedEmployee?.names?.history?.length > 0
-            ? multipleDisplayField
-            : singularDisplayField;
-
-    const editField = (
-        <Flex gap="small">
-            <Field title="Фамилия">
-                <InputField
-                    value={lastName}
-                    onChange={updateLastName}
-                    placeholder="Фамилия"
-                ></InputField>
-            </Field>
-            <Field title="Имя">
-                <InputField
-                    value={firstName}
-                    onChange={updateFirstName}
-                    placeholder="Имя"
-                ></InputField>
-            </Field>
-            <Field title="Отчество">
-                <InputField
-                    value={middleName}
-                    onChange={updateMiddleName}
-                    placeholder="Отчество"
-                ></InputField>
-            </Field>
-        </Flex>
-    );
+    // const editField = (
+    //     <Flex gap="small">
+    //         <Field title="Фамилия">
+    //             <InputField
+    //                 value={lastName}
+    //                 onChange={updateLastName}
+    //                 placeholder="Фамилия"
+    //             ></InputField>
+    //         </Field>
+    //         <Field title="Имя">
+    //             <InputField
+    //                 value={firstName}
+    //                 onChange={updateFirstName}
+    //                 placeholder="Имя"
+    //             ></InputField>
+    //         </Field>
+    //         <Field title="Отчество">
+    //             <InputField
+    //                 value={middleName}
+    //                 onChange={updateMiddleName}
+    //                 placeholder="Отчество"
+    //             ></InputField>
+    //         </Field>
+    //     </Flex>
+    // );
 
     return (
-        <CombinedField
-            displayField={displayField}
-            editField={editField}
-        ></CombinedField>
+        // <CombinedField
+        //     displayField={displayField}
+        //     editField={editField}
+        // ></CombinedField>
+        <>?</>
     );
 }

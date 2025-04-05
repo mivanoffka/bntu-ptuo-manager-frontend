@@ -1,27 +1,27 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { Listed } from "@/view/primitives/listed/Listed";
-import { PhoneNumber } from "@/model";
+import { IPhoneNumber } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { PhoneNumberField } from "@/view/employee/fields/contacts/PhoneNumberField";
+import { useEmployeeEditor } from "@/controller/employee";
 
 export function PhoneNumbersList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
 
-    const getPhoneNumbers = () => getList<PhoneNumber>("phoneNumbers");
+    const getPhoneNumbers = () => getList<IPhoneNumber>("phoneNumbers");
 
     const addPhoneNumber = () =>
-        updateList<PhoneNumber>("phoneNumbers", {
+        updateList<IPhoneNumber>("phoneNumbers", {
             id: tempIds.generate(),
             value: null,
             comment: null,
-            phoneNumberType: null,
+            phoneNumberTypeId: null,
         });
 
-    const updatePhoneNumber = (phoneNumber: PhoneNumber) =>
-        updateList<PhoneNumber>("phoneNumbers", phoneNumber);
+    const updatePhoneNumber = (phoneNumber: IPhoneNumber) =>
+        updateList<IPhoneNumber>("phoneNumbers", phoneNumber);
 
-    const removePhoneNumber = (phoneNumber: PhoneNumber) =>
-        removeFromList<PhoneNumber>("phoneNumbers", phoneNumber);
+    const removePhoneNumber = (phoneNumber: IPhoneNumber) =>
+        removeFromList<IPhoneNumber>("phoneNumbers", phoneNumber);
 
     return (
         <Listed

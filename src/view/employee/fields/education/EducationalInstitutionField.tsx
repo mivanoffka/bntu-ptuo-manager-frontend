@@ -1,14 +1,14 @@
 import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { DatePicker, Flex, Typography } from "antd";
-import { EducationalInstitution } from "@/model";
+import { IEducationalInstitution } from "@/model";
 import { Commented } from "@/view/primitives/containers";
 import { Field, FieldTitle } from "@/view/primitives";
 import dayjs from "dayjs";
 
 export interface IEducationalInstitutionFieldProps {
-    item: EducationalInstitution;
-    onChange: (item: EducationalInstitution) => void;
+    item: IEducationalInstitution;
+    onChange: (item: IEducationalInstitution) => void;
 }
 
 export function EducationalInstitutionField(

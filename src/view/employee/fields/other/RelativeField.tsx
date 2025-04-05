@@ -1,14 +1,14 @@
 import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { DatePicker, Flex, Typography } from "antd";
-import { Relative } from "@/model";
+import { IRelative } from "@/model";
 import { Field, FieldTitle, LabelField, SelectField } from "@/view/primitives";
 import dayjs from "dayjs";
 import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
 
 export interface IRelativeFieldProps {
-    item: Relative;
-    onChange: (item: Relative) => void;
+    item: IRelative;
+    onChange: (item: IRelative) => void;
 }
 
 export function RelativeField(props: IRelativeFieldProps) {
@@ -19,10 +19,10 @@ export function RelativeField(props: IRelativeFieldProps) {
         <Flex vertical gap="middle" style={{ width: "100%" }}>
             <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
                 <LabelField>{item.fullName}</LabelField>
-                <FieldTitle>
+                {/* <FieldTitle>
                     род. {dayjs(item.birthdate).format("DD.MM.YYYY")},{" "}
-                    {item.relativeType?.label}
-                </FieldTitle>
+                    {item.relativeTypeId?.label}
+                </FieldTitle> */}
             </Flex>
             {item.comment && (
                 <Flex
@@ -60,7 +60,10 @@ export function RelativeField(props: IRelativeFieldProps) {
                 </Field>
                 <Field title="Родство">
                     <SelectField.Edit
-                        value={item.relativeType}
+                        onChange={(value) =>
+                            onChange({ ...item, relativeTypeId: value })
+                        }
+                        selectedId={item.relativeTypeId}
                         enumeration={relativeTypes}
                     />
                 </Field>

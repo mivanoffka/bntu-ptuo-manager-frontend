@@ -1,17 +1,17 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { Listed } from "@/view/primitives/listed/Listed";
-import { EducationalInstitution } from "@/model";
+import { IEducationalInstitution } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { EducationalInstitutionField } from "@/view/employee/fields/education/EducationalInstitutionField";
+import { useEmployeeEditor } from "@/controller/employee";
 
 export function EducationalInstitutionsList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
 
     const getEducationalInstitutions = () =>
-        getList<EducationalInstitution>("educationalInstitutions");
+        getList<IEducationalInstitution>("educationalInstitutions");
 
     const addEducationalInstitution = () =>
-        updateList<EducationalInstitution>("educationalInstitutions", {
+        updateList<IEducationalInstitution>("educationalInstitutions", {
             id: tempIds.generate(),
             label: null,
             graduatedAt: null,
@@ -19,17 +19,17 @@ export function EducationalInstitutionsList() {
         });
 
     const updateEducationalInstitution = (
-        educationalInstitution: EducationalInstitution
+        educationalInstitution: IEducationalInstitution
     ) =>
-        updateList<EducationalInstitution>(
+        updateList<IEducationalInstitution>(
             "educationalInstitutions",
             educationalInstitution
         );
 
     const removeEducationalInstitution = (
-        educationalInstitution: EducationalInstitution
+        educationalInstitution: IEducationalInstitution
     ) =>
-        removeFromList<EducationalInstitution>(
+        removeFromList<IEducationalInstitution>(
             "educationalInstitutions",
             educationalInstitution
         );

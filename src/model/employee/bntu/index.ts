@@ -1,2 +1,2 @@
-export { BntuDepartment } from "@/model/employee/bntu/bntu.department";
-export { BntuPosition } from "@/model/employee/bntu/bntu.position";
+export * from "@/model/employee/bntu/bntu.department.option";
+export * from "@/model/employee/bntu/bntu.position";

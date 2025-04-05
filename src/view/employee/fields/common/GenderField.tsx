@@ -1,4 +1,3 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { Field } from "@/view/primitives/fields/field/Field";
 import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
@@ -9,21 +8,23 @@ import { DatePicker, Flex, Input, Typography } from "antd";
 import dayjs from "dayjs";
 import { Gender } from "@/model";
 import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
+import { useEmployeeEditor } from "@/controller/employee";
 
 export function GenderField() {
     const { getField, updateField } = useEmployeeEditor();
     const { genders } = useEnumerations();
 
-    const gender = getField<Gender>("gender");
+    const genderId = getField<number>("genderId");
 
-    const updateGender = (value: Gender) => updateField("gender", value);
+    const updateGenderId = (value: number | null) =>
+        updateField("genderId", value);
 
     return (
         <SelectField
             title="Пол"
-            value={gender}
+            selectedId={genderId}
             enumeration={genders}
-            onChange={updateGender}
+            onChange={updateGenderId}
         ></SelectField>
     );
 }

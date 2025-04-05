@@ -1,3 +1,3 @@
-import { EnumerationItem } from "@/model/enumeration";
+import { IEnumerated } from "@/model/enumerated";
 
-export interface AcademicDegree extends EnumerationItem {}
+export interface AcademicDegree extends IEnumerated {}

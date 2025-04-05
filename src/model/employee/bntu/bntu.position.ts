@@ -1,9 +1,9 @@
 import { DateTimeString } from "@/model/date.time.string";
-import { BntuDepartment } from "@/model/employee/bntu/bntu.department";
 
-export interface BntuPosition {
-    department: BntuDepartment | null;
-    name: string | null;
+export interface IBntuPosition {
+    bntuDepartmentOptionId: number | null;
+    bntuDepartmentAuthenticLabel: string | null;
+    label: string | null;
     hiredAt: DateTimeString | null;
     isDischarged: boolean;
     dischargedAt: DateTimeString | null;

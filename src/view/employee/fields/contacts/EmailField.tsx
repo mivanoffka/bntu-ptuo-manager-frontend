@@ -1,12 +1,12 @@
-import { Email } from "@/model";
+import { IEmail } from "@/model";
 import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { Field } from "@/view/primitives/fields/field/Field";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { Flex, Typography } from "antd";
 
 export interface IEmailFieldProps {
-    item: Email;
-    onChange: (item: Email) => void;
+    item: IEmail;
+    onChange: (item: IEmail) => void;
 }
 
 export function EmailField(props: IEmailFieldProps) {

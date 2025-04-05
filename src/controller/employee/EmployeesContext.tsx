@@ -1,17 +1,17 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { Employee, IPagination } from "@/model";
+import { IEmployee, IEmployeeVersion, IPagination } from "@/model";
 import { createHook } from "@/controller/utils";
 import { useApi } from "@/controller/api";
 
-export interface IEmployees {
-    list: Employee[];
+export interface IEmployeesContext {
+    list: IEmployee[];
     pagination: IPagination;
     setPage: (page: number) => void;
-    push: (employee: Employee) => void;
+    push: (employee: IEmployeeVersion) => void;
     remove: (ids: number[]) => void;
 }
 
-export const Employees = createContext<IEmployees>({
+export const EmployeesContext = createContext<IEmployeesContext>({
     list: [],
     pagination: { current: 0, total: 0, size: 10 },
     setPage: () => {},
@@ -20,8 +20,7 @@ export const Employees = createContext<IEmployees>({
 });
 
 export function EmployeesProvider({ children }: { children: ReactNode }) {
-    const [serverList, setServerList] = useState<Employee[]>([]);
-    const [list, setList] = useState<Employee[]>([]);
+    const [list, setList] = useState<IEmployee[]>([]);
     const [pagination, setPagination] = useState<IPagination>({
         current: 0,
         total: 0,
@@ -40,22 +39,21 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
     async function fetchEmployees() {
         await axiosInstance
-            .get("employees/spreadsheet")
+            .get("employees")
             .then((response) => {
-                const employees = response.data.employees;
+                const employees = response.data;
                 setList(employees);
-                console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
     }
 
-    async function push(employee: Employee) {}
+    async function push(employeeVersion: IEmployeeVersion) {}
 
     async function remove(ids: number[]) {}
 
-    const context: IEmployees = {
+    const context: IEmployeesContext = {
         list,
         pagination,
         setPage,
@@ -63,7 +61,11 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         remove,
     };
 
-    return <Employees.Provider value={context}>{children}</Employees.Provider>;
+    return (
+        <EmployeesContext.Provider value={context}>
+            {children}
+        </EmployeesContext.Provider>
+    );
 }
 
-export const useEmployees = createHook(Employees);
+export const useEmployees = createHook(EmployeesContext);

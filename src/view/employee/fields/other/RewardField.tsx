@@ -1,14 +1,14 @@
 import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { DatePicker, Flex, Typography } from "antd";
-import { Reward } from "@/model";
+import { IReward } from "@/model";
 import { Commented } from "@/view/primitives/containers";
 import { Field, FieldTitle } from "@/view/primitives";
 import dayjs from "dayjs";
 
 export interface IRewardFieldProps {
-    item: Reward;
-    onChange: (item: Reward) => void;
+    item: IReward;
+    onChange: (item: IReward) => void;
 }
 
 export function RewardField(props: IRewardFieldProps) {

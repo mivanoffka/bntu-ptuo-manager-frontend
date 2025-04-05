@@ -1,26 +1,26 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { Listed } from "@/view/primitives/listed/Listed";
-import { Address } from "@/model";
+import { IAddress } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { AddressField } from "@/view/employee/fields/contacts/AddressField";
+import { useEmployeeEditor } from "@/controller/employee";
 
 export function AddressesList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
 
-    const getAddresses = () => getList<Address>("addresses");
+    const getAddresses = () => getList<IAddress>("addresses");
 
     const addAddress = () =>
-        updateList<Address>("addresses", {
+        updateList<IAddress>("addresses", {
             id: tempIds.generate(),
             value: null,
             comment: null,
         });
 
-    const updateAddress = (address: Address) =>
-        updateList<Address>("addresses", address);
+    const updateAddress = (address: IAddress) =>
+        updateList<IAddress>("addresses", address);
 
-    const removeAddress = (address: Address) =>
-        removeFromList<Address>("addresses", address);
+    const removeAddress = (address: IAddress) =>
+        removeFromList<IAddress>("addresses", address);
 
     return (
         <Listed

@@ -1,9 +1,7 @@
-import { PhoneNumberType } from "@/model/employee/contacts/phone.number.type";
-import { Identifiable } from "@/model/identifiable";
+import { IPrimaryKeyed } from "@/model/primary.keyed";
 
-export interface PhoneNumber extends Identifiable {
-    id: number;
+export interface IPhoneNumber extends IPrimaryKeyed {
     value: string | null;
     comment: string | null;
-    phoneNumberType: PhoneNumberType | null;
+    phoneNumberTypeId: number | null;
 }

@@ -1,14 +1,14 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
+import { useEmployeeEditor } from "@/controller/employee";
 import { DateTimeString } from "@/model/date.time.string";
 import { CombinedField, LabelField } from "@/view/primitives";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 
 export function BirthdateField() {
-    const { displayedEmployee, updateField } = useEmployeeEditor();
+    const { employeeVersion, updateField } = useEmployeeEditor();
 
     const getBirthdateValue = () => {
-        const rawDate = displayedEmployee?.birthdate;
+        const rawDate = employeeVersion?.birthdate;
         if (!rawDate) return null;
         const parsedDate = dayjs(rawDate);
         return parsedDate.isValid() ? parsedDate : null;

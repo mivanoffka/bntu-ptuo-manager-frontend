@@ -1,4 +1,3 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
 import { Field } from "@/view/primitives/fields/field/Field";
 import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
@@ -6,6 +5,7 @@ import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { VBox } from "@/view/utils";
 import { DatePicker, Flex, Input, Typography } from "antd";
 import dayjs from "dayjs";
+import { useEmployeeEditor } from "@/controller/employee";
 
 export function BirthplaceField() {
     const { getField, updateField } = useEmployeeEditor();

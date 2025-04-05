@@ -1,25 +1,25 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { Listed } from "@/view/primitives/listed/Listed";
-import { Comment } from "@/model";
+import { IComment } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { CommentField } from "@/view/employee/fields/other/CommentField";
+import { useEmployeeEditor } from "@/controller/employee";
 
 export function CommentsList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
 
-    const getComments = () => getList<Comment>("comments");
+    const getComments = () => getList<IComment>("comments");
 
     const addComment = () =>
-        updateList<Comment>("comments", {
+        updateList<IComment>("comments", {
             id: tempIds.generate(),
             value: null,
         });
 
-    const updateComment = (comment: Comment) =>
-        updateList<Comment>("comments", comment);
+    const updateComment = (comment: IComment) =>
+        updateList<IComment>("comments", comment);
 
-    const removeComment = (comment: Comment) =>
-        removeFromList<Comment>("comments", comment);
+    const removeComment = (comment: IComment) =>
+        removeFromList<IComment>("comments", comment);
 
     return (
         <Listed

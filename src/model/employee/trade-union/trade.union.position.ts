@@ -1,13 +1,8 @@
 import { DateTimeString } from "@/model/date.time.string";
-import { TradeUnionDepartment } from "@/model/employee/trade-union/trade.union.department";
-import { WorkingGroup } from "@/model/employee/trade-union/working.group";
+import { IPrimaryKeyed } from "@/model/primary.keyed";
 
-export interface TradeUnionPosition {
-    tradeUnionDepartment: TradeUnionDepartment;
-    workingGroup: WorkingGroup;
-
-    joinedAt: DateTimeString | null;
-    leftAt: DateTimeString | null;
-
+export interface ITradeUnionPosition extends IPrimaryKeyed {
+    occurredAt: DateTimeString | null;
+    label: string | null;
     comment: string | null;
 }

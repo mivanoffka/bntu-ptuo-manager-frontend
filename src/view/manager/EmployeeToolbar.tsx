@@ -1,4 +1,4 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
+import { useEmployeeEditor } from "@/controller/employee";
 import { useEditMode } from "@/controller/employee/EditModeContext";
 import "@/view/manager/style/employee-toolbar.css";
 import {

@@ -1,25 +1,25 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { Listed } from "@/view/primitives/listed/Listed";
-import { Email } from "@/model";
+import { IEmail } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { EmailField } from "@/view/employee/fields/contacts/EmailField";
+import { useEmployeeEditor } from "@/controller/employee";
 
 export function EmailsList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
 
-    const getEmails = () => getList<Email>("emails");
+    const getEmails = () => getList<IEmail>("emails");
 
     const addEmail = () =>
-        updateList<Email>("emails", {
+        updateList<IEmail>("emails", {
             id: tempIds.generate(),
             value: null,
             comment: null,
         });
 
-    const updateEmail = (email: Email) => updateList<Email>("emails", email);
+    const updateEmail = (email: IEmail) => updateList<IEmail>("emails", email);
 
-    const removeEmail = (email: Email) =>
-        removeFromList<Email>("emails", email);
+    const removeEmail = (email: IEmail) =>
+        removeFromList<IEmail>("emails", email);
 
     return (
         <Listed

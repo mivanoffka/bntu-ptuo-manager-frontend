@@ -1,21 +1,21 @@
-import { useEmployeeEditor } from "@/controller/employee/EmployeeEditorContext";
 import { SelectField } from "@/view/primitives/fields/derivatives/SelectField";
 import { EducationLevel } from "@/model";
 import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
+import { useEmployeeEditor } from "@/controller/employee";
 
 export function EducationLevelField() {
     const { getField, updateField } = useEmployeeEditor();
     const { educationLevels } = useEnumerations();
 
-    const educationLevel = getField<EducationLevel>("educationLevel");
+    const educationLevelId = getField<number | null>("educationLevelId");
 
-    const updateEducationLevel = (value: EducationLevel) =>
-        updateField("educationLevel", value);
+    const updateEducationLevel = (value: number | null) =>
+        updateField("educationLevelId", value);
 
     return (
         <SelectField
             title="Образование"
-            value={educationLevel}
+            selectedId={educationLevelId}
             enumeration={educationLevels}
             onChange={updateEducationLevel}
         ></SelectField>

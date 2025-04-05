@@ -1,4 +1,4 @@
-import { Employee, Name } from "@/model";
+import { Employee, IName } from "@/model";
 import { faker } from "@faker-js/faker";
 import dayjs from "dayjs";
 import { Context, useContext } from "react";

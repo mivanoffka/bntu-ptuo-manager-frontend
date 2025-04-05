@@ -1,7 +1,6 @@
-import { Identifiable } from "@/model/identifiable";
+import { IPrimaryKeyed } from "@/model/primary.keyed";
 
-export interface Email extends Identifiable {
-    id: number;
+export interface IEmail extends IPrimaryKeyed {
     value: string | null;
     comment: string | null;
 }
