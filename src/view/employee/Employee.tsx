@@ -26,8 +26,8 @@ export function Employee() {
             vertical
             gap="middle"
             align="center"
-            justify="center"
-            style={{ width: "100%" }}
+            justify="start"
+            style={{ width: "100%", height: "100%" }}
         >
             <Flex
                 align="center"
