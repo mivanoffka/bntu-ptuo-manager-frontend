@@ -1,7 +1,7 @@
 import { Flex, Image } from "antd";
 
 import {
-    NameField,
+    NamesField,
     PhoneNumbersList,
     EmailsList,
     AddressesList,
@@ -49,7 +49,7 @@ export function Employee() {
                     justify="center"
                     style={{ width: "100%" }}
                 >
-                    <NameField></NameField>
+                    <NamesField></NamesField>
                     <BirthplaceField></BirthplaceField>
 
                     <Flex

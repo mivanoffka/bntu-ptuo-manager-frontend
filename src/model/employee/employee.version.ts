@@ -18,6 +18,7 @@ export interface IEmployeeVersion extends IPrimaryKeyed, ITimeStamped {
     // Common
 
     names: IName[];
+    newName?: IName | null;
 
     birthdate: DateTimeString | null;
     birthplace: string | null;
@@ -30,8 +31,12 @@ export interface IEmployeeVersion extends IPrimaryKeyed, ITimeStamped {
     // TradeUnion
 
     tradeUnionPositions: ITradeUnionPosition[];
-    tradeUnionDepartmentRecord: ITradeUnionDepartmentRecord[];
+
+    tradeUnionDepartmentRecords: ITradeUnionDepartmentRecord[];
+    newTradeUnionDepartmentRecord?: ITradeUnionDepartmentRecord | null;
+
     workingGroupRecords: IWorkingGroupRecord[];
+    newWorkingGroupRecord?: IWorkingGroupRecord | null;
 
     joinedAt: DateTimeString | null;
     isArchived: boolean | null;

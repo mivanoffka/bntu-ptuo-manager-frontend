@@ -7,8 +7,10 @@ export interface IEmployeesContext {
     list: IEmployee[];
     pagination: IPagination;
     setPage: (page: number) => void;
-    push: (employee: IEmployeeVersion) => void;
+    push: (employee: IEmployee, employeeVersion: IEmployeeVersion) => void;
     remove: (ids: number[]) => void;
+    invalidated: boolean;
+    invalidate: () => void;
 }
 
 export const EmployeesContext = createContext<IEmployeesContext>({
@@ -17,6 +19,8 @@ export const EmployeesContext = createContext<IEmployeesContext>({
     setPage: () => {},
     push: () => {},
     remove: () => {},
+    invalidated: false,
+    invalidate: () => {},
 });
 
 export function EmployeesProvider({ children }: { children: ReactNode }) {
@@ -27,9 +31,15 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         size: 10,
     });
 
+    const [invalidated, setInvalidated] = useState(false);
+
+    function invalidate() {
+        setInvalidated(true);
+    }
+
     useEffect(() => {
         fetchEmployees();
-    }, []);
+    }, [invalidated]);
 
     const { axiosInstance } = useApi();
 
@@ -49,7 +59,25 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
             });
     }
 
-    async function push(employeeVersion: IEmployeeVersion) {}
+    async function push(
+        employee: IEmployee,
+        employeeVersion: IEmployeeVersion
+    ) {
+        const { id } = employee;
+
+        const body = {
+            newEmployeeVersion: employeeVersion,
+        };
+
+        await axiosInstance
+            .patch(`employees/${id}/`, body)
+            .then((response) => {
+                invalidate();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     async function remove(ids: number[]) {}
 
@@ -59,6 +87,8 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         setPage,
         push,
         remove,
+        invalidated,
+        invalidate,
     };
 
     return (

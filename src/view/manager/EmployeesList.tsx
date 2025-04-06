@@ -1,5 +1,5 @@
 import { useEmployees } from "@/controller/employee/EmployeesContext";
-import { IEmployeeVersion, IName } from "@/model";
+import { IEmployee, IEmployeeVersion, IName } from "@/model";
 import { Table, Button, Pagination, Card } from "antd";
 
 import "@/view/manager/style/employees-list.css";
@@ -28,11 +28,13 @@ export function EmployeesList() {
         {
             title: "Имя",
             key: "name",
-            render: (item: IEmployeeVersion) => {
-                if (!item) {
+            render: (employee: IEmployee) => {
+                const { latestEmployeeVersion } = employee;
+
+                if (!latestEmployeeVersion) {
                     return;
                 }
-                const { names } = item;
+                const { names } = latestEmployeeVersion;
                 if (names) {
                     const { firstName, lastName, middleName } = names[0];
 
@@ -89,7 +91,7 @@ export function EmployeesList() {
                 rowSelection={rowSelection}
                 size="small"
                 columns={columns}
-                dataSource={list?.map((item) => item.latestEmployeeVersion)}
+                dataSource={list}
                 pagination={{ position: ["none", "none"] }}
                 onRow={(employee) => ({
                     onClick: (e) => {

@@ -3,7 +3,7 @@ import { useEmployees } from "@/controller/employee/EmployeesContext";
 import { useSelectedEmployees } from "@/controller/employee/SelectedEmployeesContext";
 import { getCopy, getNewEmployee } from "@/controller/employee/utils";
 import { createHook } from "@/controller/utils";
-import { IEmployee, IPrimaryKeyed } from "@/model";
+import { IEmployee, IEmployeeVersion, IPrimaryKeyed } from "@/model";
 import {
     createContext,
     ReactNode,
@@ -27,21 +27,27 @@ export function OneSelectedEmployeeProvider({
     children: ReactNode;
 }) {
     const { selectedIds } = useSelectedEmployees();
-    const { list } = useEmployees();
+    const { list, push: pushEmployee } = useEmployees();
     const { editModeEnabled } = useEditMode();
 
     const [oneSelectedEmployee, setOneSelectedEmployee] =
         useState<IEmployee | null>(null);
 
     useEffect(() => {
+        console.log(oneSelectedEmployee);
+    }, [oneSelectedEmployee]);
+
+    useEffect(() => {
         if (editModeEnabled) {
             return;
         }
-
         if (selectedIds) {
             const lastAddedId = selectedIds[selectedIds.length - 1];
 
             const employee = list.find((item) => item.id === lastAddedId);
+
+            console.log(lastAddedId);
+            console.log(list);
 
             if (employee) {
                 setOneSelectedEmployee(employee);

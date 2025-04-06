@@ -1,5 +1,6 @@
 import { useEditMode } from "@/controller/employee/EditModeContext";
 import { useEmployees } from "@/controller/employee/EmployeesContext";
+import { useOneSelectedEmployee } from "@/controller/employee/OneSelectedEmployeeContext";
 import { useOneSelectedEmployeeVersion } from "@/controller/employee/OneSelectedEmployeeVersionContext";
 import { useSelectedEmployees } from "@/controller/employee/SelectedEmployeesContext";
 import { getCopy, getNewEmployee } from "@/controller/employee/utils";
@@ -44,6 +45,7 @@ export const EmployeeEditorContext = createContext<IEmployeeEditorContext>({
 
 export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
     const { selectedIds } = useSelectedEmployees();
+    const { oneSelectedEmployee } = useOneSelectedEmployee();
     const { list, push } = useEmployees();
     const { editModeEnabled, enableEditMode, disableEditMode } = useEditMode();
 
@@ -85,11 +87,11 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
     }
 
     async function applyEdit() {
-        if (!employeeVersion) {
+        if (!employeeVersion || !oneSelectedEmployee) {
             return;
         }
 
-        await push(employeeVersion);
+        await push(oneSelectedEmployee, employeeVersion);
         disableEditMode();
     }
 

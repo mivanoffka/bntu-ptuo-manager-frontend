@@ -1,10 +1,2 @@
-export {
-    CombinedField,
-    Field,
-    FieldTitle,
-} from "@/view/primitives/fields/field";
-export {
-    InputField,
-    LabelField,
-    SelectField,
-} from "@/view/primitives/fields/derivatives";
+export * from "@/view/primitives/fields/field";
+export * from "@/view/primitives/fields/derivatives";

@@ -1,5 +1,5 @@
 export {
-    NameField,
+    NamesField,
     GenderField,
     BirthdateField,
     BirthplaceField,
