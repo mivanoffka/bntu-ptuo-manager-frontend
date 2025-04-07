@@ -4,12 +4,12 @@ import { Flex, Typography } from "antd";
 import { IComment } from "@/model";
 
 export interface ICommentFieldProps {
-    item: IComment;
+    value: IComment;
     onChange: (item: IComment) => void;
 }
 
 export function CommentField(props: ICommentFieldProps) {
-    const { item, onChange } = props;
+    const { value: item, onChange } = props;
 
     const displayField = (
         <Flex justify="space-between" gap="small" style={{ width: "100%" }}>

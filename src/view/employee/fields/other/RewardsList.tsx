@@ -9,29 +9,27 @@ export function RewardsList() {
 
     const getRewards = () => getList<IReward>("rewards");
 
-    const addReward = () =>
-        updateList<IReward>("rewards", {
-            id: tempIds.generate(),
-            label: null,
-            grantedAt: null,
-            comment: null,
-        });
+    const getNewReward = () => ({
+        id: tempIds.generate(),
+        label: null,
+        grantedAt: null,
+        comment: null,
+    });
 
-    const updateReward = (reward: IReward) =>
-        updateList<IReward>("rewards", reward);
+    const updateReward = (item: IReward) =>
+        updateList<IReward>("rewards", item);
 
-    const removeReward = (reward: IReward) =>
-        removeFromList<IReward>("rewards", reward);
+    const removeReward = (item: IReward) =>
+        removeFromList<IReward>("rewards", item);
 
     return (
         <Listed
             items={getRewards()}
             FieldType={RewardField}
-            get={getRewards}
-            add={addReward}
-            update={updateReward}
-            remove={removeReward}
+            newItemGetter={getNewReward}
+            onChange={updateReward}
+            onDelete={removeReward}
             title="Награды"
-        ></Listed>
+        />
     );
 }

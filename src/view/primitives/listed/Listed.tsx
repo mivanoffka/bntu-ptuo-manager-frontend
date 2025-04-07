@@ -1,27 +1,28 @@
 import { useEditMode } from "@/controller/employee/EditModeContext";
+import { IPrimaryKeyed } from "@/model";
 import { Expandable } from "@/view/primitives/containers/Expandable";
 import { FieldTitle } from "@/view/primitives/fields/field/FieldTitle";
 import { ListedItem } from "@/view/primitives/listed/ListedItem";
 import { Button, Flex } from "antd";
 import { ReactNode } from "react";
 
-export interface IListedProps<T> {
+export interface IListedProps<T extends IPrimaryKeyed> {
     items: T[];
-    FieldType: React.ComponentType<{ item: T; onChange: (item: T) => void }>;
-    get: () => T[];
-    add: () => void;
-    update: (item: T) => void;
-    remove: (item: T) => void;
+    FieldType: React.ComponentType<{ value: T; onChange: (value: T) => void }>;
+    newItemGetter: () => T;
+    onChange: (item: T) => void;
+    onDelete: (item: T) => void;
     title?: ReactNode;
 }
 
-export function Listed<T>(props: IListedProps<T>) {
+export function Listed<T extends IPrimaryKeyed>(props: IListedProps<T>) {
     const { editModeEnabled } = useEditMode();
-    const { items, FieldType, get, add, update, remove, title } = props;
+    const { items, FieldType, newItemGetter, onChange, onDelete, title } =
+        props;
 
     const handleAddClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        add();
+        onChange(newItemGetter());
     };
 
     const listTitle = (
@@ -42,14 +43,14 @@ export function Listed<T>(props: IListedProps<T>) {
                     {items.map((item, index) => {
                         const field = (
                             <FieldType
-                                item={item}
-                                onChange={update}
+                                value={item}
+                                onChange={onChange}
                             ></FieldType>
                         );
                         return (
                             <ListedItem
                                 index={index}
-                                remove={() => remove(item)}
+                                remove={() => onDelete(item)}
                             >
                                 {field}
                             </ListedItem>

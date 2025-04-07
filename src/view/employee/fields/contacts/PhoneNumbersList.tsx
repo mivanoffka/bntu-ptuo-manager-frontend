@@ -9,28 +9,28 @@ export function PhoneNumbersList() {
 
     const getPhoneNumbers = () => getList<IPhoneNumber>("phoneNumbers");
 
-    const addPhoneNumber = () =>
-        updateList<IPhoneNumber>("phoneNumbers", {
+    const getNewPhoneNumber = () => {
+        return {
             id: tempIds.generate(),
             value: null,
             comment: null,
             phoneNumberTypeId: null,
-        });
+        };
+    };
 
-    const updatePhoneNumber = (phoneNumber: IPhoneNumber) =>
-        updateList<IPhoneNumber>("phoneNumbers", phoneNumber);
+    const updatePhoneNumber = (item: IPhoneNumber) =>
+        updateList<IPhoneNumber>("phoneNumbers", item);
 
-    const removePhoneNumber = (phoneNumber: IPhoneNumber) =>
-        removeFromList<IPhoneNumber>("phoneNumbers", phoneNumber);
+    const removePhoneNumber = (item: IPhoneNumber) =>
+        removeFromList<IPhoneNumber>("phoneNumbers", item);
 
     return (
         <Listed
             items={getPhoneNumbers()}
             FieldType={PhoneNumberField}
-            get={getPhoneNumbers}
-            add={addPhoneNumber}
-            update={updatePhoneNumber}
-            remove={removePhoneNumber}
+            newItemGetter={getNewPhoneNumber}
+            onChange={updatePhoneNumber}
+            onDelete={removePhoneNumber}
             title="Номера телефонов"
         ></Listed>
     );

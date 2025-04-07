@@ -7,14 +7,14 @@ import { Field, FieldTitle } from "@/view/primitives";
 import dayjs from "dayjs";
 
 export interface IEducationalInstitutionFieldProps {
-    item: IEducationalInstitution;
+    value: IEducationalInstitution;
     onChange: (item: IEducationalInstitution) => void;
 }
 
 export function EducationalInstitutionField(
     props: IEducationalInstitutionFieldProps
 ) {
-    const { item, onChange } = props;
+    const { value: item, onChange } = props;
 
     const displayField = (
         <Commented comment={item.comment}>

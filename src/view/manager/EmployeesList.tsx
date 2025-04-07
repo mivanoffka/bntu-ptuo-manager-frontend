@@ -1,5 +1,5 @@
 import { useEmployees } from "@/controller/employee/EmployeesContext";
-import { IEmployee, IEmployeeVersion, IName } from "@/model";
+import { HistoryUtility, IEmployee, IEmployeeVersion, IName } from "@/model";
 import { Table, Button, Pagination, Card } from "antd";
 
 import "@/view/manager/style/employees-list.css";
@@ -36,7 +36,14 @@ export function EmployeesList() {
                 }
                 const { names } = latestEmployeeVersion;
                 if (names) {
-                    const { firstName, lastName, middleName } = names[0];
+                    const relevantName =
+                        HistoryUtility.fromCollection(names).relevant;
+
+                    if (!relevantName) {
+                        return "Без имени";
+                    }
+
+                    const { firstName, lastName, middleName } = relevantName;
 
                     return `${lastName} ${firstName} ${middleName}`;
                 }

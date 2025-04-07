@@ -5,11 +5,13 @@ import {
     Field,
     FieldTitle,
 } from "@/view/primitives/fields/field";
-import { History } from "@/model";
+import { HistoryUtility } from "@/model";
 import { useEffect, useState } from "react";
 import { Checkbox, Flex } from "antd";
 import dayjs from "dayjs";
 import { Commented } from "@/view/primitives/containers";
+import { ToggleButton } from "@/view/primitives/buttons";
+import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 
 export interface IHistoryFieldProps<T extends ITimeStamped & IPrimaryKeyed> {
     title?: string;
@@ -20,8 +22,10 @@ export interface IHistoryFieldProps<T extends ITimeStamped & IPrimaryKeyed> {
         value: T;
         onChange: (value: T) => void;
     }>;
-    itemsFieldName: string;
-    newItemFieldName: string;
+    onChangeList: (value: T) => void;
+    onChangeNew: (value: T | null) => void;
+    items: T[];
+    newItem: T | null;
     newItemGetter: () => T;
 }
 
@@ -32,59 +36,44 @@ export function HistoryField<T extends IPrimaryKeyed & ITimeStamped>(
         title,
         DisplayFieldType,
         EditFieldType,
-        itemsFieldName,
         newItemGetter,
-        newItemFieldName,
+        onChangeList,
+        onChangeNew,
+        items,
+        newItem,
     } = props;
 
     const [asNewItem, setAsNewItem] = useState(false);
-    const { updateField, getList, getField } = useEmployeeEditor();
     const { editModeEnabled } = useEditMode();
 
     useEffect(() => {
         setAsNewItem(false);
-        updateField(newItemFieldName, undefined);
+        onChangeNew(null);
     }, [editModeEnabled]);
 
-    const items = getList<T>(itemsFieldName);
-    const itemsHistory = History.fromCollection<T>(items);
-
-    const newItem = getField<T>(newItemFieldName);
+    const itemsHistory = HistoryUtility.fromCollection<T>(items);
 
     const value =
         (asNewItem ? newItem : itemsHistory.relevant) || newItemGetter();
 
-    const onChange = asNewItem
-        ? (value: T) => updateField(newItemFieldName, value)
-        : (value: T) =>
-              updateField(
-                  itemsFieldName,
-                  History.updatedByReplace<T>(itemsHistory, value)
-              );
+    const onChange = asNewItem ? onChangeNew : onChangeList;
 
     const editField = <EditFieldType value={value} onChange={onChange} />;
 
-    const historyItems = (
-        <ul>
-            {itemsHistory.history.map((item, index) => {
-                return (
-                    <li
-                        key={index}
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            gap: 20,
-                        }}
-                    >
-                        <DisplayFieldType value={value} />
-                        <FieldTitle>
-                            (до {dayjs(item.updatedAt).format("DD.MM.YYYY")})
-                        </FieldTitle>
-                    </li>
-                );
-            })}
-        </ul>
-    );
+    const historyItems = itemsHistory.history.map((item, index) => {
+        return (
+            <Flex justify="space-between" style={{ width: "100%" }}>
+                <Flex>
+                    <DisplayFieldType value={item.item} />
+                </Flex>
+                <Flex>
+                    <FieldTitle>
+                        (до {dayjs(item.updatedAt).format("DD.MM.YYYY")})
+                    </FieldTitle>
+                </Flex>
+            </Flex>
+        );
+    });
 
     const singularDisplayField = <DisplayFieldType value={value} />;
 
@@ -97,20 +86,22 @@ export function HistoryField<T extends IPrimaryKeyed & ITimeStamped>(
 
     return (
         <Field title={title}>
-            <Flex vertical gap="small" style={{ width: "100%" }}>
-                {editModeEnabled && (
-                    <Checkbox
-                        checked={asNewItem}
-                        onChange={(e) => setAsNewItem(e.target.checked)}
-                    >
-                        <FieldTitle>Сохранить как новое</FieldTitle>
-                    </Checkbox>
-                )}
-
+            <Flex gap="small" align="end" style={{ width: "100%" }}>
                 <CombinedField
                     displayField={displayField}
                     editField={editField}
                 />
+                <Flex style={{ width: "25px" }}>
+                    {editModeEnabled && (
+                        <ToggleButton
+                            isChecked={asNewItem}
+                            onChange={setAsNewItem}
+                            label={<PlusOutlined></PlusOutlined>}
+                            checkedLabel={<MinusOutlined></MinusOutlined>}
+                            reversed
+                        />
+                    )}
+                </Flex>
             </Flex>
         </Field>
     );

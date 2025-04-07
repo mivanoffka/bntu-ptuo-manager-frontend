@@ -5,12 +5,12 @@ import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { Flex, Typography } from "antd";
 
 export interface IAddressFieldProps {
-    item: IAddress;
+    value: IAddress;
     onChange: (item: IAddress) => void;
 }
 
 export function AddressField(props: IAddressFieldProps) {
-    const { item, onChange } = props;
+    const { value: item, onChange } = props;
 
     const displayField = (
         <Flex justify="space-between" gap="small" style={{ width: "100%" }}>

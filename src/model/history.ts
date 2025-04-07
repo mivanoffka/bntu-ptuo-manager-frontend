@@ -6,7 +6,7 @@ export interface IHistory<T extends ITimeStamped> {
     relevant: T | null;
 }
 
-export class History {
+export class HistoryUtility {
     static fromCollection<T extends ITimeStamped>(items: T[]): IHistory<T> {
         const sortedItems = [...items].sort((a, b) => {
             const aDate = a.createdAt ? new Date(a.createdAt).getTime() : 0;

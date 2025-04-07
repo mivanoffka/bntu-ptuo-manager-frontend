@@ -9,26 +9,26 @@ export function EmailsList() {
 
     const getEmails = () => getList<IEmail>("emails");
 
-    const addEmail = () =>
-        updateList<IEmail>("emails", {
+    const getNewEmail = () => {
+        return {
             id: tempIds.generate(),
             value: null,
             comment: null,
-        });
+        };
+    };
 
-    const updateEmail = (email: IEmail) => updateList<IEmail>("emails", email);
+    const updateEmail = (item: IEmail) => updateList<IEmail>("emails", item);
 
-    const removeEmail = (email: IEmail) =>
-        removeFromList<IEmail>("emails", email);
+    const removeEmail = (item: IEmail) =>
+        removeFromList<IEmail>("emails", item);
 
     return (
         <Listed
             items={getEmails()}
             FieldType={EmailField}
-            get={getEmails}
-            add={addEmail}
-            update={updateEmail}
-            remove={removeEmail}
+            newItemGetter={getNewEmail}
+            onChange={updateEmail}
+            onDelete={removeEmail}
             title="Электронная почта"
         ></Listed>
     );

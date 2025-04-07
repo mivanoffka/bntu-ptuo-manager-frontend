@@ -27,7 +27,7 @@ export interface IEmployeeEditorContext {
     getField: <T>(fieldName: string) => T | null;
     updateList: <T extends IPrimaryKeyed>(fieldName: string, value: T) => void;
     getList: <T extends IPrimaryKeyed>(fieldName: string) => T[];
-    updateField: <T>(fieldName: string, value: T) => void;
+    updateField: <T>(fieldName: string, value: T | null) => void;
 }
 
 export const EmployeeEditorContext = createContext<IEmployeeEditorContext>({

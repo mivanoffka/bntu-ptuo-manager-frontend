@@ -10,38 +10,29 @@ export function EducationalInstitutionsList() {
     const getEducationalInstitutions = () =>
         getList<IEducationalInstitution>("educationalInstitutions");
 
-    const addEducationalInstitution = () =>
-        updateList<IEducationalInstitution>("educationalInstitutions", {
-            id: tempIds.generate(),
-            label: null,
-            graduatedAt: null,
-            comment: null,
-        });
+    const getNewEducationalInstitution = () => ({
+        id: tempIds.generate(),
+        label: null,
+        graduatedAt: null,
+        comment: null,
+    });
 
-    const updateEducationalInstitution = (
-        educationalInstitution: IEducationalInstitution
-    ) =>
-        updateList<IEducationalInstitution>(
-            "educationalInstitutions",
-            educationalInstitution
-        );
+    const updateEducationalInstitution = (item: IEducationalInstitution) =>
+        updateList<IEducationalInstitution>("educationalInstitutions", item);
 
-    const removeEducationalInstitution = (
-        educationalInstitution: IEducationalInstitution
-    ) =>
+    const removeEducationalInstitution = (item: IEducationalInstitution) =>
         removeFromList<IEducationalInstitution>(
             "educationalInstitutions",
-            educationalInstitution
+            item
         );
 
     return (
         <Listed
             items={getEducationalInstitutions()}
             FieldType={EducationalInstitutionField}
-            get={getEducationalInstitutions}
-            add={addEducationalInstitution}
-            update={updateEducationalInstitution}
-            remove={removeEducationalInstitution}
+            newItemGetter={getNewEducationalInstitution}
+            onChange={updateEducationalInstitution}
+            onDelete={removeEducationalInstitution}
             title="Учебные учреждения"
         ></Listed>
     );

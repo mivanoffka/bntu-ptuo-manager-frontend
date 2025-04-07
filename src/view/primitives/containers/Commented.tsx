@@ -1,12 +1,12 @@
 import { MessageOutlined } from "@ant-design/icons";
-import { Dropdown, Flex, MenuProps } from "antd";
+import { Dropdown, DropdownProps, Flex, MenuProps } from "antd";
 import { ReactNode } from "react";
 
 export interface ICommentedProps {
     children?: ReactNode;
     comment?: ReactNode;
     icon?: ReactNode;
-    placement?: string;
+    placement?: DropdownProps["placement"];
 }
 
 export function Commented(props: ICommentedProps) {
@@ -15,7 +15,11 @@ export function Commented(props: ICommentedProps) {
     const items: MenuProps["items"] = [
         {
             key: 0,
-            label: <div>{comment}</div>,
+            label: (
+                <Flex vertical style={{ width: "100%" }}>
+                    {comment}
+                </Flex>
+            ),
         },
     ];
 

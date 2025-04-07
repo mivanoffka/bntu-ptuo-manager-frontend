@@ -7,12 +7,12 @@ import { Field, FieldTitle } from "@/view/primitives";
 import dayjs from "dayjs";
 
 export interface IRewardFieldProps {
-    item: IReward;
+    value: IReward;
     onChange: (item: IReward) => void;
 }
 
 export function RewardField(props: IRewardFieldProps) {
-    const { item, onChange } = props;
+    const { value: item, onChange } = props;
 
     const displayField = (
         <Commented comment={item.comment}>

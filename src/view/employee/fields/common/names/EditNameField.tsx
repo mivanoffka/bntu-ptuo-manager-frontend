@@ -1,5 +1,5 @@
 import { Field } from "@/view/primitives/fields/field/Field";
-import { IName } from "@/model";
+import { IName, NameUtility } from "@/model";
 import { InputField } from "@/view/primitives";
 import { Flex } from "antd";
 
@@ -13,44 +13,32 @@ export function EditNameField(props: IEditNameFieldProps) {
 
     const { firstName, lastName, middleName } = value ?? {};
 
-    function updateNamePart(fieldName: string, newValue: string) {
-        const newName = { ...value, [fieldName]: newValue };
-
-        onChange(newName);
-    }
-
-    function updateFirstName(value: string) {
-        updateNamePart("firstName", value);
-    }
-
-    function updateLastName(value: string) {
-        updateNamePart("lastName", value);
-    }
-
-    function updateMiddleName(value: string) {
-        updateNamePart("middleName", value);
-    }
-
     return (
-        <Flex gap="small">
+        <Flex gap="small" style={{ width: "100%" }}>
             <Field title="Фамилия">
                 <InputField
                     value={lastName}
-                    onChange={updateLastName}
+                    onChange={(newValue) =>
+                        onChange(NameUtility.updatedLastName(value, newValue))
+                    }
                     placeholder="Фамилия"
                 ></InputField>
             </Field>
             <Field title="Имя">
                 <InputField
                     value={firstName}
-                    onChange={updateFirstName}
+                    onChange={(newValue) =>
+                        onChange(NameUtility.updatedFirstName(value, newValue))
+                    }
                     placeholder="Имя"
                 ></InputField>
             </Field>
             <Field title="Отчество">
                 <InputField
                     value={middleName}
-                    onChange={updateMiddleName}
+                    onChange={(newValue) =>
+                        onChange(NameUtility.updatedMiddleName(value, newValue))
+                    }
                     placeholder="Отчество"
                 ></InputField>
             </Field>

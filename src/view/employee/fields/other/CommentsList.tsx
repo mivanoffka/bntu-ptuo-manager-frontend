@@ -9,26 +9,24 @@ export function CommentsList() {
 
     const getComments = () => getList<IComment>("comments");
 
-    const addComment = () =>
-        updateList<IComment>("comments", {
-            id: tempIds.generate(),
-            value: null,
-        });
+    const getNewComment = () => ({
+        id: tempIds.generate(),
+        value: null,
+    });
 
-    const updateComment = (comment: IComment) =>
-        updateList<IComment>("comments", comment);
+    const updateComment = (item: IComment) =>
+        updateList<IComment>("comments", item);
 
-    const removeComment = (comment: IComment) =>
-        removeFromList<IComment>("comments", comment);
+    const removeComment = (item: IComment) =>
+        removeFromList<IComment>("comments", item);
 
     return (
         <Listed
             items={getComments()}
             FieldType={CommentField}
-            get={getComments}
-            add={addComment}
-            update={updateComment}
-            remove={removeComment}
+            newItemGetter={getNewComment}
+            onChange={updateComment}
+            onDelete={removeComment}
             title="Комментарии"
         ></Listed>
     );

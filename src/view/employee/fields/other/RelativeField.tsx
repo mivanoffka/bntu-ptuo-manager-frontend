@@ -7,22 +7,25 @@ import dayjs from "dayjs";
 import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
 
 export interface IRelativeFieldProps {
-    item: IRelative;
+    value: IRelative;
     onChange: (item: IRelative) => void;
 }
 
 export function RelativeField(props: IRelativeFieldProps) {
-    const { item, onChange } = props;
+    const { value: item, onChange } = props;
     const { relativeTypes } = useEnumerations();
 
     const displayField = (
         <Flex vertical gap="middle" style={{ width: "100%" }}>
             <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
                 <LabelField>{item.fullName}</LabelField>
-                {/* <FieldTitle>
+                <FieldTitle>
                     род. {dayjs(item.birthdate).format("DD.MM.YYYY")},{" "}
-                    {item.relativeTypeId?.label}
-                </FieldTitle> */}
+                </FieldTitle>
+                <SelectField.Display
+                    enumeration={relativeTypes}
+                    selectedId={item.relativeTypeId}
+                ></SelectField.Display>
             </Flex>
             {item.comment && (
                 <Flex

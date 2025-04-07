@@ -9,29 +9,27 @@ export function RelativesList() {
 
     const getRelatives = () => getList<IRelative>("relatives");
 
-    const addRelative = () =>
-        updateList<IRelative>("relatives", {
-            id: tempIds.generate(),
-            fullName: "",
-            birthdate: null,
-            relativeTypeId: null,
-            comment: null,
-        });
+    const getNewRelative = () => ({
+        id: tempIds.generate(),
+        fullName: "",
+        birthdate: null,
+        relativeTypeId: null,
+        comment: null,
+    });
 
-    const updateRelative = (relative: IRelative) =>
-        updateList<IRelative>("relatives", relative);
+    const updateRelative = (item: IRelative) =>
+        updateList<IRelative>("relatives", item);
 
-    const removeRelative = (relative: IRelative) =>
-        removeFromList<IRelative>("relatives", relative);
+    const removeRelative = (item: IRelative) =>
+        removeFromList<IRelative>("relatives", item);
 
     return (
         <Listed
             items={getRelatives()}
             FieldType={RelativeField}
-            get={getRelatives}
-            add={addRelative}
-            update={updateRelative}
-            remove={removeRelative}
+            newItemGetter={getNewRelative}
+            onChange={updateRelative}
+            onDelete={removeRelative}
             title="Родственники"
         ></Listed>
     );

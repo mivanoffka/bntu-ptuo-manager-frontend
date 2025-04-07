@@ -9,27 +9,27 @@ export function AddressesList() {
 
     const getAddresses = () => getList<IAddress>("addresses");
 
-    const addAddress = () =>
-        updateList<IAddress>("addresses", {
+    const getNewAddress = () => {
+        return {
             id: tempIds.generate(),
             value: null,
             comment: null,
-        });
+        };
+    };
 
-    const updateAddress = (address: IAddress) =>
-        updateList<IAddress>("addresses", address);
+    const updateAddress = (item: IAddress) =>
+        updateList<IAddress>("addresses", item);
 
-    const removeAddress = (address: IAddress) =>
-        removeFromList<IAddress>("addresses", address);
+    const removeAddress = (item: IAddress) =>
+        removeFromList<IAddress>("addresses", item);
 
     return (
         <Listed
             items={getAddresses()}
             FieldType={AddressField}
-            get={getAddresses}
-            add={addAddress}
-            update={updateAddress}
-            remove={removeAddress}
+            newItemGetter={getNewAddress}
+            onChange={updateAddress}
+            onDelete={removeAddress}
             title="Места жительства"
         ></Listed>
     );

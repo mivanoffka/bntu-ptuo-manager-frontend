@@ -5,12 +5,12 @@ import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { Flex, Typography } from "antd";
 
 export interface IEmailFieldProps {
-    item: IEmail;
+    value: IEmail;
     onChange: (item: IEmail) => void;
 }
 
 export function EmailField(props: IEmailFieldProps) {
-    const { item, onChange } = props;
+    const { value: item, onChange } = props;
 
     const displayField = (
         <Flex justify="space-between" gap="small" style={{ width: "100%" }}>

@@ -8,12 +8,12 @@ import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
 import { Commented } from "@/view/primitives/containers";
 
 export interface IPhoneNumberFieldProps {
-    item: IPhoneNumber;
+    value: IPhoneNumber;
     onChange: (value: IPhoneNumber) => void;
 }
 
 export function PhoneNumberField(props: IPhoneNumberFieldProps) {
-    const { item, onChange } = props;
+    const { value: item, onChange } = props;
     const { phoneNumberTypes } = useEnumerations();
 
     const displayField = (
