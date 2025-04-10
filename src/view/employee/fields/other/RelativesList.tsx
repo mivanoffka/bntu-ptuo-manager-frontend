@@ -17,14 +17,17 @@ export function RelativesList() {
         comment: null,
     });
 
-    const updateRelative = (item: IRelative) =>
-        updateList<IRelative>("relatives", item);
+    const updateRelative = (item: IRelative | null) => {
+        if (item) {
+            updateList<IRelative>("relatives", item);
+        }
+    };
 
     const removeRelative = (item: IRelative) =>
         removeFromList<IRelative>("relatives", item);
 
     return (
-        <Listed
+        <Listed<IRelative>
             items={getRelatives()}
             FieldType={RelativeField}
             newItemGetter={getNewRelative}

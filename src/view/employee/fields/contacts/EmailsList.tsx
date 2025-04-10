@@ -17,13 +17,17 @@ export function EmailsList() {
         };
     };
 
-    const updateEmail = (item: IEmail) => updateList<IEmail>("emails", item);
+    const updateEmail = (item: IEmail | null) => {
+        if (item) {
+            updateList<IEmail>("emails", item);
+        }
+    };
 
     const removeEmail = (item: IEmail) =>
         removeFromList<IEmail>("emails", item);
 
     return (
-        <Listed
+        <Listed<IEmail>
             items={getEmails()}
             FieldType={EmailField}
             newItemGetter={getNewEmail}

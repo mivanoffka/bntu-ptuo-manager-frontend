@@ -1,4 +1,4 @@
-import { FieldTitle } from "@/view/primitives/fields/field/FieldTitle";
+import { SecondaryLabel } from "@/view/primitives/fields/field/SecondaryLabel";
 import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
 import { Collapse, Flex } from "antd";
 import { ReactNode, useState } from "react";
@@ -15,7 +15,7 @@ export function Expandable(props: IDropDownProps) {
         id: 0,
         label: (
             <Flex vertical align="left" style={{ width: "100%" }}>
-                <FieldTitle>{title}</FieldTitle>
+                <SecondaryLabel>{title}</SecondaryLabel>
             </Flex>
         ),
 

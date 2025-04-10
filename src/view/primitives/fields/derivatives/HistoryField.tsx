@@ -1,50 +1,49 @@
-import { useEditMode, useEmployeeEditor } from "@/controller/employee";
-import { IPrimaryKeyed, ITimeStamped } from "@/model";
-import {
-    CombinedField,
-    Field,
-    FieldTitle,
-} from "@/view/primitives/fields/field";
-import { HistoryUtility } from "@/model";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Checkbox, Flex } from "antd";
 import dayjs from "dayjs";
 import { Commented } from "@/view/primitives/containers";
 import { ToggleButton } from "@/view/primitives/buttons";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+    CombinedFieldContainer,
+    FieldContainer,
+    SecondaryLabel,
+} from "@/view/primitives/fields/field";
+import {
+    IDisplayFieldProps,
+    IEditFieldProps,
+} from "@/view/primitives/fields/types";
+import { IPrimaryKeyed, ITimeStamped } from "@/model";
+import { HistoryUtility } from "@/model";
 
 export interface IHistoryFieldProps<T extends ITimeStamped & IPrimaryKeyed> {
+    editModeEnabled: boolean;
     title?: string;
-    DisplayFieldType: React.ComponentType<{
-        value: T;
-    }>;
-    EditFieldType: React.ComponentType<{
-        value: T;
-        onChange: (value: T) => void;
-    }>;
-    onChangeList: (value: T) => void;
+    DisplayFieldType: FC<IDisplayFieldProps<T>>;
+    EditFieldType: FC<IEditFieldProps<T>>;
+    onChangeListItem: (value: T | null) => void;
     onChangeNew: (value: T | null) => void;
     items: T[];
     newItem: T | null;
     newItemGetter: () => T;
 }
 
-export function HistoryField<T extends IPrimaryKeyed & ITimeStamped>(
+export function HistoryField<T extends ITimeStamped & IPrimaryKeyed>(
     props: IHistoryFieldProps<T>
 ) {
     const {
+        editModeEnabled,
         title,
         DisplayFieldType,
         EditFieldType,
         newItemGetter,
-        onChangeList,
+        onChangeListItem,
         onChangeNew,
         items,
         newItem,
     } = props;
 
     const [asNewItem, setAsNewItem] = useState(false);
-    const { editModeEnabled } = useEditMode();
 
     useEffect(() => {
         setAsNewItem(false);
@@ -52,57 +51,62 @@ export function HistoryField<T extends IPrimaryKeyed & ITimeStamped>(
     }, [editModeEnabled]);
 
     const itemsHistory = HistoryUtility.fromCollection<T>(items);
-
     const value =
-        (asNewItem ? newItem : itemsHistory.relevant) || newItemGetter();
-
-    const onChange = asNewItem ? onChangeNew : onChangeList;
-
-    const editField = <EditFieldType value={value} onChange={onChange} />;
+        (asNewItem ? newItem : itemsHistory.relevant) ?? newItemGetter();
+    const onChange = asNewItem ? onChangeNew : onChangeListItem;
 
     const historyItems = itemsHistory.history.map((item, index) => {
         return (
-            <Flex justify="space-between" style={{ width: "100%" }}>
+            <Flex
+                key={item.item.id}
+                justify="space-between"
+                style={{ width: "100%" }}
+            >
                 <Flex>
                     <DisplayFieldType value={item.item} />
                 </Flex>
                 <Flex>
-                    <FieldTitle>
+                    <SecondaryLabel>
                         (до {dayjs(item.updatedAt).format("DD.MM.YYYY")})
-                    </FieldTitle>
+                    </SecondaryLabel>
                 </Flex>
             </Flex>
         );
     });
 
-    const singularDisplayField = <DisplayFieldType value={value} />;
+    const MultipleDisplayFieldType: FC<IDisplayFieldProps<T>> = (props) => {
+        return (
+            <Commented comment={historyItems}>
+                <DisplayFieldType {...props} />
+            </Commented>
+        );
+    };
 
-    const multipleDisplayField = (
-        <Commented comment={historyItems}>{singularDisplayField}</Commented>
-    );
-
-    const displayField =
-        items.length > 1 ? multipleDisplayField : singularDisplayField;
+    const ActualDisplayFieldType: FC<IDisplayFieldProps<T>> =
+        items.length > 1 ? MultipleDisplayFieldType : DisplayFieldType;
 
     return (
-        <Field title={title}>
+        <FieldContainer title={title}>
             <Flex gap="small" align="end" style={{ width: "100%" }}>
-                <CombinedField
-                    displayField={displayField}
-                    editField={editField}
+                <CombinedFieldContainer
+                    DisplayFieldType={ActualDisplayFieldType}
+                    EditFieldType={EditFieldType}
+                    onChange={onChange}
+                    value={value}
+                    editModeEnabled={editModeEnabled}
                 />
                 <Flex style={{ width: "25px" }}>
                     {editModeEnabled && (
                         <ToggleButton
                             isChecked={asNewItem}
                             onChange={setAsNewItem}
-                            label={<PlusOutlined></PlusOutlined>}
-                            checkedLabel={<MinusOutlined></MinusOutlined>}
+                            label={<PlusOutlined />}
+                            checkedLabel={<MinusOutlined />}
                             reversed
                         />
                     )}
                 </Flex>
             </Flex>
-        </Field>
+        </FieldContainer>
     );
 }

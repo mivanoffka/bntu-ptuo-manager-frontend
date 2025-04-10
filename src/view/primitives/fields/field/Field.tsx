@@ -1,19 +1,19 @@
 import { Flex, Typography } from "antd";
 import "./style/field.css";
 import { ReactNode } from "react";
-import { FieldTitle } from "@/view/primitives/fields/field/FieldTitle";
+import { SecondaryLabel } from "@/view/primitives/fields/field/SecondaryLabel";
 
-export interface IFieldProps {
+export interface IFieldContainerProps {
     title?: ReactNode;
     children?: ReactNode;
 }
 
-export function Field(props: IFieldProps) {
+export function FieldContainer(props: IFieldContainerProps) {
     const { title, children } = props;
 
     return (
         <Flex vertical style={{ width: "100%" }}>
-            <FieldTitle>{title}</FieldTitle>
+            <SecondaryLabel>{title}</SecondaryLabel>
             {children}
         </Flex>
     );

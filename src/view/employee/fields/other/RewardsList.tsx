@@ -16,14 +16,17 @@ export function RewardsList() {
         comment: null,
     });
 
-    const updateReward = (item: IReward) =>
-        updateList<IReward>("rewards", item);
+    const updateReward = (item: IReward | null) => {
+        if (item) {
+            updateList<IReward>("rewards", item);
+        }
+    };
 
     const removeReward = (item: IReward) =>
         removeFromList<IReward>("rewards", item);
 
     return (
-        <Listed
+        <Listed<IReward>
             items={getRewards()}
             FieldType={RewardField}
             newItemGetter={getNewReward}

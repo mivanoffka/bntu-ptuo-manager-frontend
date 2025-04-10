@@ -14,14 +14,17 @@ export function CommentsList() {
         value: null,
     });
 
-    const updateComment = (item: IComment) =>
-        updateList<IComment>("comments", item);
+    const updateComment = (item: IComment | null) => {
+        if (item) {
+            updateList<IComment>("comments", item);
+        }
+    };
 
     const removeComment = (item: IComment) =>
         removeFromList<IComment>("comments", item);
 
     return (
-        <Listed
+        <Listed<IComment>
             items={getComments()}
             FieldType={CommentField}
             newItemGetter={getNewComment}

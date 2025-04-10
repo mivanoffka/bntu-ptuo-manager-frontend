@@ -1,35 +1,49 @@
-import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
+import { CombinedFieldContainer } from "@/view/primitives/fields/field/CombinedField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { Flex, Typography } from "antd";
 import { IComment } from "@/model";
+import {
+    IDisplayFieldProps,
+    IEditFieldProps,
+} from "@/view/primitives/fields/types";
+import { useEditMode } from "@/controller/employee";
 
-export interface ICommentFieldProps {
-    value: IComment;
-    onChange: (item: IComment) => void;
-}
+export function CommentField(props: IEditFieldProps<IComment>) {
+    const { value, onChange } = props;
+    const { editModeEnabled } = useEditMode();
 
-export function CommentField(props: ICommentFieldProps) {
-    const { value: item, onChange } = props;
+    function DisplayField(props: IDisplayFieldProps<IComment>) {
+        const { value: item } = props;
+        const { value } = item;
 
-    const displayField = (
-        <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
-            <Typography.Text>{item.value}</Typography.Text>
-        </Flex>
-    );
+        return (
+            <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
+                <Typography.Text>{value}</Typography.Text>
+            </Flex>
+        );
+    }
 
-    const editField = (
-        <Flex gap="small" style={{ width: "100%" }}>
-            <InputField
-                value={item.value}
-                onChange={(value) => onChange({ ...item, value })}
-            ></InputField>
-        </Flex>
-    );
+    function EditField(props: IEditFieldProps<IComment>) {
+        const { value: item, onChange } = props;
+        const { value } = item;
+
+        return (
+            <Flex gap="small" style={{ width: "100%" }}>
+                <InputField
+                    value={value}
+                    onChange={(value) => onChange({ ...item, value })}
+                />
+            </Flex>
+        );
+    }
 
     return (
-        <CombinedField
-            displayField={displayField}
-            editField={editField}
-        ></CombinedField>
+        <CombinedFieldContainer
+            editModeEnabled={editModeEnabled}
+            value={value}
+            onChange={onChange}
+            DisplayFieldType={DisplayField}
+            EditFieldType={EditField}
+        />
     );
 }

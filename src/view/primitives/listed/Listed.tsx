@@ -1,16 +1,17 @@
 import { useEditMode } from "@/controller/employee/EditModeContext";
 import { IPrimaryKeyed } from "@/model";
 import { Expandable } from "@/view/primitives/containers/Expandable";
-import { FieldTitle } from "@/view/primitives/fields/field/FieldTitle";
+import { SecondaryLabel } from "@/view/primitives/fields/field/SecondaryLabel";
+import { IEditFieldProps } from "@/view/primitives/fields/types";
 import { ListedItem } from "@/view/primitives/listed/ListedItem";
 import { Button, Flex } from "antd";
 import { ReactNode } from "react";
 
 export interface IListedProps<T extends IPrimaryKeyed> {
     items: T[];
-    FieldType: React.ComponentType<{ value: T; onChange: (value: T) => void }>;
+    FieldType: React.FC<IEditFieldProps<T>>;
     newItemGetter: () => T;
-    onChange: (item: T) => void;
+    onChange: (item: T | null) => void;
     onDelete: (item: T) => void;
     title?: ReactNode;
 }
@@ -27,7 +28,7 @@ export function Listed<T extends IPrimaryKeyed>(props: IListedProps<T>) {
 
     const listTitle = (
         <Flex justify="space-between" style={{ width: "100%" }}>
-            <FieldTitle>{title}</FieldTitle>
+            <SecondaryLabel>{title}</SecondaryLabel>
         </Flex>
     );
 

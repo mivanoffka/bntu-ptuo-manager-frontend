@@ -1,22 +1,35 @@
-import { ReactNode } from "react";
-import { useEditMode } from "@/controller/employee/EditModeContext";
-import { Field } from "@/view/primitives/fields/field/Field";
+import { FieldContainer } from "@/view/primitives/fields/field/Field";
+import {
+    IDisplayFieldProps,
+    IEditFieldProps,
+} from "@/view/primitives/fields/types";
 import "./style/field.css";
 
-export interface ICombinedFieldProps {
+export interface ICombinedFieldContainerProps<T> extends IEditFieldProps<T> {
+    editModeEnabled: boolean;
     title?: string;
-    displayField: ReactNode;
-    editField: ReactNode;
+    DisplayFieldType: React.FC<IDisplayFieldProps<T>>;
+    EditFieldType: React.FC<IEditFieldProps<T>>;
 }
 
-export function CombinedField(props: ICombinedFieldProps) {
-    const { title, editField, displayField } = props;
+export function CombinedFieldContainer<T>(
+    props: ICombinedFieldContainerProps<T>
+) {
+    const {
+        editModeEnabled,
+        title,
+        EditFieldType,
+        DisplayFieldType,
+        value,
+        onChange,
+    } = props;
 
-    const { editModeEnabled } = useEditMode();
+    const displayField = <DisplayFieldType value={value} />;
+    const editField = <EditFieldType value={value} onChange={onChange} />;
 
     return (
-        <Field title={title}>
+        <FieldContainer title={title}>
             {editModeEnabled ? editField : displayField}
-        </Field>
+        </FieldContainer>
     );
 }

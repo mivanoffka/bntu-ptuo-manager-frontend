@@ -1,93 +1,131 @@
-import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
+import { CombinedFieldContainer } from "@/view/primitives/fields/field/CombinedField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { DatePicker, Flex, Typography } from "antd";
 import { IRelative } from "@/model";
-import { Field, FieldTitle, LabelField, SelectField } from "@/view/primitives";
-import dayjs from "dayjs";
+import {
+    FieldContainer,
+    SecondaryLabel,
+    LabelField,
+    SelectField,
+} from "@/view/primitives";
+import {
+    IDisplayFieldProps,
+    IEditFieldProps,
+} from "@/view/primitives/fields/types";
+import { useEditMode } from "@/controller/employee";
 import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
+import dayjs from "dayjs";
+import { DateTimeField } from "@/view/primitives/fields";
+import { Commented } from "@/view/primitives/containers";
 
-export interface IRelativeFieldProps {
-    value: IRelative;
-    onChange: (item: IRelative) => void;
-}
-
-export function RelativeField(props: IRelativeFieldProps) {
-    const { value: item, onChange } = props;
+export function RelativeField(props: IEditFieldProps<IRelative>) {
+    const { value, onChange } = props;
+    const { editModeEnabled } = useEditMode();
     const { relativeTypes } = useEnumerations();
 
-    const displayField = (
-        <Flex vertical gap="middle" style={{ width: "100%" }}>
-            <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
-                <LabelField>{item.fullName}</LabelField>
-                <FieldTitle>
-                    род. {dayjs(item.birthdate).format("DD.MM.YYYY")},{" "}
-                </FieldTitle>
-                <SelectField.Display
-                    enumeration={relativeTypes}
-                    selectedId={item.relativeTypeId}
-                ></SelectField.Display>
-            </Flex>
-            {item.comment && (
+    function DisplayField(props: IDisplayFieldProps<IRelative>) {
+        const { value: item } = props;
+        const { fullName, birthdate, relativeTypeId, comment } = item;
+
+        return (
+            <Commented comment={comment}>
+                <Flex vertical gap="middle" style={{ width: "100%" }}>
+                    <Flex
+                        justify="space-between"
+                        gap="small"
+                        style={{ width: "100%" }}
+                    >
+                        <LabelField value={fullName} />
+                        <Flex gap="large">
+                            {birthdate && (
+                                <SecondaryLabel>
+                                    род. {dayjs(birthdate).format("DD.MM.YYYY")}
+                                </SecondaryLabel>
+                            )}
+                            <SecondaryLabel>
+                                <SelectField.Display
+                                    enumeration={relativeTypes}
+                                    selectedId={relativeTypeId}
+                                />
+                            </SecondaryLabel>
+                        </Flex>
+                    </Flex>
+                </Flex>
+            </Commented>
+        );
+    }
+
+    function EditField(props: IEditFieldProps<IRelative>) {
+        const { value: item, onChange } = props;
+        const { fullName, birthdate, relativeTypeId, comment } = item;
+
+        return (
+            <Flex vertical gap="middle" style={{ width: "100%" }}>
                 <Flex
                     justify="space-between"
                     gap="small"
                     style={{ width: "100%" }}
                 >
-                    <FieldTitle>{item.comment}</FieldTitle>
+                    <FieldContainer title="ФИО">
+                        <InputField
+                            value={fullName}
+                            onChange={(fullName) =>
+                                onChange({
+                                    ...item,
+                                    fullName: fullName ? fullName : "",
+                                })
+                            }
+                        />
+                    </FieldContainer>
                 </Flex>
-            )}
-        </Flex>
-    );
-
-    const editField = (
-        <Flex vertical gap="middle" style={{ width: "100%" }}>
-            <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
-                <Field title="ФИО">
-                    <InputField
-                        value={item.fullName}
-                        onChange={(value) =>
-                            onChange({ ...item, fullName: value })
-                        }
-                    ></InputField>
-                </Field>
+                <Flex
+                    justify="space-between"
+                    gap="small"
+                    style={{ width: "100%" }}
+                >
+                    <FieldContainer title="Дата рождения">
+                        <DateTimeField.Edit
+                            value={birthdate}
+                            onChange={(birthdate) =>
+                                onChange({ ...item, birthdate })
+                            }
+                        ></DateTimeField.Edit>
+                    </FieldContainer>
+                    <FieldContainer title="Родство">
+                        <SelectField.Edit
+                            onChange={(relativeTypeId) =>
+                                onChange({ ...item, relativeTypeId })
+                            }
+                            selectedId={relativeTypeId}
+                            enumeration={relativeTypes}
+                        />
+                    </FieldContainer>
+                </Flex>
+                <Flex
+                    justify="space-between"
+                    gap="small"
+                    style={{ width: "100%" }}
+                >
+                    <FieldContainer title="Комментарий">
+                        <InputField
+                            value={comment}
+                            onChange={(comment) =>
+                                onChange({ ...item, comment })
+                            }
+                        />
+                    </FieldContainer>
+                </Flex>
             </Flex>
-            <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
-                <Field title="Дата рождения">
-                    <DatePicker
-                        size="small"
-                        value={item.birthdate}
-                        onChange={(value) =>
-                            onChange({ ...item, birthdate: value })
-                        }
-                    />
-                </Field>
-                <Field title="Родство">
-                    <SelectField.Edit
-                        onChange={(value) =>
-                            onChange({ ...item, relativeTypeId: value })
-                        }
-                        selectedId={item.relativeTypeId}
-                        enumeration={relativeTypes}
-                    />
-                </Field>
-            </Flex>
-            <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
-                <Field title="Комментарий">
-                    <InputField
-                        value={item.comment}
-                        onChange={(value) =>
-                            onChange({ ...item, comment: value })
-                        }
-                    ></InputField>
-                </Field>
-            </Flex>
-        </Flex>
-    );
+        );
+    }
 
     return (
-        <CombinedField
-            displayField={displayField}
-            editField={editField}
-        ></CombinedField>
+        <CombinedFieldContainer
+            editModeEnabled={editModeEnabled}
+            value={value}
+            onChange={onChange}
+            DisplayFieldType={DisplayField}
+            EditFieldType={EditField}
+        />
     );
 }

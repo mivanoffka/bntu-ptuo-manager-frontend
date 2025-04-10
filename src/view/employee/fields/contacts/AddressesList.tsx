@@ -17,14 +17,17 @@ export function AddressesList() {
         };
     };
 
-    const updateAddress = (item: IAddress) =>
-        updateList<IAddress>("addresses", item);
+    const updateAddress = (item: IAddress | null) => {
+        if (item) {
+            updateList<IAddress>("addresses", item);
+        }
+    };
 
     const removeAddress = (item: IAddress) =>
         removeFromList<IAddress>("addresses", item);
 
     return (
-        <Listed
+        <Listed<IAddress>
             items={getAddresses()}
             FieldType={AddressField}
             newItemGetter={getNewAddress}

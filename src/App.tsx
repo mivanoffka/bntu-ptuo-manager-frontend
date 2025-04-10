@@ -17,55 +17,58 @@ import {
     SelectedEmployeesProvider,
 } from "@/controller/employee";
 import { EnumerationsProvider } from "@/controller/enumerations/EnumerationsContext";
+import { ConfigProvider } from "antd";
 
 const App: React.FC = () => (
-    <BrowserRouter>
-        <ApiProvider>
-            <AuthProvider>
-                <EditModeProvider>
-                    <EnumerationsProvider>
-                        <SelectedEmployeesProvider>
-                            <EmployeesProvider>
-                                <OneSelectedEmployeeProvider>
-                                    <EmployeeVersionsProvider>
-                                        <OneSelectedEmployeeVersionProvider>
-                                            <EmployeeEditorProvider>
-                                                <PageContainer>
-                                                    <TopBar></TopBar>
-                                                    <Content>
-                                                        <Routes>
-                                                            <Route
-                                                                path="/employees"
-                                                                element={
-                                                                    <EmployeesManager />
-                                                                }
-                                                            ></Route>
-                                                            <Route
-                                                                path="/auth/sign-in"
-                                                                element={
-                                                                    <SignIn />
-                                                                }
-                                                            />
-                                                            <Route
-                                                                path="*"
-                                                                element={
-                                                                    <Navigate to="/employees" />
-                                                                }
-                                                            />
-                                                        </Routes>
-                                                    </Content>
-                                                </PageContainer>
-                                            </EmployeeEditorProvider>
-                                        </OneSelectedEmployeeVersionProvider>
-                                    </EmployeeVersionsProvider>
-                                </OneSelectedEmployeeProvider>
-                            </EmployeesProvider>
-                        </SelectedEmployeesProvider>
-                    </EnumerationsProvider>
-                </EditModeProvider>
-            </AuthProvider>
-        </ApiProvider>
-    </BrowserRouter>
+    <ConfigProvider componentSize="small">
+        <BrowserRouter>
+            <ApiProvider>
+                <AuthProvider>
+                    <EditModeProvider>
+                        <EnumerationsProvider>
+                            <SelectedEmployeesProvider>
+                                <EmployeesProvider>
+                                    <OneSelectedEmployeeProvider>
+                                        <EmployeeVersionsProvider>
+                                            <OneSelectedEmployeeVersionProvider>
+                                                <EmployeeEditorProvider>
+                                                    <PageContainer>
+                                                        <TopBar></TopBar>
+                                                        <Content>
+                                                            <Routes>
+                                                                <Route
+                                                                    path="/employees"
+                                                                    element={
+                                                                        <EmployeesManager />
+                                                                    }
+                                                                ></Route>
+                                                                <Route
+                                                                    path="/auth/sign-in"
+                                                                    element={
+                                                                        <SignIn />
+                                                                    }
+                                                                />
+                                                                <Route
+                                                                    path="*"
+                                                                    element={
+                                                                        <Navigate to="/employees" />
+                                                                    }
+                                                                />
+                                                            </Routes>
+                                                        </Content>
+                                                    </PageContainer>
+                                                </EmployeeEditorProvider>
+                                            </OneSelectedEmployeeVersionProvider>
+                                        </EmployeeVersionsProvider>
+                                    </OneSelectedEmployeeProvider>
+                                </EmployeesProvider>
+                            </SelectedEmployeesProvider>
+                        </EnumerationsProvider>
+                    </EditModeProvider>
+                </AuthProvider>
+            </ApiProvider>
+        </BrowserRouter>
+    </ConfigProvider>
 );
 
 export default App;

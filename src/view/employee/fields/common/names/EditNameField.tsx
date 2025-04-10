@@ -1,4 +1,4 @@
-import { Field } from "@/view/primitives/fields/field/Field";
+import { FieldContainer } from "@/view/primitives/fields/field/Field";
 import { IName, NameUtility } from "@/model";
 import { InputField } from "@/view/primitives";
 import { Flex } from "antd";
@@ -15,7 +15,7 @@ export function EditNameField(props: IEditNameFieldProps) {
 
     return (
         <Flex gap="small" style={{ width: "100%" }}>
-            <Field title="Фамилия">
+            <FieldContainer title="Фамилия">
                 <InputField
                     value={lastName}
                     onChange={(newValue) =>
@@ -23,8 +23,8 @@ export function EditNameField(props: IEditNameFieldProps) {
                     }
                     placeholder="Фамилия"
                 ></InputField>
-            </Field>
-            <Field title="Имя">
+            </FieldContainer>
+            <FieldContainer title="Имя">
                 <InputField
                     value={firstName}
                     onChange={(newValue) =>
@@ -32,8 +32,8 @@ export function EditNameField(props: IEditNameFieldProps) {
                     }
                     placeholder="Имя"
                 ></InputField>
-            </Field>
-            <Field title="Отчество">
+            </FieldContainer>
+            <FieldContainer title="Отчество">
                 <InputField
                     value={middleName}
                     onChange={(newValue) =>
@@ -41,7 +41,7 @@ export function EditNameField(props: IEditNameFieldProps) {
                     }
                     placeholder="Отчество"
                 ></InputField>
-            </Field>
+            </FieldContainer>
         </Flex>
     );
 }

@@ -17,8 +17,16 @@ export function EducationalInstitutionsList() {
         comment: null,
     });
 
-    const updateEducationalInstitution = (item: IEducationalInstitution) =>
-        updateList<IEducationalInstitution>("educationalInstitutions", item);
+    const updateEducationalInstitution = (
+        item: IEducationalInstitution | null
+    ) => {
+        if (item) {
+            updateList<IEducationalInstitution>(
+                "educationalInstitutions",
+                item
+            );
+        }
+    };
 
     const removeEducationalInstitution = (item: IEducationalInstitution) =>
         removeFromList<IEducationalInstitution>(
@@ -27,7 +35,7 @@ export function EducationalInstitutionsList() {
         );
 
     return (
-        <Listed
+        <Listed<IEducationalInstitution>
             items={getEducationalInstitutions()}
             FieldType={EducationalInstitutionField}
             newItemGetter={getNewEducationalInstitution}

@@ -18,14 +18,17 @@ export function PhoneNumbersList() {
         };
     };
 
-    const updatePhoneNumber = (item: IPhoneNumber) =>
-        updateList<IPhoneNumber>("phoneNumbers", item);
+    const updatePhoneNumber = (item: IPhoneNumber | null) => {
+        if (item) {
+            updateList<IPhoneNumber>("phoneNumbers", item);
+        }
+    };
 
     const removePhoneNumber = (item: IPhoneNumber) =>
         removeFromList<IPhoneNumber>("phoneNumbers", item);
 
     return (
-        <Listed
+        <Listed<IPhoneNumber>
             items={getPhoneNumbers()}
             FieldType={PhoneNumberField}
             newItemGetter={getNewPhoneNumber}

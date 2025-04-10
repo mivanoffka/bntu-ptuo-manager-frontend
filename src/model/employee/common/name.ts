@@ -25,21 +25,21 @@ export class NameUtility {
 
     private static updatedNamePart(
         name: IName,
-        newValue: string,
+        newValue: string | null,
         fieldName: string
     ) {
         return { ...name, [fieldName]: newValue };
     }
 
-    static updatedFirstName(name: IName, value: string) {
+    static updatedFirstName(name: IName, value: string | null) {
         return NameUtility.updatedNamePart(name, value, "firstName");
     }
 
-    static updatedLastName(name: IName, value: string) {
+    static updatedLastName(name: IName, value: string | null) {
         return NameUtility.updatedNamePart(name, value, "lastName");
     }
 
-    static updatedMiddleName(name: IName, value: string) {
+    static updatedMiddleName(name: IName, value: string | null) {
         return NameUtility.updatedNamePart(name, value, "middleName");
     }
 }

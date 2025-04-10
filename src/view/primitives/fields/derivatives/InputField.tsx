@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 export interface IInputFieldProps {
     title?: ReactNode;
     value: string | null;
-    onChange: (value: string) => void;
+    onChange: (value: string | null) => void;
     placeholder?: string;
 }
 
@@ -16,7 +16,7 @@ export function InputField(props: IInputFieldProps) {
     return (
         <Input
             size="small"
-            value={displayValue}
+            value={displayValue || ""}
             onChange={(e) => {
                 onChange(e.target.value);
             }}

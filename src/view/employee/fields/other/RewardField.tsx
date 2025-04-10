@@ -1,65 +1,88 @@
-import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
+import { CombinedFieldContainer } from "@/view/primitives/fields/field/CombinedField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { DatePicker, Flex, Typography } from "antd";
 import { IReward } from "@/model";
-import { Commented } from "@/view/primitives/containers";
-import { Field, FieldTitle } from "@/view/primitives";
+import { FieldContainer, SecondaryLabel } from "@/view/primitives";
+import {
+    IDisplayFieldProps,
+    IEditFieldProps,
+} from "@/view/primitives/fields/types";
+import { useEditMode } from "@/controller/employee";
 import dayjs from "dayjs";
+import { DateTimeField } from "@/view/primitives/fields";
+import { Commented } from "@/view/primitives/containers";
 
-export interface IRewardFieldProps {
-    value: IReward;
-    onChange: (item: IReward) => void;
-}
+export function RewardField(props: IEditFieldProps<IReward>) {
+    const { value, onChange } = props;
+    const { editModeEnabled } = useEditMode();
 
-export function RewardField(props: IRewardFieldProps) {
-    const { value: item, onChange } = props;
+    function DisplayField(props: IDisplayFieldProps<IReward>) {
+        const { value: item } = props;
+        const { label, comment, grantedAt } = item;
 
-    const displayField = (
-        <Commented comment={item.comment}>
-            <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
-                <Typography.Text>{item.label}</Typography.Text>
-                <FieldTitle>
-                    {dayjs(item.grantedAt).format("DD.MM.YYYY")}
-                </FieldTitle>
+        return (
+            <Commented comment={comment}>
+                <Flex
+                    justify="space-between"
+                    gap="small"
+                    style={{ width: "100%" }}
+                >
+                    <Typography.Text>{label}</Typography.Text>
+                    <Flex>
+                        {grantedAt && (
+                            <SecondaryLabel>
+                                {dayjs(grantedAt).format("DD.MM.YYYY")}
+                            </SecondaryLabel>
+                        )}
+                    </Flex>
+                </Flex>
+            </Commented>
+        );
+    }
+
+    function EditField(props: IEditFieldProps<IReward>) {
+        const { value: item, onChange } = props;
+        const { label, comment, grantedAt } = item;
+
+        return (
+            <Flex vertical gap="small" style={{ width: "100%" }}>
+                <Flex gap="small" style={{ width: "100%" }}>
+                    <FieldContainer title="Название">
+                        <InputField
+                            value={label}
+                            onChange={(label) => onChange({ ...item, label })}
+                        />
+                    </FieldContainer>
+                    <FieldContainer title="Дата присуждения">
+                        <DateTimeField.Edit
+                            value={grantedAt}
+                            onChange={(grantedAt) =>
+                                onChange({ ...item, grantedAt })
+                            }
+                        ></DateTimeField.Edit>
+                    </FieldContainer>
+                </Flex>
+                <Flex style={{ width: "100%" }}>
+                    <FieldContainer title="Комментарий">
+                        <InputField
+                            value={comment}
+                            onChange={(comment) =>
+                                onChange({ ...item, comment })
+                            }
+                        />
+                    </FieldContainer>
+                </Flex>
             </Flex>
-        </Commented>
-    );
-
-    const editField = (
-        <Flex vertical gap="small" style={{ width: "100%" }}>
-            <Flex gap="small" style={{ width: "100%" }}>
-                <Field title="Название">
-                    <InputField
-                        value={item.label}
-                        onChange={(label) => onChange({ ...item, label })}
-                    ></InputField>
-                </Field>
-                <Field title="Дата присуждения">
-                    <DatePicker
-                        size="small"
-                        value={item.grantedAt}
-                        onChange={(grantedAt) =>
-                            onChange({ ...item, grantedAt })
-                        }
-                    ></DatePicker>
-                </Field>
-            </Flex>
-
-            <Flex style={{ width: "100%" }}>
-                <Field title="Комментарий">
-                    <InputField
-                        value={item.comment}
-                        onChange={(comment) => onChange({ ...item, comment })}
-                    ></InputField>
-                </Field>
-            </Flex>
-        </Flex>
-    );
+        );
+    }
 
     return (
-        <CombinedField
-            displayField={displayField}
-            editField={editField}
-        ></CombinedField>
+        <CombinedFieldContainer
+            editModeEnabled={editModeEnabled}
+            value={value}
+            onChange={onChange}
+            DisplayFieldType={DisplayField}
+            EditFieldType={EditField}
+        />
     );
 }

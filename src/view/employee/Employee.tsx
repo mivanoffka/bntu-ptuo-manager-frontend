@@ -19,6 +19,7 @@ import { Expandable } from "@/view/primitives";
 
 import "./style/employee.css";
 import { RewardsList } from "@/view/employee/fields/other";
+import { BntuPositionsList } from "@/view/employee/fields/bntu/BntuPositionsList";
 
 export function Employee() {
     return (
@@ -81,6 +82,9 @@ export function Employee() {
                 justify="center"
                 style={{ width: "100%" }}
             >
+                <Expandable title="БНТУ">
+                    <BntuPositionsList></BntuPositionsList>
+                </Expandable>
                 <Expandable title="Контакты">
                     <PhoneNumbersList></PhoneNumbersList>
                     <EmailsList></EmailsList>

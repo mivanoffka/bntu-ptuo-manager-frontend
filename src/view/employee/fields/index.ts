@@ -19,3 +19,5 @@ export {
     EducationLevelField,
     AcademicDegreeField,
 } from "@/view/employee/fields/education";
+
+export * from "@/view/employee/fields/bntu";

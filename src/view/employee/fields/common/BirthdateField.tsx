@@ -1,43 +1,24 @@
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { DateTimeString } from "@/model/date.time.string";
-import { CombinedField, LabelField } from "@/view/primitives";
-import { DatePicker } from "antd";
-import dayjs from "dayjs";
+import { DateTimeField } from "@/view/primitives/fields";
 
 export function BirthdateField() {
     const { employeeVersion, updateField } = useEmployeeEditor();
+    const { editModeEnabled } = useEditMode();
 
-    const getBirthdateValue = () => {
-        const rawDate = employeeVersion?.birthdate;
-        if (!rawDate) return null;
-        const parsedDate = dayjs(rawDate);
-        return parsedDate.isValid() ? parsedDate : null;
-    };
-
-    const birthdate = getBirthdateValue();
-
-    const updateBirthdate = (date: dayjs.Dayjs | null) => {
+    const updateBirthdate = (value: string | null) => {
         updateField<DateTimeString | null>(
             "birthdate",
-            date?.toISOString() as DateTimeString
+            value as DateTimeString
         );
     };
 
-    const displayField = (
-        <LabelField>
-            {birthdate ? birthdate.format("DD.MM.YYYY") : "Не указано"}
-        </LabelField>
-    );
-
-    const editField = (
-        <DatePicker size="small" value={birthdate} onChange={updateBirthdate} />
-    );
-
     return (
-        <CombinedField
+        <DateTimeField
+            value={employeeVersion?.birthdate ?? null}
+            onChange={updateBirthdate}
             title="Дата рождения"
-            displayField={displayField}
-            editField={editField}
+            editModeEnabled={editModeEnabled}
         />
     );
 }

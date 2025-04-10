@@ -1,16 +1,11 @@
-import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
-import { Field } from "@/view/primitives/fields/field/Field";
-import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
-import { SelectField } from "@/view/primitives/fields/derivatives/SelectField";
-import { InputField } from "@/view/primitives/fields/derivatives/InputField";
-import { VBox } from "@/view/utils";
-import { DatePicker, Flex, Input, Typography } from "antd";
-import dayjs from "dayjs";
-import { Gender } from "@/model";
+import { SelectField } from "@/view/primitives/fields/derivatives/select/SelectField";
 import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
+import { Gender } from "@/model";
+import { FieldContainer } from "@/view/primitives";
 
 export function GenderField() {
+    const { editModeEnabled } = useEditMode();
     const { getField, updateField } = useEmployeeEditor();
     const { genders } = useEnumerations();
 
@@ -20,8 +15,9 @@ export function GenderField() {
         updateField("genderId", value);
 
     return (
-        <SelectField
+        <SelectField<Gender>
             title="Пол"
+            editModeEnabled={editModeEnabled}
             selectedId={genderId}
             enumeration={genders}
             onChange={updateGenderId}

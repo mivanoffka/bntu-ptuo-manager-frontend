@@ -1,31 +1,25 @@
-import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
-import { Field } from "@/view/primitives/fields/field/Field";
+import { CombinedFieldContainer } from "@/view/primitives/fields/field/CombinedField";
 import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
-import { VBox } from "@/view/utils";
-import { DatePicker, Flex, Input, Typography } from "antd";
-import dayjs from "dayjs";
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 
 export function BirthplaceField() {
+    const { editModeEnabled } = useEditMode();
     const { getField, updateField } = useEmployeeEditor();
 
     const birthplace = getField<string>("birthplace");
 
-    const updateBirthplace = (value: string) =>
+    const updateBirthplace = (value: string | null) =>
         updateField("birthplace", value);
 
-    const displayField = <LabelField>{birthplace}</LabelField>;
-
-    const editField = (
-        <InputField value={birthplace} onChange={updateBirthplace}></InputField>
-    );
-
     return (
-        <CombinedField
+        <CombinedFieldContainer
+            value={birthplace}
+            onChange={updateBirthplace}
+            editModeEnabled={editModeEnabled}
             title="Место рождения"
-            displayField={displayField}
-            editField={editField}
-        ></CombinedField>
+            DisplayFieldType={LabelField}
+            EditFieldType={InputField}
+        ></CombinedFieldContainer>
     );
 }

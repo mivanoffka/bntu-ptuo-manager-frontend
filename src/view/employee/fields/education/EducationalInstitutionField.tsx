@@ -1,73 +1,91 @@
-import { CombinedField } from "@/view/primitives/fields/field/CombinedField";
+import { CombinedFieldContainer } from "@/view/primitives/fields/field/CombinedField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
-import { DatePicker, Flex, Typography } from "antd";
-import { DateTimeString, IEducationalInstitution } from "@/model";
-import { Commented } from "@/view/primitives/containers";
-import { Field, FieldTitle } from "@/view/primitives";
+import { Flex, Typography } from "antd";
+import { IEducationalInstitution } from "@/model";
+import { FieldContainer, SecondaryLabel } from "@/view/primitives";
+import {
+    IDisplayFieldProps,
+    IEditFieldProps,
+} from "@/view/primitives/fields/types";
+import { useEditMode } from "@/controller/employee";
 import dayjs from "dayjs";
-
-export interface IEducationalInstitutionFieldProps {
-    value: IEducationalInstitution;
-    onChange: (item: IEducationalInstitution) => void;
-}
+import { DateTimeField } from "@/view/primitives/fields";
+import { Commented } from "@/view/primitives/containers";
 
 export function EducationalInstitutionField(
-    props: IEducationalInstitutionFieldProps
+    props: IEditFieldProps<IEducationalInstitution>
 ) {
-    const { value: item, onChange } = props;
+    const { value, onChange } = props;
+    const { editModeEnabled } = useEditMode();
 
-    const displayField = (
-        <Commented comment={item.comment}>
-            <Flex justify="space-between" gap="small" style={{ width: "100%" }}>
-                <Typography.Text>{item.label}</Typography.Text>
-                {item.graduatedAt && (
-                    <FieldTitle>
-                        окончено в {dayjs(item?.graduatedAt).format("YYYY")}
-                    </FieldTitle>
-                )}
-            </Flex>
-        </Commented>
-    );
+    function DisplayField(props: IDisplayFieldProps<IEducationalInstitution>) {
+        const { value: item } = props;
+        const { label, comment, graduatedAt } = item;
 
-    const editField = (
-        <Flex vertical gap="small" style={{ width: "100%" }}>
-            <Flex gap="small" style={{ width: "100%" }}>
-                <Field title="Название">
-                    <InputField
-                        value={item.label}
-                        onChange={(label) => onChange({ ...item, label })}
-                    ></InputField>
-                </Field>
-                <Field title="Год окончания">
-                    <DatePicker
-                        size="small"
-                        value={dayjs(item.graduatedAt)}
-                        onChange={(graduatedAt) =>
-                            onChange({
-                                ...item,
-                                graduatedAt:
-                                    graduatedAt.toISOString() as DateTimeString,
-                            })
-                        }
-                    ></DatePicker>
-                </Field>
-            </Flex>
+        return (
+            <Commented comment={comment}>
+                <Flex
+                    align="center"
+                    justify="space-between"
+                    gap="small"
+                    style={{ width: "100%" }}
+                >
+                    <Typography.Text>{label}</Typography.Text>
+                    <div>
+                        {graduatedAt && (
+                            <SecondaryLabel>
+                                окончено в {dayjs(graduatedAt).format("YYYY")}
+                            </SecondaryLabel>
+                        )}
+                    </div>
+                </Flex>
+            </Commented>
+        );
+    }
 
-            <Flex style={{ width: "100%" }}>
-                <Field title="Комментарий">
-                    <InputField
-                        value={item.comment}
-                        onChange={(comment) => onChange({ ...item, comment })}
-                    ></InputField>
-                </Field>
+    function EditField(props: IEditFieldProps<IEducationalInstitution>) {
+        const { value: item, onChange } = props;
+        const { label, comment, graduatedAt } = item;
+
+        return (
+            <Flex vertical gap="small" style={{ width: "100%" }}>
+                <Flex gap="small" style={{ width: "100%" }}>
+                    <FieldContainer title="Название">
+                        <InputField
+                            value={label}
+                            onChange={(label) => onChange({ ...item, label })}
+                        />
+                    </FieldContainer>
+                    <FieldContainer title="Год окончания">
+                        <DateTimeField.Edit
+                            value={graduatedAt}
+                            onChange={(graduatedAt) =>
+                                onChange({ ...item, graduatedAt })
+                            }
+                        ></DateTimeField.Edit>
+                    </FieldContainer>
+                </Flex>
+                <Flex style={{ width: "100%" }}>
+                    <FieldContainer title="Комментарий">
+                        <InputField
+                            value={comment}
+                            onChange={(comment) =>
+                                onChange({ ...item, comment })
+                            }
+                        />
+                    </FieldContainer>
+                </Flex>
             </Flex>
-        </Flex>
-    );
+        );
+    }
 
     return (
-        <CombinedField
-            displayField={displayField}
-            editField={editField}
-        ></CombinedField>
+        <CombinedFieldContainer
+            editModeEnabled={editModeEnabled}
+            value={value}
+            onChange={onChange}
+            DisplayFieldType={DisplayField}
+            EditFieldType={EditField}
+        />
     );
 }
