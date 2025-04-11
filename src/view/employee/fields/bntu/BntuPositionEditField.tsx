@@ -1,18 +1,16 @@
 import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
+import { useTrees } from "@/controller/trees";
+import { TreeName } from "@/controller/trees/constants";
 import { IBntuPosition } from "@/model";
 import { FieldContainer, InputField, SelectField } from "@/view/primitives";
 import { DateTimeField } from "@/view/primitives/fields";
+import { SelectTreeEditField } from "@/view/primitives/fields/derivatives/select-tree/SelectTreeEditField";
 import { IEditFieldProps } from "@/view/primitives/fields/types";
-import { Checkbox, Flex } from "antd";
+import { Checkbox, Flex, Tree } from "antd";
 
 export function BntuPositionEditField(props: IEditFieldProps<IBntuPosition>) {
     const { value: item, onChange } = props;
-    const bntuPositionOptions = [
-        { id: 1, label: "ФИТР" },
-        { id: 2, label: "ФММП" },
-        { id: 3, label: "МСФ" },
-        { id: 4, label: "АТФ" },
-    ];
+    const { bntuDepartmentsTree } = useTrees();
 
     function onIsDischargedChange(e: any) {
         const isDischarged = e.target.checked;
@@ -20,7 +18,7 @@ export function BntuPositionEditField(props: IEditFieldProps<IBntuPosition>) {
         if (!isDischarged) {
             onChange({ ...item, dischargedAt: null, isDischarged });
         } else {
-            onChange({ ...item, isDischarged });
+            onChange({ ...item, isDischarged, isDischargedVoluntarily: true });
         }
     }
 
@@ -85,13 +83,16 @@ export function BntuPositionEditField(props: IEditFieldProps<IBntuPosition>) {
                 </Flex>
                 <Flex style={{ width: "33%" }}>
                     <FieldContainer title="Подразделение">
-                        <SelectField.Edit
-                            selectedId={item.bntuDepartmentOptionId}
-                            enumeration={bntuPositionOptions}
-                            onChange={(bntuDepartmentOptionId) =>
-                                onChange({ ...item, bntuDepartmentOptionId })
+                        <SelectTreeEditField
+                            selectedPath={item.bntuDepartmentOptionPath}
+                            onChange={(bntuDepartmentOptionPath) =>
+                                onChange({
+                                    ...item,
+                                    bntuDepartmentOptionPath,
+                                })
                             }
-                        ></SelectField.Edit>
+                            tree={bntuDepartmentsTree}
+                        ></SelectTreeEditField>
                     </FieldContainer>
                 </Flex>
                 <Flex style={{ width: "33%" }}>

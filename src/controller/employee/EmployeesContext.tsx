@@ -2,6 +2,7 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { IEmployee, IEmployeeVersion, IPagination } from "@/model";
 import { createHook } from "@/controller/utils";
 import { useApi } from "@/controller/api";
+import { EmployeesEndPoint } from "@/controller/employee/constants";
 
 export interface IEmployeesContext {
     list: IEmployee[];
@@ -49,7 +50,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
     async function fetchEmployees() {
         await axiosInstance
-            .get("employees")
+            .get(EmployeesEndPoint.PREFIX)
             .then((response) => {
                 const employees = response.data;
                 setList(employees);
@@ -70,7 +71,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         };
 
         await axiosInstance
-            .patch(`employees/${id}/`, body)
+            .patch(`${EmployeesEndPoint.PREFIX}/${id}/`, body)
             .then((response) => {
                 invalidate();
             })

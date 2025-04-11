@@ -5,5 +5,5 @@ export interface ITradeUnionDepartmentRecord
     extends IPrimaryKeyed,
         ITimeStamped {
     authenticLabel: string | null;
-    tradeUnionDepartmentOptionId: number | null;
+    tradeUnionDepartmentOptionPath: string | null;
 }

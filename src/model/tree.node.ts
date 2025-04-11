@@ -1,6 +1,5 @@
-import { IEnumerated } from "@/model/enumerated";
-
-export interface ITreeNode extends IEnumerated {
+export interface ITreeNode {
     path: string;
-    hierarchy: string[];
+    label: string;
+    children: ITreeNode[];
 }

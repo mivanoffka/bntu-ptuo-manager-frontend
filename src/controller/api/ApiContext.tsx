@@ -17,7 +17,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     const [accessToken, setAccessToken] = useState<string | null>(null);
 
     const axiosInstance = axios.create({
-        baseURL: "http://localhost:8000",
+        baseURL: "http://localhost:8000/employees",
     });
 
     async function reloadAccessToken() {

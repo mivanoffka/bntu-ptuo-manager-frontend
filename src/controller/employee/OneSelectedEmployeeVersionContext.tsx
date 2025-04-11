@@ -15,6 +15,7 @@ import {
     useEffect,
     useState,
 } from "react";
+import { EmployeesEndPoint } from "@/controller/employee/constants";
 
 export interface IOneSelectedEmployeeVersionContext {
     employeeVersion: IEmployeeVersion | null;
@@ -44,7 +45,6 @@ export function OneSelectedEmployeeVersionProvider({
         useState<IEmployeeVersion | null>(null);
 
     useEffect(() => {
-        console.log("!");
         console.log(oneSelectedEmployee);
         console.log(selectedVersionTimestamp);
         if (oneSelectedEmployee && selectedVersionTimestamp) {
@@ -60,7 +60,9 @@ export function OneSelectedEmployeeVersionProvider({
         versionTimestamp: DateTimeString
     ) {
         await axiosInstance
-            .get(`employees/${employeeId}/versions/${versionTimestamp}`)
+            .get(
+                `${EmployeesEndPoint.PREFIX}/${employeeId}/${EmployeesEndPoint.VERSIONS}/${versionTimestamp}`
+            )
             .then((response) => {
                 const employeeVersion = response.data;
                 setEmployeeVersion(employeeVersion);

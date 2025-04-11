@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { createHook } from "@/controller/utils";
 import { useApi } from "@/controller/api";
+import { EnumerationsEndPoint } from "@/controller/enumerations/constants";
 
 export enum EnumerationName {
     GENDERS = "genders",
@@ -50,7 +51,9 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axiosInstance.get("/employees/enumerations");
+            const response = await axiosInstance.get(
+                EnumerationsEndPoint.PREFIX
+            );
             setEnumerations(response.data || {});
         } catch (err) {
             console.log(err);

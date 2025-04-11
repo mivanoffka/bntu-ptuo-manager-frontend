@@ -18,6 +18,7 @@ import {
 } from "@/controller/employee";
 import { EnumerationsProvider } from "@/controller/enumerations/EnumerationsContext";
 import { ConfigProvider } from "antd";
+import { TreesProvider } from "@/controller/trees";
 
 const App: React.FC = () => (
     <ConfigProvider componentSize="small">
@@ -25,45 +26,47 @@ const App: React.FC = () => (
             <ApiProvider>
                 <AuthProvider>
                     <EditModeProvider>
-                        <EnumerationsProvider>
-                            <SelectedEmployeesProvider>
-                                <EmployeesProvider>
-                                    <OneSelectedEmployeeProvider>
-                                        <EmployeeVersionsProvider>
-                                            <OneSelectedEmployeeVersionProvider>
-                                                <EmployeeEditorProvider>
-                                                    <PageContainer>
-                                                        <TopBar></TopBar>
-                                                        <Content>
-                                                            <Routes>
-                                                                <Route
-                                                                    path="/employees"
-                                                                    element={
-                                                                        <EmployeesManager />
-                                                                    }
-                                                                ></Route>
-                                                                <Route
-                                                                    path="/auth/sign-in"
-                                                                    element={
-                                                                        <SignIn />
-                                                                    }
-                                                                />
-                                                                <Route
-                                                                    path="*"
-                                                                    element={
-                                                                        <Navigate to="/employees" />
-                                                                    }
-                                                                />
-                                                            </Routes>
-                                                        </Content>
-                                                    </PageContainer>
-                                                </EmployeeEditorProvider>
-                                            </OneSelectedEmployeeVersionProvider>
-                                        </EmployeeVersionsProvider>
-                                    </OneSelectedEmployeeProvider>
-                                </EmployeesProvider>
-                            </SelectedEmployeesProvider>
-                        </EnumerationsProvider>
+                        <TreesProvider>
+                            <EnumerationsProvider>
+                                <SelectedEmployeesProvider>
+                                    <EmployeesProvider>
+                                        <OneSelectedEmployeeProvider>
+                                            <EmployeeVersionsProvider>
+                                                <OneSelectedEmployeeVersionProvider>
+                                                    <EmployeeEditorProvider>
+                                                        <PageContainer>
+                                                            <TopBar></TopBar>
+                                                            <Content>
+                                                                <Routes>
+                                                                    <Route
+                                                                        path="/employees"
+                                                                        element={
+                                                                            <EmployeesManager />
+                                                                        }
+                                                                    ></Route>
+                                                                    <Route
+                                                                        path="/auth/sign-in"
+                                                                        element={
+                                                                            <SignIn />
+                                                                        }
+                                                                    />
+                                                                    <Route
+                                                                        path="*"
+                                                                        element={
+                                                                            <Navigate to="/employees" />
+                                                                        }
+                                                                    />
+                                                                </Routes>
+                                                            </Content>
+                                                        </PageContainer>
+                                                    </EmployeeEditorProvider>
+                                                </OneSelectedEmployeeVersionProvider>
+                                            </EmployeeVersionsProvider>
+                                        </OneSelectedEmployeeProvider>
+                                    </EmployeesProvider>
+                                </SelectedEmployeesProvider>
+                            </EnumerationsProvider>
+                        </TreesProvider>
                     </EditModeProvider>
                 </AuthProvider>
             </ApiProvider>
