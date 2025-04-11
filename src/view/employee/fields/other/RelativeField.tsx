@@ -13,7 +13,10 @@ import {
     IEditFieldProps,
 } from "@/view/primitives/fields/types";
 import { useEditMode } from "@/controller/employee";
-import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
+import {
+    EnumerationName,
+    useEnumerations,
+} from "@/controller/enumerations/EnumerationsContext";
 import dayjs from "dayjs";
 import { DateTimeField } from "@/view/primitives/fields";
 import { Commented } from "@/view/primitives/containers";
@@ -21,7 +24,9 @@ import { Commented } from "@/view/primitives/containers";
 export function RelativeField(props: IEditFieldProps<IRelative>) {
     const { value, onChange } = props;
     const { editModeEnabled } = useEditMode();
-    const { relativeTypes } = useEnumerations();
+    const { getEnumeration } = useEnumerations();
+
+    const relativeTypes = getEnumeration(EnumerationName.RELATIVE_TYPES);
 
     function DisplayField(props: IDisplayFieldProps<IRelative>) {
         const { value: item } = props;

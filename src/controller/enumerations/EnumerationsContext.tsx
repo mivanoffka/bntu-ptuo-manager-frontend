@@ -2,13 +2,21 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 import { createHook } from "@/controller/utils";
 import { useApi } from "@/controller/api";
 
+export enum EnumerationName {
+    GENDERS = "genders",
+    PHONE_NUMBER_TYPES = "phoneNumberTypes",
+    EDUCATION_LEVELS = "educationLevels",
+    ACADEMIC_DEGREES = "academicDegrees",
+    WORKING_GROUPS = "workingGroups",
+    RELATIVE_TYPES = "relativeTypes",
+}
+
 interface IEnumerationsContext {
-    genders: { id: number; label: string }[];
-    phoneNumberTypes: { id: number; label: string }[];
-    educationLevels: { id: number; label: string }[];
-    academicDegrees: { id: number; label: string }[];
-    workingGroups: { id: number; label: string }[];
-    relativeTypes: { id: number; label: string }[];
+    getEnumeration: (name: string) => { id: number; label: string }[];
+    setEnumeration: (
+        name: string,
+        value: { id: number; label: string }[]
+    ) => void;
     loading: boolean;
     error: string | null;
     reloadEnumerations: () => void;
@@ -18,28 +26,35 @@ const Enumerations = createContext<IEnumerationsContext | undefined>(undefined);
 
 export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
     const { axiosInstance } = useApi();
-    const [genders, setGenders] = useState([]);
-    const [phoneNumberTypes, setPhoneNumberTypes] = useState([]);
-    const [educationLevels, setEducationLevel] = useState([]);
-    const [academicDegrees, setAcademicDegrees] = useState([]);
-    const [workingGroups, setWorkingGroups] = useState([]);
-    const [relativeTypes, setRelativeTypes] = useState([]);
+    const [enumerations, setEnumerations] = useState<
+        Record<string, { id: number; label: string }[]>
+    >({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const getEnumeration = (name: string) => {
+        return enumerations[name] || [];
+    };
+
+    const setEnumeration = (
+        name: string,
+        value: { id: number; label: string }[]
+    ) => {
+        setEnumerations((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
     async function fetchEnumerations() {
         setLoading(true);
         setError(null);
         try {
             const response = await axiosInstance.get("/employees/enumerations");
-            setGenders(response.data.genders || []);
-            setPhoneNumberTypes(response.data.phoneNumberTypes || []);
-            setEducationLevel(response.data.educationLevels || []);
-            setAcademicDegrees(response.data.academicDegrees || []);
-            setWorkingGroups(response.data.workingGroups || []);
-            setRelativeTypes(response.data.relativeTypes || []);
+            setEnumerations(response.data || {});
         } catch (err) {
             console.log(err);
+            setError("Failed to fetch enumerations");
         } finally {
             setLoading(false);
         }
@@ -50,12 +65,8 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const context: IEnumerationsContext = {
-        genders,
-        phoneNumberTypes,
-        educationLevels,
-        academicDegrees,
-        workingGroups,
-        relativeTypes,
+        getEnumeration,
+        setEnumeration,
         loading,
         error,
         reloadEnumerations: fetchEnumerations,

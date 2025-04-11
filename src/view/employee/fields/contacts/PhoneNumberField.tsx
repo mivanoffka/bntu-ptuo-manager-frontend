@@ -4,7 +4,10 @@ import { FieldContainer } from "@/view/primitives/fields/field/Field";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { Flex, Typography } from "antd";
 import { SecondaryLabel, SelectField } from "@/view/primitives";
-import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
+import {
+    EnumerationName,
+    useEnumerations,
+} from "@/controller/enumerations/EnumerationsContext";
 import {
     IDisplayFieldProps,
     IEditFieldProps,
@@ -14,7 +17,9 @@ import { useEditMode } from "@/controller/employee";
 export function PhoneNumberField(props: IEditFieldProps<IPhoneNumber>) {
     const { value, onChange } = props;
     const { editModeEnabled } = useEditMode();
-    const { phoneNumberTypes } = useEnumerations();
+    const { getEnumeration } = useEnumerations();
+
+    const phoneNumberTypes = getEnumeration(EnumerationName.PHONE_NUMBER_TYPES);
 
     function DisplayField(props: IDisplayFieldProps<IPhoneNumber>) {
         const { value: item } = props;
