@@ -39,6 +39,7 @@ export interface IEmployeeVersion extends IPrimaryKeyed, ITimeStamped {
     newWorkingGroupRecord?: IWorkingGroupRecord | null;
 
     joinedAt: DateTimeString | null;
+    recordedAt: DateTimeString | null;
     isArchived: boolean | null;
     archivedAt: DateTimeString | null;
     isRetired: boolean | null;

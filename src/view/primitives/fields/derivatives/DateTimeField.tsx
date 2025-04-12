@@ -5,7 +5,7 @@ import {
     IDisplayFieldProps,
     IEditFieldProps,
 } from "@/view/primitives/fields/types";
-import { DatePicker } from "antd";
+import { DatePicker, Flex } from "antd";
 import dayjs from "dayjs";
 
 export const DEFAULT_DATE_FORMAT = "DD.MM.YYYY";
@@ -47,19 +47,17 @@ const DateTimeEditField: React.FC<IEditFieldProps<DateTimeString | null>> = (
 interface DateTimeFieldProps {
     value: DateTimeString | null;
     onChange: (value: DateTimeString | null) => void;
-    title: string;
     editModeEnabled: boolean;
 }
 
 export function DateTimeField(props: DateTimeFieldProps) {
-    const { value: value, onChange, title, editModeEnabled } = props;
+    const { value: value, onChange, editModeEnabled } = props;
 
     return (
         <CombinedFieldContainer<DateTimeString | null>
             editModeEnabled={editModeEnabled}
             value={value}
             onChange={onChange}
-            title={title}
             DisplayFieldType={DateTimeDisplayField}
             EditFieldType={DateTimeEditField}
         />

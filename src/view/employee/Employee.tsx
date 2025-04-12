@@ -20,6 +20,7 @@ import { Expandable } from "@/view/primitives";
 import "./style/employee.css";
 import { RewardsList } from "@/view/employee/fields/other";
 import { BntuPositionsList } from "@/view/employee/fields/bntu/BntuPositionsList";
+import { TradeUnionInfoField } from "@/view/employee/fields/trade-union/TradeUnionInfoField";
 
 export function Employee() {
     return (
@@ -84,6 +85,9 @@ export function Employee() {
             >
                 <Expandable title="БНТУ">
                     <BntuPositionsList></BntuPositionsList>
+                </Expandable>
+                <Expandable title="Профсоюз">
+                    <TradeUnionInfoField></TradeUnionInfoField>
                 </Expandable>
                 <Expandable title="Контакты">
                     <PhoneNumbersList></PhoneNumbersList>
