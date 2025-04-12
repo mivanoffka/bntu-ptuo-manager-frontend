@@ -8,7 +8,7 @@ import { useSelectedEmployees } from "@/controller/employee/SelectedEmployeesCon
 import { useEffect } from "react";
 
 export function EmployeesList() {
-    const { list } = useEmployees();
+    const { list, hasMore, next } = useEmployees();
     const {
         selectedIds,
         selectOne,
@@ -20,11 +20,6 @@ export function EmployeesList() {
     } = useSelectedEmployees();
 
     const columns = [
-        // {
-        //     title: "",
-        //     key: "",
-        //     width: "15px",
-        // },
         {
             title: "Имя",
             key: "name",
@@ -50,33 +45,42 @@ export function EmployeesList() {
             },
             width: "200px",
         },
-        // {
-        //     title: "Дата рождения",
-        //     key: "birthdate",
-        //     render: (item: IEmployeeVersion) => {
-        //         if (item.birthdate) {
-        //             return dayjs(item.birthdate).format("DD.MM.YYYY");
-        //         }
-        //     },
-        //     width: "150px",
-        // },
-        // {
-        //     title: "Место рождения",
-        //     key: "birthplace",
-        //     render: (item: IEmployeeVersion) => {
-        //         if (item.birthplace) {
-        //             return item.birthplace;
-        //         }
-        //     },
-        // width: "150px",
-        // },
-        // {
-        // title: "Полнота",
-        // key: "fullfilled",
-        // render: () => {
-        //     return "+";
-        // },
-        // },
+        {
+            title: "Дата рождения",
+            key: "birthdate",
+            render: (employee: IEmployee) => {
+                const { latestEmployeeVersion } = employee;
+
+                if (!latestEmployeeVersion) {
+                    return;
+                }
+
+                const { birthdate } = latestEmployeeVersion;
+
+                if (birthdate) {
+                    return dayjs(birthdate).format("DD.MM.YYYY");
+                }
+            },
+            width: "150px",
+        },
+        {
+            title: "Место рождения",
+            key: "birthplace",
+            render: (employee: IEmployee) => {
+                const { latestEmployeeVersion } = employee;
+
+                if (!latestEmployeeVersion) {
+                    return;
+                }
+
+                const { birthplace } = latestEmployeeVersion;
+
+                if (birthplace) {
+                    return birthplace;
+                }
+            },
+            width: "150px",
+        },
     ];
 
     const rowSelection = {
@@ -99,7 +103,7 @@ export function EmployeesList() {
                 size="small"
                 columns={columns}
                 dataSource={list}
-                pagination={{ position: ["none", "none"] }}
+                pagination={false}
                 onRow={(employee) => ({
                     onClick: (e) => {
                         if (!employee.id) return;
@@ -118,9 +122,12 @@ export function EmployeesList() {
                 })}
             />
             <div className="pagination-row">
-                <Pagination size="small" total={list?.length} />
+                {hasMore() && (
+                    <div className="pagination-row">
+                        <Button onClick={next}>Загрузить еще</Button>
+                    </div>
+                )}
             </div>
         </div>
-        // </div>
     );
 }

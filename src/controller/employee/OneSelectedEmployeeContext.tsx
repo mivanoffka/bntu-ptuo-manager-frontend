@@ -34,10 +34,6 @@ export function OneSelectedEmployeeProvider({
         useState<IEmployee | null>(null);
 
     useEffect(() => {
-        console.log(oneSelectedEmployee);
-    }, [oneSelectedEmployee]);
-
-    useEffect(() => {
         if (editModeEnabled) {
             return;
         }
@@ -45,9 +41,6 @@ export function OneSelectedEmployeeProvider({
             const lastAddedId = selectedIds[selectedIds.length - 1];
 
             const employee = list.find((item) => item.id === lastAddedId);
-
-            console.log(lastAddedId);
-            console.log(list);
 
             if (employee) {
                 setOneSelectedEmployee(employee);

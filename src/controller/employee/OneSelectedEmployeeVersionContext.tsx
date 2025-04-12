@@ -45,12 +45,8 @@ export function OneSelectedEmployeeVersionProvider({
         useState<IEmployeeVersion | null>(null);
 
     useEffect(() => {
-        console.log(oneSelectedEmployee);
-        console.log(selectedVersionTimestamp);
         if (oneSelectedEmployee && selectedVersionTimestamp) {
             const { id } = oneSelectedEmployee;
-            console.log(id);
-
             fetchEmployeeVersion(id, selectedVersionTimestamp);
         }
     }, [selectedVersionTimestamp]);

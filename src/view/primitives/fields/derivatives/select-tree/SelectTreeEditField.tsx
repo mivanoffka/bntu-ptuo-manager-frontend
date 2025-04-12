@@ -20,8 +20,6 @@ export function SelectTreeEditField<T extends ITreeNode>(
         placeholder = DEFAULT_SELECT_PLACEHOLDER,
     } = props;
 
-    console.log(tree);
-
     return (
         <TreeSelect
             showSearch
