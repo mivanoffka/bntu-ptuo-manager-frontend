@@ -20,7 +20,9 @@ import { Expandable } from "@/view/primitives";
 import "./style/employee.css";
 import { RewardsList } from "@/view/employee/fields/other";
 import { BntuPositionsList } from "@/view/employee/fields/bntu/BntuPositionsList";
-import { TradeUnionInfoField } from "@/view/employee/fields/trade-union/TradeUnionInfoField";
+import { TradeUnionInfoField } from "@/view/employee/fields/trade-union/info/TradeUnionInfoField";
+import { TradeUnionDepartmentFields } from "@/view/employee/fields/trade-union/departments/TradeUnionDepartmentFields";
+import { WorkingGroupHistory } from "@/view/employee/fields/trade-union/working-groups/WorkingGroupHistoryField";
 
 export function Employee() {
     return (
@@ -88,6 +90,10 @@ export function Employee() {
                 </Expandable>
                 <Expandable title="Профсоюз">
                     <TradeUnionInfoField></TradeUnionInfoField>
+                    <Flex gap="small" style={{ width: "100%" }}>
+                        <TradeUnionDepartmentFields></TradeUnionDepartmentFields>
+                        <WorkingGroupHistory></WorkingGroupHistory>
+                    </Flex>
                 </Expandable>
                 <Expandable title="Контакты">
                     <PhoneNumbersList></PhoneNumbersList>

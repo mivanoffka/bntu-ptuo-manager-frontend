@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Checkbox, Flex } from "antd";
+import { Checkbox, Flex, Switch } from "antd";
 import dayjs from "dayjs";
 import { Commented } from "@/view/primitives/containers";
 import { ToggleButton } from "@/view/primitives/buttons";
@@ -95,14 +95,14 @@ export function HistoryField<T extends ITimeStamped & IPrimaryKeyed>(
                     value={value}
                     editModeEnabled={editModeEnabled}
                 />
-                <Flex style={{ width: "25px" }}>
+                <Flex style={{ width: "100px" }}>
                     {editModeEnabled && (
-                        <ToggleButton
-                            isChecked={asNewItem}
+                        <Switch
+                            size="default"
+                            checkedChildren="Замена"
+                            unCheckedChildren="Правка"
+                            checked={asNewItem}
                             onChange={setAsNewItem}
-                            label={<PlusOutlined />}
-                            checkedLabel={<MinusOutlined />}
-                            reversed
                         />
                     )}
                 </Flex>
