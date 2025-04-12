@@ -35,8 +35,8 @@ const App: React.FC = () => (
                                                 <OneSelectedEmployeeVersionProvider>
                                                     <EmployeeEditorProvider>
                                                         <PageContainer>
-                                                            <TopBar></TopBar>
                                                             <Content>
+                                                                <TopBar></TopBar>
                                                                 <Routes>
                                                                     <Route
                                                                         path="/employees"

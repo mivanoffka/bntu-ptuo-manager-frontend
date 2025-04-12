@@ -14,5 +14,5 @@
 .top-bar-menu {
     display: flex;
     justify-content: space-between;
-    width: 90%; /* Ширина меню */
+    width: 100%;
 }

@@ -4,11 +4,12 @@ import { Button, Flex, Splitter } from "antd";
 import "@/view/manager/style/employees-manager.css";
 import { EmployeesList } from "@/view/manager/EmployeesList";
 import { EmployeesViewer } from "@/view/manager/EmployeeViewer";
+import { TopBar } from "@/view/top-bar";
 
 export function EmployeesManager() {
     const [sizes, setSizes] = React.useState<(number | string)[]>([
-        "60%",
-        "40%",
+        "30%",
+        "70%",
     ]);
 
     return (

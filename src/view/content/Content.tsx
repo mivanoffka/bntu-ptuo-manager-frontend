@@ -15,6 +15,7 @@ export function Content({ children }: IContent) {
 
     return (
         <Flex
+            vertical
             align="center"
             justify="center"
             style={{ width: "100%", height: "100%" }}
