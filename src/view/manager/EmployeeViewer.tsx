@@ -1,8 +1,8 @@
-import "@/view/manager/style/employee-viewer.css";
 import { useOneSelectedEmployeeVersion } from "@/controller/employee";
 import { Flex, Typography } from "antd";
-import { EmployeeToolbar } from "@/view/manager/EmployeeToolbar";
 import { Employee } from "@/view/employee/Employee";
+import { EmployeeFooterToolbar } from "@/view/manager/EmployeeFooterToolbar";
+import { EmployeeHeaderToolbar } from "@/view/manager/toolbar/EmployeeHeaderToolbar";
 
 export function EmployeesViewer() {
     const { employeeVersion } = useOneSelectedEmployeeVersion();
@@ -13,12 +13,26 @@ export function EmployeesViewer() {
         </Typography.Text>
     );
 
+    const content = (
+        <Flex
+            justify="space-between"
+            align="center"
+            vertical
+            style={{ width: "100%", height: "100%" }}
+        >
+            <EmployeeHeaderToolbar></EmployeeHeaderToolbar>
+            <Employee></Employee>
+            <EmployeeFooterToolbar></EmployeeFooterToolbar>
+        </Flex>
+    );
+
     return (
-        <div className="container">
-            <EmployeeToolbar></EmployeeToolbar>
-            <div className="inner-container">
-                {employeeVersion ? <Employee></Employee> : emptyContent}
-            </div>
-        </div>
+        <Flex
+            align="center"
+            justify="center"
+            style={{ width: "100%", height: "100%" }}
+        >
+            {employeeVersion ? content : emptyContent}
+        </Flex>
     );
 }

@@ -14,7 +14,9 @@ export function EmployeesManager() {
 
     return (
         <div className="employees-manager-splitter">
-            <Splitter onResize={setSizes}>
+            <EmployeesList></EmployeesList>
+            <EmployeesViewer></EmployeesViewer>
+            {/* <Splitter onResize={setSizes}>
                 <Splitter.Panel size={sizes[0]} resizable>
                     <div className="splitter-content-wrapper">
                         <div className="splitter-content">
@@ -29,7 +31,7 @@ export function EmployeesManager() {
                         </div>
                     </div>
                 </Splitter.Panel>
-            </Splitter>
+            </Splitter> */}
         </div>
     );
 }

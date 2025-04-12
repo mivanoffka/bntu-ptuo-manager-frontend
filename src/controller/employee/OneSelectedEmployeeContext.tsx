@@ -48,7 +48,7 @@ export function OneSelectedEmployeeProvider({
         } else {
             setOneSelectedEmployee(null);
         }
-    }, [selectedIds]);
+    }, [selectedIds, list]);
 
     const context: IOneSelectedEmployeeContext = {
         oneSelectedEmployee,

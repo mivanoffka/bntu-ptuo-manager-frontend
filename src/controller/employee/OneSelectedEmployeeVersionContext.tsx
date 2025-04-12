@@ -21,6 +21,7 @@ export interface IOneSelectedEmployeeVersionContext {
     employeeVersion: IEmployeeVersion | null;
     setEmployeeVersion: (value: IEmployeeVersion | null) => void;
     isLatest: () => boolean;
+    restoreToSelectedVersion(): void;
 }
 
 export const OneSelectedEmployeeVersionContext =
@@ -28,6 +29,7 @@ export const OneSelectedEmployeeVersionContext =
         employeeVersion: null,
         setEmployeeVersion: (value: IEmployeeVersion | null) => {},
         isLatest: () => false,
+        restoreToSelectedVersion: () => {},
     });
 
 export function OneSelectedEmployeeVersionProvider({
@@ -35,6 +37,7 @@ export function OneSelectedEmployeeVersionProvider({
 }: {
     children: ReactNode;
 }) {
+    const { invalidate } = useEmployees();
     const { axiosInstance } = useApi();
     const { selectedVersionTimestamp, getLatestTimestamp } =
         useEmployeeVersions();
@@ -57,7 +60,7 @@ export function OneSelectedEmployeeVersionProvider({
     ) {
         await axiosInstance
             .get(
-                `${EmployeesEndPoint.PREFIX}/${employeeId}/${EmployeesEndPoint.VERSIONS}/${versionTimestamp}`
+                `${EmployeesEndPoint.PREFIX}/${employeeId}/${EmployeesEndPoint.VERSIONS}/${versionTimestamp}/`
             )
             .then((response) => {
                 const employeeVersion = response.data;
@@ -66,6 +69,29 @@ export function OneSelectedEmployeeVersionProvider({
             .catch((error) => {
                 console.log(error);
             });
+    }
+
+    async function restoreEmployeeVersion(
+        employeeId: number,
+        versionTimestamp: DateTimeString
+    ) {
+        await axiosInstance
+            .post(
+                `${EmployeesEndPoint.PREFIX}/${employeeId}/${EmployeesEndPoint.RESTORE}/${versionTimestamp}/`
+            )
+            .then((response) => {
+                invalidate();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    async function restoreToSelectedVersion() {
+        if (oneSelectedEmployee && selectedVersionTimestamp) {
+            const { id } = oneSelectedEmployee;
+            restoreEmployeeVersion(id, selectedVersionTimestamp);
+        }
     }
 
     function isLatest(): boolean {
@@ -78,6 +104,7 @@ export function OneSelectedEmployeeVersionProvider({
         employeeVersion,
         isLatest,
         setEmployeeVersion,
+        restoreToSelectedVersion,
     };
 
     return (

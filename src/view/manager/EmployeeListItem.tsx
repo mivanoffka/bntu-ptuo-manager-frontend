@@ -22,7 +22,10 @@ export function EmployeesListItem(props: IEmployeeListItemProps) {
     const { toggleSingularSelection } = useSelectedEmployees();
 
     return (
-        <Flex onClick={() => toggleSingularSelection(employee.id)}>
+        <Flex
+            style={{ width: "100%" }}
+            onClick={() => toggleSingularSelection(employee.id)}
+        >
             {label}
         </Flex>
     );

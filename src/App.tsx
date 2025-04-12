@@ -19,9 +19,11 @@ import {
 import { EnumerationsProvider } from "@/controller/enumerations/EnumerationsContext";
 import { ConfigProvider } from "antd";
 import { TreesProvider } from "@/controller/trees";
+import { Layout } from "@/view/layout/Layout";
+import { THEME } from "@/view/constants";
 
 const App: React.FC = () => (
-    <ConfigProvider componentSize="small">
+    <ConfigProvider componentSize="small" theme={THEME}>
         <BrowserRouter>
             <ApiProvider>
                 <AuthProvider>
@@ -41,7 +43,7 @@ const App: React.FC = () => (
                                                                     <Route
                                                                         path="/employees"
                                                                         element={
-                                                                            <EmployeesManager />
+                                                                            <Layout />
                                                                         }
                                                                     ></Route>
                                                                     <Route

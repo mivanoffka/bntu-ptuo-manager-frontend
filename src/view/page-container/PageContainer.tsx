@@ -7,5 +7,9 @@ export interface IPageContainer {
 }
 
 export function PageContainer({ children }: IPageContainer) {
-    return <div className="page-container">{children}</div>;
+    return (
+        <div className="root-container">
+            <div className="page-container">{children}</div>
+        </div>
+    );
 }

@@ -45,7 +45,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         size: 10,
     });
 
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(25);
 
     const [totalItems, setTotalItems] = useState(0);
 

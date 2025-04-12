@@ -6,6 +6,7 @@ import { SecondaryLabel } from "@/view/primitives/fields/field/SecondaryLabel";
 export interface IFieldContainerProps {
     title?: ReactNode;
     children?: ReactNode;
+    horizontal?: boolean;
 }
 
 export function FieldContainer(props: IFieldContainerProps) {

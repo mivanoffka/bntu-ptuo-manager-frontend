@@ -31,7 +31,7 @@ export function Employee() {
             gap="middle"
             align="center"
             justify="start"
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "75%", height: "75%" }}
         >
             <Flex
                 align="center"
