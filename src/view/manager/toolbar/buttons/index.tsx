@@ -122,10 +122,12 @@ export function CancelToolBarButton() {
 }
 
 export function CreateToolBarButton() {
+    const { createNew } = useEmployeeEditor();
+
     return (
         <ToolBarButton
             color={Palette.BLUE}
-            onClick={null}
+            onClick={createNew}
             title={"Добавить сотрудника"}
             icon={<PlusOutlined />}
         />

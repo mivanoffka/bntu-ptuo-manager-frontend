@@ -1,40 +1,44 @@
-import { Employee, IName } from "@/model";
-import { faker } from "@faker-js/faker";
-import dayjs from "dayjs";
-import { Context, useContext } from "react";
+import { IEmployeeVersion } from "@/model";
 
-export function getNewEmployee(): Employee {
+export function getNewEmployee(): IEmployeeVersion {
     return {
-        id: null,
-        names: {
-            relevant: { firstName: null, lastName: null, middleName: null },
-            history: [],
-        },
+        id: tempIds.generate(),
+        names: [],
+        newName: null,
+
         birthdate: null,
         birthplace: null,
-        gender: null,
+        genderId: null,
+
         bntuPositions: [],
+
         tradeUnionPositions: [],
+        tradeUnionDepartmentRecords: [],
+        newTradeUnionDepartmentRecord: null,
+        workingGroupRecords: [],
+        newWorkingGroupRecord: null,
+
         joinedAt: null,
+        recordedAt: null,
         isArchived: false,
         archivedAt: null,
         isRetired: false,
         retiredAt: null,
-        educationInstitutions: [],
-        educationLevel: null,
-        academicDegree: null,
-        relatives: [],
+
         phoneNumbers: [],
-        addresses: [],
         emails: [],
+        addresses: [],
+
+        educationInstitutions: [],
+        academicDegreeId: null,
+        educationLevelId: null,
+
+        relatives: [],
         rewards: [],
         comments: [],
-    };
-}
 
-export function getCopy(employee: Employee): Employee {
-    return {
-        ...employee,
+        createdAt: null,
+        updatedAt: null,
     };
 }
 
