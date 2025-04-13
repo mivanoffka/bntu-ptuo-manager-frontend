@@ -46,7 +46,7 @@ export const EmployeeEditorContext = createContext<IEmployeeEditorContext>({
 export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
     const { selectedIds } = useSelectedEmployees();
     const { oneSelectedEmployee } = useOneSelectedEmployee();
-    const { list, push } = useEmployees();
+    const { list, push, invalidate } = useEmployees();
     const { editModeEnabled, enableEditMode, disableEditMode } = useEditMode();
 
     const { employeeVersion, setEmployeeVersion } =
@@ -92,6 +92,7 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         }
 
         await push(oneSelectedEmployee, employeeVersion);
+        invalidate();
         disableEditMode();
     }
 

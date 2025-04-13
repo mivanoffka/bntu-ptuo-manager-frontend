@@ -16,15 +16,17 @@ import { useFetcher } from "react-router-dom";
 export interface IEmployeeVersionsContext {
     employeeVersionTimestamps: DateTimeString[];
     selectedVersionTimestamp: DateTimeString | null;
-    getLatestTimestamp: () => DateTimeString | null;
+    latestTimestamp: DateTimeString | null;
     selectVersion: (timestamp: DateTimeString) => void;
+    selectLatestVersion: () => void;
 }
 
 export const EmployeeVersionsContext = createContext<IEmployeeVersionsContext>({
     selectedVersionTimestamp: null,
     employeeVersionTimestamps: [],
-    getLatestTimestamp: () => null,
+    latestTimestamp: null,
     selectVersion: () => {},
+    selectLatestVersion: () => {},
 });
 
 export function EmployeeVersionsProvider({
@@ -34,18 +36,29 @@ export function EmployeeVersionsProvider({
 }) {
     const { axiosInstance } = useApi();
     const { oneSelectedEmployee } = useOneSelectedEmployee();
-    const employeeVersionTimestamps =
-        oneSelectedEmployee?.employeeVersionTimestamps ?? [];
+    const [employeeVersionTimestamps, setEmployeeVersionTimestamps] = useState<
+        DateTimeString[]
+    >([]);
+
+    const [latestTimestamp, setLatestTimestamp] =
+        useState<DateTimeString | null>(null);
 
     const [selectedVersionTimestamp, setSelectedVersionTimestamp] =
         useState<DateTimeString | null>(null);
 
-    function getLatestTimestamp(): DateTimeString | null {
+    useEffect(() => {
         if (!oneSelectedEmployee) {
-            return null;
+            setSelectedVersionTimestamp(null);
+            setEmployeeVersionTimestamps([]);
+            return;
         }
+        const { employeeVersionTimestamps } = oneSelectedEmployee;
 
-        return employeeVersionTimestamps.reduce(
+        setEmployeeVersionTimestamps(employeeVersionTimestamps);
+    }, [oneSelectedEmployee]);
+
+    function getLatestTimestamp(from: DateTimeString[]): DateTimeString | null {
+        return from.reduce(
             (latest: DateTimeString, current: DateTimeString) => {
                 const currentDate = dayjs(current);
                 const latestDate = dayjs(latest);
@@ -56,11 +69,22 @@ export function EmployeeVersionsProvider({
     }
 
     useEffect(() => {
-        const latest = getLatestTimestamp();
-        setSelectedVersionTimestamp(latest);
-    }, [oneSelectedEmployee]);
+        if (!oneSelectedEmployee) {
+            return;
+        }
 
-    function selectVersion(timestamp: DateTimeString) {
+        const latest = getLatestTimestamp(employeeVersionTimestamps);
+
+        setLatestTimestamp(latest);
+        selectVersion(latest);
+    }, [employeeVersionTimestamps]);
+
+    function selectVersion(timestamp: DateTimeString | null) {
+        if (!timestamp) {
+            setSelectedVersionTimestamp(null);
+            return;
+        }
+
         if (employeeVersionTimestamps.includes(timestamp)) {
             setSelectedVersionTimestamp(timestamp);
         } else {
@@ -68,11 +92,16 @@ export function EmployeeVersionsProvider({
         }
     }
 
+    function selectLatestVersion() {
+        selectVersion(latestTimestamp);
+    }
+
     const context: IEmployeeVersionsContext = {
         selectedVersionTimestamp,
         employeeVersionTimestamps,
         selectVersion,
-        getLatestTimestamp,
+        latestTimestamp,
+        selectLatestVersion,
     };
 
     return (

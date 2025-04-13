@@ -1,6 +1,6 @@
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { DateTimeString } from "@/model/date.time.string";
-import { DateTimeField } from "@/view/primitives/fields";
+import { DateTimeField, FieldContainer } from "@/view/primitives/fields";
 
 export function BirthdateField() {
     const { employeeVersion, updateField } = useEmployeeEditor();
@@ -14,11 +14,12 @@ export function BirthdateField() {
     };
 
     return (
-        <DateTimeField
-            value={employeeVersion?.birthdate ?? null}
-            onChange={updateBirthdate}
-            title="Дата рождения"
-            editModeEnabled={editModeEnabled}
-        />
+        <FieldContainer title="Дата рождения">
+            <DateTimeField
+                value={employeeVersion?.birthdate ?? null}
+                onChange={updateBirthdate}
+                editModeEnabled={editModeEnabled}
+            />
+        </FieldContainer>
     );
 }

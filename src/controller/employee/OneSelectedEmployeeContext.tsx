@@ -1,3 +1,5 @@
+import { useApi } from "@/controller/api";
+import { EmployeesEndPoint } from "@/controller/employee/constants";
 import { useEditMode } from "@/controller/employee/EditModeContext";
 import { useEmployees } from "@/controller/employee/EmployeesContext";
 import { useSelectedEmployees } from "@/controller/employee/SelectedEmployeesContext";
@@ -27,28 +29,61 @@ export function OneSelectedEmployeeProvider({
     children: ReactNode;
 }) {
     const { selectedIds } = useSelectedEmployees();
-    const { list, push: pushEmployee } = useEmployees();
     const { editModeEnabled } = useEditMode();
+    const { axiosInstance } = useApi();
+
+    const { allInvalid } = useEmployees();
 
     const [oneSelectedEmployee, setOneSelectedEmployee] =
         useState<IEmployee | null>(null);
+
+    async function fetchOneEmployee(id: number) {
+        const data = await axiosInstance
+            .get(`${EmployeesEndPoint.PREFIX}/${id}/`)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return undefined;
+            });
+
+        return data;
+    }
+
+    async function fetchSelectedEmployee(id: number) {
+        const employee = await fetchOneEmployee(id);
+
+        setOneSelectedEmployee(employee);
+    }
 
     useEffect(() => {
         if (editModeEnabled) {
             return;
         }
-        if (selectedIds) {
+        if (selectedIds && selectedIds.length > 0) {
             const lastAddedId = selectedIds[selectedIds.length - 1];
 
-            const employee = list.find((item) => item.id === lastAddedId);
-
-            if (employee) {
-                setOneSelectedEmployee(employee);
-            }
+            fetchSelectedEmployee(lastAddedId);
         } else {
             setOneSelectedEmployee(null);
         }
-    }, [selectedIds, list]);
+    }, [selectedIds, allInvalid]);
+
+    useEffect(() => {
+        if (allInvalid) {
+            if (editModeEnabled) {
+                return;
+            }
+            if (selectedIds && selectedIds.length > 0) {
+                const lastAddedId = selectedIds[selectedIds.length - 1];
+
+                fetchSelectedEmployee(lastAddedId);
+            } else {
+                setOneSelectedEmployee(null);
+            }
+        }
+    }, [allInvalid]);
 
     const context: IOneSelectedEmployeeContext = {
         oneSelectedEmployee,

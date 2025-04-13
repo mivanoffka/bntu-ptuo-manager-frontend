@@ -39,8 +39,7 @@ export function OneSelectedEmployeeVersionProvider({
 }) {
     const { invalidate } = useEmployees();
     const { axiosInstance } = useApi();
-    const { selectedVersionTimestamp, getLatestTimestamp } =
-        useEmployeeVersions();
+    const { selectedVersionTimestamp, latestTimestamp } = useEmployeeVersions();
 
     const { oneSelectedEmployee } = useOneSelectedEmployee();
 
@@ -51,6 +50,8 @@ export function OneSelectedEmployeeVersionProvider({
         if (oneSelectedEmployee && selectedVersionTimestamp) {
             const { id } = oneSelectedEmployee;
             fetchEmployeeVersion(id, selectedVersionTimestamp);
+        } else {
+            setEmployeeVersion(null);
         }
     }, [selectedVersionTimestamp]);
 
@@ -95,9 +96,7 @@ export function OneSelectedEmployeeVersionProvider({
     }
 
     function isLatest(): boolean {
-        const latestVersionTimestamp = getLatestTimestamp();
-
-        return selectedVersionTimestamp === latestVersionTimestamp;
+        return selectedVersionTimestamp === latestTimestamp;
     }
 
     const context: IOneSelectedEmployeeVersionContext = {

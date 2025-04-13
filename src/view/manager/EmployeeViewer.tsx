@@ -1,16 +1,23 @@
 import { useOneSelectedEmployeeVersion } from "@/controller/employee";
 import { Flex, Typography } from "antd";
 import { Employee } from "@/view/employee/Employee";
-import { EmployeeFooterToolbar } from "@/view/manager/EmployeeFooterToolbar";
+import { EmployeeFooterToolbar } from "@/view/manager/toolbar/EmployeeFooterToolbar";
 import { EmployeeHeaderToolbar } from "@/view/manager/toolbar/EmployeeHeaderToolbar";
+import { CreateToolBarButton } from "@/view/manager/toolbar/buttons";
+import { Palette, FontSize } from "@/view/constants";
 
 export function EmployeesViewer() {
     const { employeeVersion } = useOneSelectedEmployeeVersion();
 
     const emptyContent = (
-        <Typography.Text type="secondary">
-            Выберите сотрудника из списка или создайте нового
-        </Typography.Text>
+        <Flex
+            justify="center"
+            align="center"
+            gap="large"
+            style={{ width: "100%", height: "25%" }}
+        >
+            <CreateToolBarButton />
+        </Flex>
     );
 
     const content = (
@@ -21,7 +28,7 @@ export function EmployeesViewer() {
             style={{ width: "100%", height: "100%" }}
         >
             <EmployeeHeaderToolbar></EmployeeHeaderToolbar>
-            <Employee></Employee>
+            {employeeVersion && <Employee></Employee>}
             <EmployeeFooterToolbar></EmployeeFooterToolbar>
         </Flex>
     );

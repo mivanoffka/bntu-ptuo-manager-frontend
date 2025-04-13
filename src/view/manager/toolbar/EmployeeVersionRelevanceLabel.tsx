@@ -2,7 +2,7 @@ import {
     useEditMode,
     useOneSelectedEmployeeVersion,
 } from "@/controller/employee";
-import { Color, FontSize } from "@/view/constants";
+import { Palette, FontSize } from "@/view/constants";
 import { SecondaryLabel } from "@/view/primitives";
 import { Flex, Typography } from "antd";
 
@@ -17,10 +17,10 @@ export function EmployeeVersionRelevanceLabel() {
         : "НЕАКТУАЛЬНАЯ ВЕРСИЯ";
 
     const color = editModeEnabled
-        ? Color.BLUE
+        ? Palette.BLUE
         : isLatest()
-        ? Color.GRAY
-        : Color.RED;
+        ? Palette.GRAY
+        : Palette.RED;
 
     return (
         <Flex align="center" justify="center">

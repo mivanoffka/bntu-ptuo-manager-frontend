@@ -3,9 +3,9 @@ import { useEditMode } from "@/controller/employee/EditModeContext";
 import {
     ApplyToolBarButton,
     CancelToolBarButton,
-    DeleteToolBarButton,
+    CloseToolBarButton,
     EditToolBarButton,
-    RestoreToolBarButton,
+    ToLatestVersionToolBarButton,
 } from "@/view/manager/toolbar/buttons";
 import { EmployeeVersionRelevanceLabel } from "@/view/manager/toolbar/EmployeeVersionRelevanceLabel";
 import { EmployeeVersionSelect } from "@/view/manager/toolbar/EmployeeVersionSelect";
@@ -35,7 +35,7 @@ export function EmployeeHeaderToolbar() {
                 >
                     <Flex
                         align="center"
-                        justify="center"
+                        justify="left"
                         style={{ width: "30%" }}
                     >
                         <EmployeeVersionSelect />
@@ -43,7 +43,7 @@ export function EmployeeHeaderToolbar() {
                     <Flex
                         align="center"
                         justify="center"
-                        style={{ textAlign: "center", width: "60%" }}
+                        style={{ width: "60%" }}
                     >
                         <EmployeeVersionRelevanceLabel />
                     </Flex>
@@ -54,7 +54,7 @@ export function EmployeeHeaderToolbar() {
                     >
                         <Flex
                             align="center"
-                            justify="center"
+                            justify="right"
                             style={{ width: "100%" }}
                         >
                             {editModeEnabled ? (
@@ -65,10 +65,13 @@ export function EmployeeHeaderToolbar() {
                             ) : isLatest() ? (
                                 <Flex>
                                     <EditToolBarButton />
-                                    <DeleteToolBarButton />
+                                    <CloseToolBarButton />
                                 </Flex>
                             ) : (
-                                <RestoreToolBarButton />
+                                <Flex>
+                                    <ToLatestVersionToolBarButton />
+                                    <CloseToolBarButton />
+                                </Flex>
                             )}
                         </Flex>
                     </Flex>

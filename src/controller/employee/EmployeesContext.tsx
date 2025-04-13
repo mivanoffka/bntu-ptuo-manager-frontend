@@ -10,8 +10,10 @@ export interface IEmployeesContext {
     setPage: (page: number) => void;
     push: (employee: IEmployee, employeeVersion: IEmployeeVersion) => void;
     remove: (ids: number[]) => void;
-    invalidated: boolean;
+    allInvalid: boolean;
     invalidate: () => void;
+    invalidOne: number | null;
+    invalidateOne: (id: number) => void;
     needsNext: boolean;
     next: () => void;
     hasMore: () => boolean;
@@ -23,11 +25,13 @@ export const EmployeesContext = createContext<IEmployeesContext>({
     setPage: () => {},
     push: () => {},
     remove: () => {},
-    invalidated: false,
+    allInvalid: false,
     invalidate: () => {},
     needsNext: false,
     next: () => {},
     hasMore: () => false,
+    invalidOne: null,
+    invalidateOne: () => {},
 });
 
 export interface IPaginatedData<T> {
@@ -51,7 +55,9 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
     const [pagesLoaded, setPagesLoaded] = useState(0);
 
-    const [invalidated, setInvalidated] = useState(false);
+    const [allInvalid, setAllInvalid] = useState(false);
+
+    const [invalidOne, setInvalidOne] = useState<number | null>(null);
 
     const [needsNext, setNeedsNext] = useState(false);
 
@@ -60,7 +66,11 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     }
 
     function invalidate() {
-        setInvalidated(true);
+        setAllInvalid(true);
+    }
+
+    function invalidateOne(id: number) {
+        setInvalidOne(id);
     }
 
     function next() {
@@ -72,15 +82,21 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     }, []);
 
     useEffect(() => {
+        if (invalidOne) {
+            fetchInvalidatedOne(invalidOne);
+        }
+    }, [invalidOne]);
+
+    useEffect(() => {
         console.log(list);
     }, [list]);
 
     useEffect(() => {
-        if (invalidated) {
+        if (allInvalid) {
             refetchEmployees();
-            setInvalidated(false);
+            setAllInvalid(false);
         }
-    }, [invalidated]);
+    }, [allInvalid]);
 
     useEffect(() => {
         if (needsNext) {
@@ -119,7 +135,6 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
     async function refetchEmployees() {
         setPagesLoaded(0);
-        setList([]);
 
         const page = 1;
 
@@ -130,8 +145,32 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
             setPagesLoaded(page);
             setTotalItems(count);
-            setList([...list, ...results]);
+            setList(results);
         }
+    }
+
+    async function fetchInvalidatedOne(id: number) {
+        const employee = await fetchOneEmployee(id);
+
+        setList((list) =>
+            list.map((item) => (item.id === id ? employee : item))
+        );
+
+        setInvalidOne(null);
+    }
+
+    async function fetchOneEmployee(id: number) {
+        const data = await axiosInstance
+            .get(`${EmployeesEndPoint.PREFIX}/${id}/`)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return undefined;
+            });
+
+        return data;
     }
 
     async function fetchNextEmployees() {
@@ -160,9 +199,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
         await axiosInstance
             .patch(`${EmployeesEndPoint.PREFIX}/${id}/`, body)
-            .then((response) => {
-                invalidate();
-            })
+            .then((response) => {})
             .catch((error) => {
                 console.log(error);
             });
@@ -176,11 +213,13 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         setPage,
         push,
         remove,
-        invalidated,
+        allInvalid,
         invalidate,
         needsNext,
         next,
         hasMore,
+        invalidOne,
+        invalidateOne,
     };
 
     return (

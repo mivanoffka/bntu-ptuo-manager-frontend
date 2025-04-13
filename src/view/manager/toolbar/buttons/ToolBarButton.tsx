@@ -1,5 +1,7 @@
+import { Palette, FontSize } from "@/view/constants";
 import { SecondaryLabel } from "@/view/primitives";
-import { Button, Flex } from "antd";
+import { Button, Flex, Typography } from "antd";
+
 import React from "react";
 
 export interface IToolBarButtonProps {
@@ -7,16 +9,24 @@ export interface IToolBarButtonProps {
     title: React.ReactNode;
     icon: React.ReactNode;
     color?: string;
+    disabled?: boolean;
 }
 
 export function ToolBarButton(props: IToolBarButtonProps) {
-    const { onClick, title, icon, color } = props;
+    const { onClick, title, icon, color, disabled = false } = props;
+
+    const textColor = disabled ? Palette.LIGHT_GRAY : Palette.GRAY;
+    const iconColor = disabled ? Palette.GRAY : color;
 
     return (
-        <Button type="link" onClick={onClick}>
-            <Flex style={{ width: "100%", color: color }} gap="small">
+        <Button disabled={disabled} type="link" onClick={onClick}>
+            <Flex style={{ width: "100%", color: iconColor }} gap="small">
                 {icon}
-                <SecondaryLabel>{title}</SecondaryLabel>
+                <Typography.Text
+                    style={{ color: textColor, fontSize: FontSize.SMALL }}
+                >
+                    {title}
+                </Typography.Text>
             </Flex>
         </Button>
     );

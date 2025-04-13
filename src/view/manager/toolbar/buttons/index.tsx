@@ -1,6 +1,9 @@
 import {
+    useEditMode,
     useEmployeeEditor,
+    useEmployeeVersions,
     useOneSelectedEmployeeVersion,
+    useSelectedEmployees,
 } from "@/controller/employee";
 import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
 import {
@@ -9,15 +12,31 @@ import {
     HistoryOutlined,
     CheckOutlined,
     CloseOutlined,
+    StopOutlined,
+    ArrowUpOutlined,
+    PlusOutlined,
 } from "@ant-design/icons";
-import { Color } from "@/view/constants";
+import { Palette } from "@/view/constants";
+
+export function CloseToolBarButton() {
+    const { clearSelection } = useSelectedEmployees();
+
+    return (
+        <ToolBarButton
+            color={Palette.BLUE}
+            onClick={clearSelection}
+            title={"Закрыть"}
+            icon={<CloseOutlined />}
+        />
+    );
+}
 
 export function EditToolBarButton() {
     const { startEdit } = useEmployeeEditor();
 
     return (
         <ToolBarButton
-            color={Color.BLUE}
+            color={Palette.BLUE}
             onClick={startEdit}
             title={"Редактировать"}
             icon={<EditOutlined />}
@@ -26,17 +45,20 @@ export function EditToolBarButton() {
 }
 
 export function DeleteToolBarButton() {
+    const { editModeEnabled } = useEditMode();
+
     return (
         <ToolBarButton
-            color={Color.RED}
+            color={Palette.RED}
+            disabled={editModeEnabled}
             onClick={null}
-            title={"Удалить"}
+            title={"Удалить запись"}
             icon={<DeleteOutlined />}
         />
     );
 }
 
-export function RestoreToolBarButton() {
+export function RestoreVersionToolBarButton() {
     const { restoreToSelectedVersion } = useOneSelectedEmployeeVersion();
 
     return (
@@ -48,12 +70,37 @@ export function RestoreToolBarButton() {
     );
 }
 
+export function DeleteVersionToolBarButton() {
+    return (
+        <ToolBarButton
+            disabled
+            color={Palette.RED}
+            onClick={null}
+            title={"Удалить версию из истории"}
+            icon={<DeleteOutlined />}
+        />
+    );
+}
+
+export function ToLatestVersionToolBarButton() {
+    const { selectLatestVersion } = useEmployeeVersions();
+
+    return (
+        <ToolBarButton
+            color={Palette.GREEN}
+            onClick={selectLatestVersion}
+            title={"К актуальной версии"}
+            icon={<ArrowUpOutlined />}
+        />
+    );
+}
+
 export function ApplyToolBarButton() {
     const { applyEdit } = useEmployeeEditor();
 
     return (
         <ToolBarButton
-            color={Color.GREEN}
+            color={Palette.GREEN}
             onClick={applyEdit}
             title={"Применить"}
             icon={<CheckOutlined />}
@@ -66,10 +113,21 @@ export function CancelToolBarButton() {
 
     return (
         <ToolBarButton
-            color={Color.RED}
+            color={Palette.RED}
             onClick={cancelEdit}
             title={"Отменить"}
-            icon={<CloseOutlined />}
+            icon={<StopOutlined />}
+        />
+    );
+}
+
+export function CreateToolBarButton() {
+    return (
+        <ToolBarButton
+            color={Palette.BLUE}
+            onClick={null}
+            title={"Добавить сотрудника"}
+            icon={<PlusOutlined />}
         />
     );
 }
