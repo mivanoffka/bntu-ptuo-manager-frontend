@@ -1,6 +1,11 @@
 import { ITreeNode } from "@/model";
-import { DownOutlined, RightOutlined } from "@ant-design/icons";
-import { Input, TreeDataNode, TreeSelect } from "antd";
+import { FontSize, Palette } from "@/view/constants";
+import {
+    CloseCircleFilled,
+    DownOutlined,
+    RightOutlined,
+} from "@ant-design/icons";
+import { Button, Input, Space, TreeDataNode, TreeSelect } from "antd";
 import { AntTreeNodeProps } from "antd/es/tree";
 
 export interface ISelectTreeFieldProps<T extends ITreeNode> {
@@ -69,21 +74,34 @@ export function SelectTreeField<T extends ITreeNode>(
         findNodeByPath(tree, selectedPath)?.label || placeholder;
 
     return editModeEnabled ? (
-        <TreeSelect
-            showSearch
-            style={{ width: "100%", textAlign: "left" }}
-            value={selectedPath}
-            dropdownStyle={{ maxHeight: 400, minWidth: 300, overflow: "auto" }}
-            placeholder={placeholder}
-            allowClear
-            onChange={onChange}
-            treeData={transformPathToKey(tree)}
-            treeDefaultExpandAll
-            treeLine
-            switcherIcon={(props: AntTreeNodeProps) =>
-                props.expanded ? <DownOutlined /> : <RightOutlined />
-            }
-        />
+        <Space.Compact>
+            <TreeSelect
+                showSearch
+                style={{ width: "100%", textAlign: "left" }}
+                value={selectedPath}
+                dropdownStyle={{
+                    maxHeight: 400,
+                    minWidth: 300,
+                    overflow: "auto",
+                }}
+                placeholder={placeholder}
+                onChange={onChange}
+                treeData={transformPathToKey(tree)}
+                treeDefaultExpandAll
+                treeLine
+                switcherIcon={(props: AntTreeNodeProps) =>
+                    props.expanded ? <DownOutlined /> : <RightOutlined />
+                }
+            />
+            <Button onClick={() => onChange(null)}>
+                <CloseCircleFilled
+                    style={{
+                        color: Palette.LIGHT_GRAY,
+                        fontSize: FontSize.SMALL,
+                    }}
+                />
+            </Button>
+        </Space.Compact>
     ) : (
         <Input readOnly value={selectedItem}></Input>
     );
