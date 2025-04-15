@@ -1,24 +1,25 @@
-import { ITradeUnionDepartmentRecord } from "@/model";
 import { useTrees } from "@/controller/trees";
 import { FieldContainer } from "@/view/primitives";
-import { IObjectFieldProps } from "@/view/primitives/fields";
 import { SelectTreeField } from "@/view/primitives/fields/derivatives/SelectTreeField";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 
-export function TradeUnionDepartmentField(
-    props: IObjectFieldProps<ITradeUnionDepartmentRecord>
-) {
-    const { value, onChange, editModeEnabled } = props;
+export function TradeUnionDepartmentField() {
     const { tradeUnionDepartmentsTree } = useTrees();
 
+    const { getField, updateField } = useEmployeeEditor();
+    const selectedPath = getField<String>("tradeUnionDepartmentPath") as string;
+    const onChange = (value: string | null) =>
+        updateField("tradeUnionDepartmentPath", value);
+
+    const { editModeEnabled } = useEditMode();
+
     return (
-        <FieldContainer>
+        <FieldContainer title="ЦПО">
             <SelectTreeField
                 editModeEnabled={editModeEnabled}
                 tree={tradeUnionDepartmentsTree}
-                selectedPath={value.tradeUnionDepartmentOptionPath}
-                onChange={(tradeUnionDepartmentOptionPath) =>
-                    onChange({ ...value, tradeUnionDepartmentOptionPath })
-                }
+                selectedPath={selectedPath}
+                onChange={onChange}
             />
         </FieldContainer>
     );

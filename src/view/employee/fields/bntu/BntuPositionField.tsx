@@ -87,11 +87,11 @@ export function BntuPositionField(props: IObjectFieldProps<IBntuPosition>) {
                     <FieldContainer title="Подразделение">
                         <SelectTreeField
                             editModeEnabled={editModeEnabled}
-                            selectedPath={item.bntuDepartmentOptionPath}
-                            onChange={(bntuDepartmentOptionPath) =>
+                            selectedPath={item.bntuDepartmentPath}
+                            onChange={(bntuDepartmentPath) =>
                                 onChange({
                                     ...item,
-                                    bntuDepartmentOptionPath,
+                                    bntuDepartmentPath,
                                 })
                             }
                             tree={bntuDepartmentsTree}

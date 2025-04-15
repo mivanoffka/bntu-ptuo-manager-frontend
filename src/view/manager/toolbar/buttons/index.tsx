@@ -14,6 +14,7 @@ import {
     StopOutlined,
     ArrowUpOutlined,
     PlusOutlined,
+    UserAddOutlined,
 } from "@ant-design/icons";
 import { Palette } from "@/view/constants";
 
@@ -128,7 +129,7 @@ export function CreateToolBarButton() {
             color={Palette.BLUE}
             onClick={createNew}
             title={"Добавить сотрудника"}
-            icon={<PlusOutlined />}
+            icon={<UserAddOutlined />}
         />
     );
 }

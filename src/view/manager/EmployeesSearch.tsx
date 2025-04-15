@@ -8,12 +8,7 @@ import { EmployeesList } from "@/view/manager/EmployeesList";
 
 export function EmployeesSearch() {
     return (
-        <Flex
-            justify="space-between"
-            align="center"
-            vertical
-            style={{ width: "100%", height: "100%" }}
-        >
+        <Flex align="center" vertical style={{ width: "100%", height: "100%" }}>
             <Toolbar>
                 <Space.Compact style={{ width: "100%" }}>
                     <Input placeholder="Поиск"></Input>
@@ -25,17 +20,24 @@ export function EmployeesSearch() {
             <Flex
                 align="center"
                 vertical
-                style={{ width: "90%", height: "30%" }}
+                style={{ width: "100%", height: "80%" }}
             >
-                <EmployeesList></EmployeesList>
+                <Flex
+                    align="center"
+                    vertical
+                    style={{ width: "90%", height: "50%" }}
+                >
+                    <EmployeesList></EmployeesList>
+                </Flex>
+                <Flex
+                    align="center"
+                    vertical
+                    style={{ width: "100%", height: "50%" }}
+                >
+                    ...
+                </Flex>
             </Flex>
-            <Flex
-                align="center"
-                vertical
-                style={{ width: "100%", height: "60%" }}
-            >
-                ...
-            </Flex>
+
             <Toolbar></Toolbar>
         </Flex>
     );

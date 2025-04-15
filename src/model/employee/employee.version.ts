@@ -1,12 +1,7 @@
 import { IRelative, IReward } from "@/model/employee/other";
 import { IBntuPosition } from "@/model/employee/bntu";
-import { IName } from "@/model/employee/common";
 import { IAddress, IEmail, IPhoneNumber } from "@/model/employee/contacts";
-import {
-    ITradeUnionDepartmentRecord,
-    ITradeUnionPosition,
-    IWorkingGroupRecord,
-} from "@/model/employee/trade-union";
+import { ITradeUnionPosition } from "@/model/employee/trade-union";
 import { DateTimeString } from "@/model/date.time.string";
 import { IEducationalInstitution } from "@/model/employee/education/educational.institution";
 import { IPrimaryKeyed } from "@/model/primary.keyed";
@@ -17,8 +12,9 @@ export interface IEmployeeVersion extends IPrimaryKeyed, ITimeStamped {
 
     // Common
 
-    names: IName[];
-    newName?: IName | null;
+    firstName: string | null;
+    middleName: string | null;
+    lastName: string | null;
 
     birthdate: DateTimeString | null;
     birthplace: string | null;
@@ -31,12 +27,9 @@ export interface IEmployeeVersion extends IPrimaryKeyed, ITimeStamped {
     // TradeUnion
 
     tradeUnionPositions: ITradeUnionPosition[];
-
-    tradeUnionDepartmentRecords: ITradeUnionDepartmentRecord[];
-    newTradeUnionDepartmentRecord?: ITradeUnionDepartmentRecord | null;
-
-    workingGroupRecords: IWorkingGroupRecord[];
-    newWorkingGroupRecord?: IWorkingGroupRecord | null;
+    tradeUnionDepartmentAuthenticLabel: string | null;
+    tradeUnionDepartmentPath: string | null;
+    workingGroupId: number | null;
 
     joinedAt: DateTimeString | null;
     recordedAt: DateTimeString | null;

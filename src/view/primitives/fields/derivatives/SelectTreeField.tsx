@@ -1,5 +1,7 @@
 import { ITreeNode } from "@/model";
+import { DownOutlined, RightOutlined } from "@ant-design/icons";
 import { Input, TreeDataNode, TreeSelect } from "antd";
+import { AntTreeNodeProps } from "antd/es/tree";
 
 export interface ISelectTreeFieldProps<T extends ITreeNode> {
     selectedPath: string | null;
@@ -76,7 +78,12 @@ export function SelectTreeField<T extends ITreeNode>(
             allowClear
             onChange={onChange}
             treeData={transformPathToKey(tree)}
-        ></TreeSelect>
+            treeDefaultExpandAll
+            treeLine
+            switcherIcon={(props: AntTreeNodeProps) =>
+                props.expanded ? <DownOutlined /> : <RightOutlined />
+            }
+        />
     ) : (
         <Input readOnly value={selectedItem}></Input>
     );

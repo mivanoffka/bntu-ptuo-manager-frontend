@@ -1,3 +1,3 @@
 import { ITreeNode } from "@/model/tree.node";
 
-export interface ITradeUnionDepartmentOption extends ITreeNode {}
+export interface ITradeUnionDepartment extends ITreeNode {}

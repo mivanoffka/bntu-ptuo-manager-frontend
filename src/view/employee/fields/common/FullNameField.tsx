@@ -1,14 +1,23 @@
-import { IName, NameUtility } from "@/model";
 import { InputField } from "@/view/primitives";
 import { Flex } from "antd";
-import { useEditMode } from "@/controller/employee";
-import { FieldContainer, IObjectFieldProps } from "@/view/primitives/fields";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
+import { FieldContainer } from "@/view/primitives/fields";
 
-export function NameField(props: IObjectFieldProps<IName>) {
-    const { value, onChange } = props;
-
+export function FullNameField() {
     const { editModeEnabled } = useEditMode();
-    const { firstName, lastName, middleName } = value ?? {};
+
+    const { getField, updateField } = useEmployeeEditor();
+
+    const firstName = getField<string>("firstName");
+    const lastName = getField<string>("lastName");
+    const middleName = getField<string>("middleName");
+
+    const updateFirstName = (value: string | null) =>
+        updateField("firstName", value);
+    const updateLastName = (value: string | null) =>
+        updateField("lastName", value);
+    const updateMiddleName = (value: string | null) =>
+        updateField("middleName", value);
 
     return (
         <Flex gap="small" style={{ width: "100%" }}>
@@ -16,9 +25,7 @@ export function NameField(props: IObjectFieldProps<IName>) {
                 <InputField
                     editModeEnabled={editModeEnabled}
                     value={lastName}
-                    onChange={(newValue) =>
-                        onChange(NameUtility.updatedLastName(value, newValue))
-                    }
+                    onChange={updateLastName}
                     placeholder="Фамилия"
                 ></InputField>
             </FieldContainer>
@@ -26,9 +33,7 @@ export function NameField(props: IObjectFieldProps<IName>) {
                 <InputField
                     editModeEnabled={editModeEnabled}
                     value={firstName}
-                    onChange={(newValue) =>
-                        onChange(NameUtility.updatedFirstName(value, newValue))
-                    }
+                    onChange={updateFirstName}
                     placeholder="Имя"
                 ></InputField>
             </FieldContainer>
@@ -36,9 +41,7 @@ export function NameField(props: IObjectFieldProps<IName>) {
                 <InputField
                     editModeEnabled={editModeEnabled}
                     value={middleName}
-                    onChange={(newValue) =>
-                        onChange(NameUtility.updatedMiddleName(value, newValue))
-                    }
+                    onChange={updateMiddleName}
                     placeholder="Отчество"
                 ></InputField>
             </FieldContainer>

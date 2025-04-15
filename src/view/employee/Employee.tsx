@@ -1,6 +1,5 @@
 import { Divider, Flex, Image, Tabs } from "antd";
 import {
-    NamesField,
     PhoneNumbersList,
     EmailsList,
     AddressesList,
@@ -12,15 +11,17 @@ import {
     EducationalInstitutionsList,
     EducationLevelField,
     AcademicDegreeField,
+    FullNameField,
 } from "@/view/employee/fields";
 
 import "./style/employee.css";
 import { RewardsList } from "@/view/employee/fields/other";
 import { BntuPositionsList } from "@/view/employee/fields/bntu/BntuPositionsList";
 import { TradeUnionInfoField } from "@/view/employee/fields/trade-union/TradeUnionInfoField";
-
-import { WorkingGroupHistory } from "@/view/employee/fields/trade-union/WorkingGroupHistoryField";
-import { TradeUnionDepartmentHistory } from "@/view/employee/fields/trade-union/TradeUnionDepartmentHistory";
+import {
+    TradeUnionDepartmentField,
+    WorkingGroupField,
+} from "@/view/employee/fields/trade-union";
 
 const { TabPane } = Tabs;
 
@@ -53,7 +54,7 @@ export function Employee() {
                     justify="center"
                     style={{ width: "100%" }}
                 >
-                    <NamesField />
+                    <FullNameField />
                     <BirthplaceField />
                     <Flex
                         align="center"
@@ -104,8 +105,8 @@ export function Employee() {
                             style={{ maxHeight: "100%", overflow: "auto" }}
                         >
                             <Flex gap="small" style={{ width: "100%" }}>
-                                <TradeUnionDepartmentHistory />
-                                <WorkingGroupHistory />
+                                <TradeUnionDepartmentField />
+                                <WorkingGroupField />
                             </Flex>
                             <Divider></Divider>
                             <TradeUnionInfoField />

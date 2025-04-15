@@ -1,3 +1,3 @@
 import { IEnumerated } from "@/model/enumerated";
 
-export interface IWorkingGroupOption extends IEnumerated {}
+export interface IWorkingGroup extends IEnumerated {}

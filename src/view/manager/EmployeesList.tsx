@@ -2,7 +2,7 @@ import { useSelectedEmployees } from "@/controller/employee";
 import { useEmployees } from "@/controller/employee/EmployeesContext";
 import { EmployeesListItem } from "@/view/manager/EmployeeListItem";
 import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
-import { PlusOutlined } from "@ant-design/icons";
+import { EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
 import { Flex, List } from "antd";
 import { useEffect, useRef } from "react";
 import "./list-item.css";
@@ -22,7 +22,8 @@ export function EmployeesList() {
             style={{
                 width: "100%",
                 height: "100%",
-                paddingRight: "10px",
+                border: "1px solid #d9d9d9",
+                borderRadius: "4px",
                 overflow: "auto",
             }}
         >
@@ -43,19 +44,22 @@ export function EmployeesList() {
                         </List.Item>
                     );
                 }}
+                loadMore={
+                    <Flex
+                        justify="center"
+                        align="center"
+                        style={{
+                            height: "30px",
+                        }}
+                    >
+                        <ToolBarButton
+                            onClick={handleLoadMore}
+                            title="Больше"
+                            icon={<PlusOutlined />}
+                        />
+                    </Flex>
+                }
             />
-            <Flex
-                vertical
-                justify="center"
-                align="center"
-                style={{ width: "100%", height: "200px" }}
-            >
-                <ToolBarButton
-                    onClick={handleLoadMore}
-                    title="Больше"
-                    icon={<PlusOutlined />}
-                />
-            </Flex>
         </Flex>
     );
 }
