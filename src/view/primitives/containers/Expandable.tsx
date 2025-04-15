@@ -1,6 +1,6 @@
-import { SecondaryLabel } from "@/view/primitives/fields/field/SecondaryLabel";
+import { SecondaryLabel } from "@/view/primitives/fields/SecondaryLabel";
 import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
-import { Collapse, Flex } from "antd";
+import { Collapse, Divider, Flex } from "antd";
 import { ReactNode, useState } from "react";
 
 export interface IDropDownProps {
@@ -9,27 +9,27 @@ export interface IDropDownProps {
 }
 
 export function Expandable(props: IDropDownProps) {
-    const { title, children } = props;
+    const { title, children: childrenBase } = props;
 
-    const item = {
-        id: 0,
-        label: (
-            <Flex vertical align="left" style={{ width: "100%" }}>
-                <SecondaryLabel>{title}</SecondaryLabel>
-            </Flex>
-        ),
-
-        children,
-    };
+    const children = childrenBase ? (
+        childrenBase
+    ) : (
+        <SecondaryLabel>ПУСТО</SecondaryLabel>
+    );
 
     return (
-        <Flex vertical align="left" justify="left" style={{ width: "100%" }}>
-            <Collapse
-                ghost
-                size="small"
-                style={{ width: "100%" }}
-                items={[item]}
-            ></Collapse>
+        <Flex
+            vertical
+            align="center"
+            justify="center"
+            style={{
+                width: "100%",
+                height: "100%",
+            }}
+        >
+            <Divider orientation="left">{title}</Divider>
+            {children}
+            <Divider />
         </Flex>
     );
 }

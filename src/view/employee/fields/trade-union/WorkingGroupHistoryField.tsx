@@ -2,8 +2,7 @@ import { HistoryField } from "@/view/primitives/fields";
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { tempIds } from "@/controller/employee/utils";
 import { IWorkingGroupRecord } from "@/model";
-import { WorkingGroupDisplayField } from "@/view/employee/fields/trade-union/working-groups/WorkingGroupDisplayField";
-import { WorkingGroupEditField } from "@/view/employee/fields/trade-union/working-groups/WorkingGroupEditField";
+import { WorkingGroupField } from "@/view/employee/fields/trade-union/WorkingGroupField";
 
 export function WorkingGroupHistory() {
     const { editModeEnabled } = useEditMode();
@@ -47,8 +46,7 @@ export function WorkingGroupHistory() {
             newItem={newWorkingGroupRecord}
             onChangeListItem={updateWorkingGroupRecord}
             onChangeNew={updateNewWorkingGroupRecord}
-            DisplayFieldType={WorkingGroupDisplayField}
-            EditFieldType={WorkingGroupEditField}
+            FieldType={WorkingGroupField}
         />
     );
 }

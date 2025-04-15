@@ -1,9 +1,9 @@
 import { IName } from "@/model";
 import { HistoryField } from "@/view/primitives/fields";
 import { DisplayNameField } from "@/view/employee/fields/common/names/DisplayNameField";
-import { EditNameField } from "@/view/employee/fields/common/names/EditNameField";
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { tempIds } from "@/controller/employee/utils";
+import { NameField } from "@/view/employee/fields/common/names/EditNameField";
 
 export function NamesField() {
     const { editModeEnabled } = useEditMode();
@@ -28,24 +28,19 @@ export function NamesField() {
             updateList<IName>("names", value);
         }
     };
-
     const updateNewName = (value: IName | null) => {
         updateField<IName>("newName", value);
     };
 
-    const title = editModeEnabled ? undefined : "Полное имя";
-
     return (
         <HistoryField
             editModeEnabled={editModeEnabled}
-            title={title}
             newItemGetter={getNewName}
             items={names}
             newItem={newName}
             onChangeListItem={updateName}
             onChangeNew={updateNewName}
-            DisplayFieldType={DisplayNameField}
-            EditFieldType={EditNameField}
+            FieldType={NameField}
         />
     );
 }

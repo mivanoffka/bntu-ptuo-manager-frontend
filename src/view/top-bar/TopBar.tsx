@@ -20,9 +20,7 @@ export function TopBar() {
     return (
         <div className="top-bar">
             <div className="top-bar-menu">
-                <Typography.Text>
-                    <HddOutlined />
-                </Typography.Text>
+                <Typography.Text>ППО работников БНТУ</Typography.Text>
 
                 <SignOutButton></SignOutButton>
             </div>

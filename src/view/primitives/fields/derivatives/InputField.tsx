@@ -6,15 +6,22 @@ export interface IInputFieldProps {
     value: string | null;
     onChange: (value: string | null) => void;
     placeholder?: string;
+    editModeEnabled: boolean;
 }
 
 export function InputField(props: IInputFieldProps) {
-    const { onChange, value, placeholder = "Не выбрано" } = props;
+    const {
+        onChange,
+        value,
+        placeholder = "Не выбрано",
+        editModeEnabled,
+    } = props;
 
     const displayValue = value ?? null;
 
     return (
         <Input
+            readOnly={!editModeEnabled}
             size="small"
             value={displayValue || ""}
             onChange={(e) => {

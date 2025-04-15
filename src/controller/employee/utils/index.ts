@@ -1,4 +1,5 @@
-import { IEmployeeVersion } from "@/model";
+import { DateTimeString, IEmployeeVersion } from "@/model";
+import dayjs from "dayjs";
 
 export function getNewEmployee(): IEmployeeVersion {
     return {
@@ -40,6 +41,21 @@ export function getNewEmployee(): IEmployeeVersion {
         createdAt: null,
         updatedAt: null,
     };
+}
+
+export function getCopy(employeeVersion: IEmployeeVersion) {
+    return { ...employeeVersion };
+}
+
+export function getLatestTimestamp(
+    from: DateTimeString[]
+): DateTimeString | null {
+    return from.reduce((latest: DateTimeString, current: DateTimeString) => {
+        const currentDate = dayjs(current);
+        const latestDate = dayjs(latest);
+
+        return currentDate.isAfter(latestDate) ? current : latest;
+    });
 }
 
 class UniqueNegativeGenerator {

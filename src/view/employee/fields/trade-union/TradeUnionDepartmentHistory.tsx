@@ -2,10 +2,9 @@ import { HistoryField } from "@/view/primitives/fields";
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { tempIds } from "@/controller/employee/utils";
 import { ITradeUnionDepartmentRecord } from "@/model";
-import { TradeUnionDepartmentDisplayField } from "@/view/employee/fields/trade-union/departments/TradeUnionDepartmentDisplayField";
-import { TradeUnionDepartmentEditField } from "@/view/employee/fields/trade-union/departments/TradeUnionDepartmentEditField";
+import { TradeUnionDepartmentField } from "@/view/employee/fields/trade-union/TradeUnionDepartmentField";
 
-export function TradeUnionDepartmentFields() {
+export function TradeUnionDepartmentHistory() {
     const { editModeEnabled } = useEditMode();
 
     const { getList, updateList, getField, updateField } = useEmployeeEditor();
@@ -57,8 +56,7 @@ export function TradeUnionDepartmentFields() {
             newItem={newTradeUnionDepartmentRecord}
             onChangeListItem={updateTradeUnionDepartmentRecord}
             onChangeNew={updateNewTradeUnionDepartmentRecord}
-            DisplayFieldType={TradeUnionDepartmentDisplayField}
-            EditFieldType={TradeUnionDepartmentEditField}
+            FieldType={TradeUnionDepartmentField}
         />
     );
 }

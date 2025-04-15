@@ -1,13 +1,15 @@
-import { useOneSelectedEmployeeVersion } from "@/controller/employee";
 import { Flex, Typography } from "antd";
 import { Employee } from "@/view/employee/Employee";
 import { EmployeeFooterToolbar } from "@/view/manager/toolbar/EmployeeFooterToolbar";
 import { EmployeeHeaderToolbar } from "@/view/manager/toolbar/EmployeeHeaderToolbar";
 import { CreateToolBarButton } from "@/view/manager/toolbar/buttons";
 import { Palette, FontSize } from "@/view/constants";
+import { useEmployeeEditor } from "@/controller/employee";
+import { useEmployees } from "@/controller/employee/EmployeesContext";
 
 export function EmployeesViewer() {
-    const { employeeVersion } = useOneSelectedEmployeeVersion();
+    // const { selectedEmployeeVersion } = useEmployees();
+    const { displayedEmployeeVersion } = useEmployeeEditor();
 
     const emptyContent = (
         <Flex
@@ -28,7 +30,7 @@ export function EmployeesViewer() {
             style={{ width: "100%", height: "100%" }}
         >
             <EmployeeHeaderToolbar></EmployeeHeaderToolbar>
-            {employeeVersion && <Employee></Employee>}
+            {displayedEmployeeVersion && <Employee></Employee>}
             <EmployeeFooterToolbar></EmployeeFooterToolbar>
         </Flex>
     );
@@ -39,7 +41,7 @@ export function EmployeesViewer() {
             justify="center"
             style={{ width: "100%", height: "100%" }}
         >
-            {employeeVersion ? content : emptyContent}
+            {displayedEmployeeVersion ? content : emptyContent}
         </Flex>
     );
 }

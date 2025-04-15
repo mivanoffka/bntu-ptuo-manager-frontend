@@ -1,7 +1,6 @@
 import { Flex, Typography } from "antd";
-import "./style/field.css";
 import { ReactNode } from "react";
-import { SecondaryLabel } from "@/view/primitives/fields/field/SecondaryLabel";
+import { SecondaryLabel } from "@/view/primitives/fields/SecondaryLabel";
 
 export interface IFieldContainerProps {
     title?: ReactNode;

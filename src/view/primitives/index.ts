@@ -2,7 +2,6 @@ export { Expandable } from "@/view/primitives/containers";
 export {
     FieldContainer,
     SecondaryLabel,
-    CombinedFieldContainer,
     InputField,
     LabelField,
     SelectField,

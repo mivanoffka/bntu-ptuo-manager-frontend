@@ -1,24 +1,28 @@
-import {
-    useEditMode,
-    useOneSelectedEmployeeVersion,
-} from "@/controller/employee";
+import { useEditMode, useEmployees } from "@/controller/employee";
+import { getLatestTimestamp } from "@/controller/employee/utils";
 import { Palette, FontSize } from "@/view/constants";
 import { SecondaryLabel } from "@/view/primitives";
 import { Flex, Typography } from "antd";
 
 export function EmployeeVersionRelevanceLabel() {
-    const { isLatest } = useOneSelectedEmployeeVersion();
+    const { selectedEmployee, selectedTimestamp } = useEmployees();
+
+    const isLatest =
+        selectedEmployee &&
+        selectedTimestamp ===
+            getLatestTimestamp(selectedEmployee.employeeVersionTimestamps);
+
     const { editModeEnabled } = useEditMode();
 
     const label = editModeEnabled
         ? "РЕДАКТИРОВАНИE"
-        : isLatest()
+        : isLatest
         ? "АКТУАЛЬНАЯ ВЕРСИЯ"
         : "НЕАКТУАЛЬНАЯ ВЕРСИЯ";
 
     const color = editModeEnabled
         ? Palette.BLUE
-        : isLatest()
+        : isLatest
         ? Palette.GRAY
         : Palette.RED;
 

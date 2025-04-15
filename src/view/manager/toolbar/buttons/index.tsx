@@ -1,8 +1,7 @@
 import {
     useEditMode,
     useEmployeeEditor,
-    useEmployeeVersions,
-    useOneSelectedEmployeeVersion,
+    useEmployees,
     useSelectedEmployees,
 } from "@/controller/employee";
 import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
@@ -59,7 +58,7 @@ export function DeleteToolBarButton() {
 }
 
 export function RestoreVersionToolBarButton() {
-    const { restoreToSelectedVersion } = useOneSelectedEmployeeVersion();
+    const { restoreToSelectedVersion } = useEmployees();
 
     return (
         <ToolBarButton
@@ -83,12 +82,12 @@ export function DeleteVersionToolBarButton() {
 }
 
 export function ToLatestVersionToolBarButton() {
-    const { selectLatestVersion } = useEmployeeVersions();
+    // const { selectLatestVersion } = useEmployeeVersions();
 
     return (
         <ToolBarButton
             color={Palette.GREEN}
-            onClick={selectLatestVersion}
+            onClick={null}
             title={"К актуальной версии"}
             icon={<ArrowUpOutlined />}
         />

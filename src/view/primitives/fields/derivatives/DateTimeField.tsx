@@ -1,27 +1,15 @@
-// DateField.tsx
 import { DateTimeString } from "@/model";
-import { CombinedFieldContainer, LabelField } from "@/view/primitives";
 import {
-    IDisplayFieldProps,
-    IEditFieldProps,
+    IObjectFieldProps,
+    IValueFieldProps,
 } from "@/view/primitives/fields/types";
-import { DatePicker, Flex } from "antd";
+import { DatePicker, Input } from "antd";
 import dayjs from "dayjs";
 
-export const DEFAULT_DATE_FORMAT = "DD.MM.YYYY";
+export function DateTimeField(props: IValueFieldProps<DateTimeString>) {
+    const { value: value, onChange, editModeEnabled } = props;
 
-const DateTimeDisplayField: React.FC<
-    IDisplayFieldProps<DateTimeString | null>
-> = ({ value }) => {
-    const displayValue = value ? dayjs(value).format(DEFAULT_DATE_FORMAT) : "—";
-
-    return <LabelField value={displayValue} />;
-};
-
-const DateTimeEditField: React.FC<IEditFieldProps<DateTimeString | null>> = (
-    props
-) => {
-    const { value, onChange } = props;
+    const displayValue = value ? dayjs(value).format("DD.MM.YYYY") : "—";
 
     const getDateValue = (value: DateTimeString | null): dayjs.Dayjs | null => {
         if (!value) return null;
@@ -29,40 +17,13 @@ const DateTimeEditField: React.FC<IEditFieldProps<DateTimeString | null>> = (
         return parsedDate.isValid() ? parsedDate : null;
     };
 
-    const onChangeDateValue = (
-        date: dayjs.Dayjs | null,
-        then: (date: DateTimeString | null) => void
-    ) => {
-        then((date?.toISOString() as DateTimeString) ?? null);
+    const onChangeDateValue = (date: dayjs.Dayjs | null) => {
+        onChange((date?.toISOString() as DateTimeString) ?? null);
     };
 
-    return (
-        <DatePicker
-            value={getDateValue(value)}
-            onChange={(value) => onChangeDateValue(value, onChange)}
-        ></DatePicker>
-    );
-};
-
-interface DateTimeFieldProps {
-    value: DateTimeString | null;
-    onChange: (value: DateTimeString | null) => void;
-    editModeEnabled: boolean;
-}
-
-export function DateTimeField(props: DateTimeFieldProps) {
-    const { value: value, onChange, editModeEnabled } = props;
-
-    return (
-        <CombinedFieldContainer<DateTimeString | null>
-            editModeEnabled={editModeEnabled}
-            value={value}
-            onChange={onChange}
-            DisplayFieldType={DateTimeDisplayField}
-            EditFieldType={DateTimeEditField}
-        />
+    return editModeEnabled ? (
+        <DatePicker onChange={onChangeDateValue} value={getDateValue(value)} />
+    ) : (
+        <Input readOnly value={displayValue || ""}></Input>
     );
 }
-
-DateTimeField.Display = DateTimeDisplayField;
-DateTimeField.Edit = DateTimeEditField;

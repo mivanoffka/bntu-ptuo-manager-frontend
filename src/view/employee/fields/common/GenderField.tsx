@@ -1,10 +1,11 @@
-import { SelectField } from "@/view/primitives/fields/derivatives/select/SelectField";
+import { SelectField } from "@/view/primitives/fields/derivatives/SelectField";
 import {
     EnumerationName,
     useEnumerations,
 } from "@/controller/enumerations/EnumerationsContext";
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { Gender } from "@/model";
+import { FieldContainer } from "@/view/primitives";
 
 export function GenderField() {
     const { editModeEnabled } = useEditMode();
@@ -19,12 +20,13 @@ export function GenderField() {
         updateField("genderId", value);
 
     return (
-        <SelectField<Gender>
-            title="Пол"
-            editModeEnabled={editModeEnabled}
-            selectedId={genderId}
-            enumeration={genders}
-            onChange={updateGenderId}
-        ></SelectField>
+        <FieldContainer title="Пол">
+            <SelectField<Gender>
+                editModeEnabled={editModeEnabled}
+                selectedId={genderId}
+                enumeration={genders}
+                onChange={updateGenderId}
+            ></SelectField>
+        </FieldContainer>
     );
 }

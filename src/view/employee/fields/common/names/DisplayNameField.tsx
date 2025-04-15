@@ -1,4 +1,4 @@
-import { FieldContainer } from "@/view/primitives/fields/field/Field";
+import { FieldContainer } from "@/view/primitives/fields/Field";
 import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
 import { IName, NameUtility } from "@/model";
 

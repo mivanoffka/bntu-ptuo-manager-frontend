@@ -12,7 +12,7 @@ export function BntuPositionsList() {
     const getNewBntuPosition = () => {
         return {
             id: tempIds.generate(),
-            bntuDepartmentOptionId: null,
+            bntuDepartmentOptionPath: null,
             bntuDepartmentAuthenticLabel: null,
             label: null,
             hiredAt: null,

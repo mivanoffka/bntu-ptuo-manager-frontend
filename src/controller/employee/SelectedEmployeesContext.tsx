@@ -8,6 +8,7 @@ import {
 } from "react";
 
 export interface ISelectedEmployees {
+    selectedId: number | null;
     selectedIds: number[];
     selectOne: (id: number) => void;
     toggleSingularSelection: (id: number) => void;
@@ -19,6 +20,7 @@ export interface ISelectedEmployees {
 }
 
 export const SelectedEmployeesContext = createContext<ISelectedEmployees>({
+    selectedId: null,
     selectedIds: [],
     selectOne: () => {},
     toggleSingularSelection: () => {},
@@ -26,7 +28,7 @@ export const SelectedEmployeesContext = createContext<ISelectedEmployees>({
     addToSelection: () => {},
     removeFromSelection: () => {},
     selectMany: () => {},
-    clearSelection: () => {}, // Добавлено
+    clearSelection: () => {},
 });
 
 export function SelectedEmployeesProvider({
@@ -35,6 +37,15 @@ export function SelectedEmployeesProvider({
     children: ReactNode;
 }) {
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    const [selectedId, setSelectedId] = useState<number | null>(null);
+
+    useEffect(() => {
+        if (selectedIds.length === 1) {
+            setSelectedId(selectedIds[0]);
+        } else {
+            setSelectedId(null);
+        }
+    }, [selectedIds]);
 
     const selectOne = useCallback((id: number) => {
         setSelectedIds([id]);
@@ -71,6 +82,7 @@ export function SelectedEmployeesProvider({
     }, []);
 
     const context: ISelectedEmployees = {
+        selectedId,
         selectedIds,
         selectMany,
         selectOne,

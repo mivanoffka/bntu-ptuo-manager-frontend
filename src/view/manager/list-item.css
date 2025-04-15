@@ -1,0 +1,20 @@
+.employee-row {
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.employee-row.even {
+    background-color: #ffffff;
+}
+
+.employee-row.odd {
+    background-color: #f7f7f7;
+}
+
+.employee-row:hover {
+    background-color: #e0e0e0;
+}
+
+.employee-row.selected {
+    background-color: #cce4ff !important;
+}

@@ -1,67 +1,61 @@
+import { useSelectedEmployees } from "@/controller/employee";
 import { useEmployees } from "@/controller/employee/EmployeesContext";
-import { HistoryUtility, IEmployee, IEmployeeVersion, IName } from "@/model";
-import { Table, Button, Pagination, Card, List, Flex } from "antd";
-
-import dayjs from "dayjs";
-import { useSelectedEmployees } from "@/controller/employee/SelectedEmployeesContext";
-import { useCallback, useEffect, useRef } from "react";
 import { EmployeesListItem } from "@/view/manager/EmployeeListItem";
+import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
+import { PlusOutlined } from "@ant-design/icons";
+import { Flex, List } from "antd";
+import { useEffect, useRef } from "react";
+import "./list-item.css";
 
 export function EmployeesList() {
-    const { list, hasMore, next } = useEmployees();
-    const {
-        selectedIds,
-        selectOne,
-        toggleSingularSelection,
-        toggleMultipleSelection,
-        addToSelection,
-        removeFromSelection,
-        selectMany,
-    } = useSelectedEmployees();
+    const { employeesList, fetchNextEmployees } = useEmployees();
+    const { selectedIds, toggleSingularSelection, selectMany, selectOne } =
+        useSelectedEmployees();
 
-    const rowSelection = {
-        selectedRowKeys: selectedIds,
-        onChange: (newSelectedRowKeys: number[]) => {
-            if (!list || !newSelectedRowKeys) {
-                return;
-            }
-            selectMany(newSelectedRowKeys);
-        },
-        // renderCell: () => null,
+    const handleLoadMore = () => {
+        fetchNextEmployees();
     };
-
-    const scrollContainerRef = useRef(null);
-
-    const handleScroll = useCallback(() => {
-        const { current } = scrollContainerRef;
-        if (current) {
-            const { scrollTop, scrollHeight, clientHeight } = current;
-            if (scrollHeight - (scrollTop + clientHeight) < 50) {
-                next();
-            }
-        }
-    }, []);
 
     return (
         <Flex
+            vertical
             style={{
                 width: "100%",
                 height: "100%",
+                paddingRight: "10px",
                 overflow: "auto",
-                backgroundColor: "#f0f0f0",
             }}
         >
             <List
-                dataSource={list}
-                renderItem={(employee) => (
-                    <List.Item
-                        style={{ width: "100%" }}
-                        onClick={() => toggleSingularSelection(employee.id)}
-                    >
-                        <EmployeesListItem employee={employee} />
-                    </List.Item>
-                )}
-            ></List>
+                dataSource={employeesList}
+                renderItem={(employee, index) => {
+                    const isSelected = selectedIds.includes(employee.id);
+                    const rowClass = `employee-row ${
+                        index % 2 === 0 ? "even" : "odd"
+                    } ${isSelected ? "selected" : ""}`;
+                    return (
+                        <List.Item
+                            style={{ height: "30px" }}
+                            className={rowClass}
+                            onClick={() => selectOne(employee.id)}
+                        >
+                            <EmployeesListItem employee={employee} />
+                        </List.Item>
+                    );
+                }}
+            />
+            <Flex
+                vertical
+                justify="center"
+                align="center"
+                style={{ width: "100%", height: "200px" }}
+            >
+                <ToolBarButton
+                    onClick={handleLoadMore}
+                    title="Больше"
+                    icon={<PlusOutlined />}
+                />
+            </Flex>
         </Flex>
     );
 }

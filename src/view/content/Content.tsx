@@ -13,5 +13,5 @@ export function Content({ children }: IContent) {
 
     const content = loading ? <Loader /> : children;
 
-    return <div className="content-container">{content}</div>;
+    return <div className="content-container">{children}</div>;
 }

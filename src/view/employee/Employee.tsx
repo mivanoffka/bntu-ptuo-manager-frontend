@@ -1,5 +1,4 @@
-import { Flex, Image } from "antd";
-
+import { Divider, Flex, Image, Tabs } from "antd";
 import {
     NamesField,
     PhoneNumbersList,
@@ -15,14 +14,15 @@ import {
     AcademicDegreeField,
 } from "@/view/employee/fields";
 
-import { Expandable } from "@/view/primitives";
-
 import "./style/employee.css";
 import { RewardsList } from "@/view/employee/fields/other";
 import { BntuPositionsList } from "@/view/employee/fields/bntu/BntuPositionsList";
-import { TradeUnionInfoField } from "@/view/employee/fields/trade-union/info/TradeUnionInfoField";
-import { TradeUnionDepartmentFields } from "@/view/employee/fields/trade-union/departments/TradeUnionDepartmentFields";
-import { WorkingGroupHistory } from "@/view/employee/fields/trade-union/working-groups/WorkingGroupHistoryField";
+import { TradeUnionInfoField } from "@/view/employee/fields/trade-union/TradeUnionInfoField";
+
+import { WorkingGroupHistory } from "@/view/employee/fields/trade-union/WorkingGroupHistoryField";
+import { TradeUnionDepartmentHistory } from "@/view/employee/fields/trade-union/TradeUnionDepartmentHistory";
+
+const { TabPane } = Tabs;
 
 export function Employee() {
     return (
@@ -44,7 +44,7 @@ export function Employee() {
                     justify="center"
                     style={{ width: "200px" }}
                 >
-                    <Image style={{ width: "150px", height: "150px" }}></Image>
+                    <Image style={{ width: "150px", height: "150px" }} />
                 </Flex>
                 <Flex
                     gap="small"
@@ -53,9 +53,8 @@ export function Employee() {
                     justify="center"
                     style={{ width: "100%" }}
                 >
-                    <NamesField></NamesField>
-                    <BirthplaceField></BirthplaceField>
-
+                    <NamesField />
+                    <BirthplaceField />
                     <Flex
                         align="center"
                         justify="center"
@@ -67,51 +66,79 @@ export function Employee() {
                             justify="center"
                             style={{ width: "50%" }}
                         >
-                            <BirthdateField></BirthdateField>
+                            <BirthdateField />
                         </Flex>
                         <Flex
                             align="center"
                             justify="center"
                             style={{ width: "50%" }}
                         >
-                            <GenderField></GenderField>
+                            <GenderField />
                         </Flex>
                     </Flex>
                 </Flex>
             </Flex>
+
             <Flex
                 vertical
-                align="center"
+                align="start"
                 justify="center"
-                style={{ width: "100%" }}
+                style={{
+                    width: "100%",
+                    height: "100%",
+                }}
             >
-                <Expandable title="БНТУ">
-                    <BntuPositionsList></BntuPositionsList>
-                </Expandable>
-                <Expandable title="Профсоюз">
-                    <TradeUnionInfoField></TradeUnionInfoField>
-                    <Flex gap="small" style={{ width: "100%" }}>
-                        <TradeUnionDepartmentFields></TradeUnionDepartmentFields>
-                        <WorkingGroupHistory></WorkingGroupHistory>
-                    </Flex>
-                </Expandable>
-                <Expandable title="Контакты">
-                    <PhoneNumbersList></PhoneNumbersList>
-                    <EmailsList></EmailsList>
-                    <AddressesList></AddressesList>
-                </Expandable>
-                <Expandable title="Образование">
-                    <Flex gap="small" style={{ width: "100%" }}>
-                        <EducationLevelField></EducationLevelField>
-                        <AcademicDegreeField></AcademicDegreeField>
-                    </Flex>
-                    <EducationalInstitutionsList></EducationalInstitutionsList>
-                </Expandable>
-                <Expandable title="Прочее">
-                    <RelativesList></RelativesList>
-                    <RewardsList></RewardsList>
-                    <CommentsList></CommentsList>
-                </Expandable>
+                <Tabs
+                    style={{ width: "100%", height: "100%" }}
+                    defaultActiveKey="bntu"
+                >
+                    <TabPane tab="БНТУ" key="bntu">
+                        <div style={{ maxHeight: "100%", overflow: "auto" }}>
+                            <BntuPositionsList />
+                        </div>
+                    </TabPane>
+                    <TabPane tab="Профсоюз" key="union">
+                        <Flex
+                            // gap="middle"
+                            vertical
+                            style={{ maxHeight: "100%", overflow: "auto" }}
+                        >
+                            <Flex gap="small" style={{ width: "100%" }}>
+                                <TradeUnionDepartmentHistory />
+                                <WorkingGroupHistory />
+                            </Flex>
+                            <Divider></Divider>
+                            <TradeUnionInfoField />
+                        </Flex>
+                    </TabPane>
+                    <TabPane tab="Контакты" key="contacts">
+                        <div style={{ maxHeight: "100%", overflow: "auto" }}>
+                            <PhoneNumbersList />
+                            <EmailsList />
+                            <AddressesList />
+                        </div>
+                    </TabPane>
+                    <TabPane tab="Образование" key="education">
+                        <Flex
+                            gap="small"
+                            vertical
+                            style={{ maxHeight: "100%", overflow: "auto" }}
+                        >
+                            <EducationalInstitutionsList />
+                            <Flex gap="small" style={{ width: "100%" }}>
+                                <EducationLevelField />
+                                <AcademicDegreeField />
+                            </Flex>
+                        </Flex>
+                    </TabPane>
+                    <TabPane tab="Прочее" key="other">
+                        <div style={{ maxHeight: "100%", overflow: "auto" }}>
+                            <RelativesList />
+                            <RewardsList />
+                            <CommentsList />
+                        </div>
+                    </TabPane>
+                </Tabs>
             </Flex>
         </Flex>
     );

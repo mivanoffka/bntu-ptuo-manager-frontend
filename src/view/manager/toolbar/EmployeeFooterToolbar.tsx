@@ -1,4 +1,5 @@
-import { useOneSelectedEmployeeVersion } from "@/controller/employee";
+import { useEmployees } from "@/controller/employee";
+import { getLatestTimestamp } from "@/controller/employee/utils";
 import {
     DeleteToolBarButton,
     DeleteVersionToolBarButton,
@@ -7,7 +8,12 @@ import {
 import { Flex } from "antd";
 
 export function EmployeeFooterToolbar() {
-    const { isLatest } = useOneSelectedEmployeeVersion();
+    const { selectedEmployee, selectedTimestamp } = useEmployees();
+
+    const isLatest =
+        selectedEmployee &&
+        selectedTimestamp ===
+            getLatestTimestamp(selectedEmployee.employeeVersionTimestamps);
 
     const toolBarLatest = (
         <Flex align="center" justify="center" gap="small">
@@ -40,7 +46,7 @@ export function EmployeeFooterToolbar() {
                 gap="small"
                 style={{ width: "90%", height: "60%" }}
             >
-                {isLatest() ? toolBarLatest : toolBarNotLatest}
+                {isLatest ? toolBarLatest : toolBarNotLatest}
             </Flex>
         </Flex>
     );

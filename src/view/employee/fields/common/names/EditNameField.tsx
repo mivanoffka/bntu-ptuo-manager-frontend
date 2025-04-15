@@ -1,22 +1,20 @@
-import { FieldContainer } from "@/view/primitives/fields/field/Field";
 import { IName, NameUtility } from "@/model";
 import { InputField } from "@/view/primitives";
 import { Flex } from "antd";
+import { useEditMode } from "@/controller/employee";
+import { FieldContainer, IObjectFieldProps } from "@/view/primitives/fields";
 
-export interface IEditNameFieldProps {
-    value: IName;
-    onChange: (value: IName) => void;
-}
-
-export function EditNameField(props: IEditNameFieldProps) {
+export function NameField(props: IObjectFieldProps<IName>) {
     const { value, onChange } = props;
 
+    const { editModeEnabled } = useEditMode();
     const { firstName, lastName, middleName } = value ?? {};
 
     return (
         <Flex gap="small" style={{ width: "100%" }}>
             <FieldContainer title="Фамилия">
                 <InputField
+                    editModeEnabled={editModeEnabled}
                     value={lastName}
                     onChange={(newValue) =>
                         onChange(NameUtility.updatedLastName(value, newValue))
@@ -26,6 +24,7 @@ export function EditNameField(props: IEditNameFieldProps) {
             </FieldContainer>
             <FieldContainer title="Имя">
                 <InputField
+                    editModeEnabled={editModeEnabled}
                     value={firstName}
                     onChange={(newValue) =>
                         onChange(NameUtility.updatedFirstName(value, newValue))
@@ -35,6 +34,7 @@ export function EditNameField(props: IEditNameFieldProps) {
             </FieldContainer>
             <FieldContainer title="Отчество">
                 <InputField
+                    editModeEnabled={editModeEnabled}
                     value={middleName}
                     onChange={(newValue) =>
                         onChange(NameUtility.updatedMiddleName(value, newValue))

@@ -1,38 +1,11 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { IEmployee, IEmployeeVersion, IPagination } from "@/model";
 import { createHook } from "@/controller/utils";
+import { DateTimeString, IEmployee, IEmployeeVersion } from "@/model";
+import { useSelectedEmployees } from "@/controller/employee/SelectedEmployeesContext";
 import { useApi } from "@/controller/api";
 import { EmployeesEndPoint } from "@/controller/employee/constants";
-
-export interface IEmployeesContext {
-    list: IEmployee[];
-    pagination: IPagination;
-    setPage: (page: number) => void;
-    push: (employee: IEmployee, employeeVersion: IEmployeeVersion) => void;
-    remove: (ids: number[]) => void;
-    allInvalid: boolean;
-    invalidate: () => void;
-    invalidOne: number | null;
-    invalidateOne: (id: number) => void;
-    needsNext: boolean;
-    next: () => void;
-    hasMore: () => boolean;
-}
-
-export const EmployeesContext = createContext<IEmployeesContext>({
-    list: [],
-    pagination: { current: 0, total: 0, size: 10 },
-    setPage: () => {},
-    push: () => {},
-    remove: () => {},
-    allInvalid: false,
-    invalidate: () => {},
-    needsNext: false,
-    next: () => {},
-    hasMore: () => false,
-    invalidOne: null,
-    invalidateOne: () => {},
-});
+import dayjs from "dayjs";
+import { getLatestTimestamp } from "@/controller/employee/utils";
 
 export interface IPaginatedData<T> {
     results: T[];
@@ -41,77 +14,69 @@ export interface IPaginatedData<T> {
     previous: string | null;
 }
 
+export interface IEmployeesContext {
+    employeesList: IEmployee[];
+    selectedId: number | null;
+    selectedTimestamp: DateTimeString | null;
+    setSelectedTimestamp: (timestamp: DateTimeString) => void;
+    selectedEmployee: IEmployee | null;
+    setSelectedEmployee: (employee: IEmployee) => void;
+    selectedEmployeeVersion: IEmployeeVersion | null;
+    setSelectedEmployeeVersion: (version: IEmployeeVersion) => void;
+    pagesLoaded: number;
+    limit: number;
+    totalItems: number;
+
+    fetchAllEmployees: () => Promise<void>;
+    fetchNextEmployees: () => Promise<void>;
+    fetchSelectedEmployee: () => Promise<void>;
+    fetchSelectedEmployeeVersion: () => Promise<void>;
+    sendNewEmployee: (version: IEmployeeVersion) => Promise<void>;
+    sendNewVersion: (version: IEmployeeVersion) => Promise<void>;
+    restoreToSelectedVersion: () => Promise<void>;
+}
+
+export const EmployeesContext = createContext<IEmployeesContext>({
+    employeesList: [],
+    selectedId: null,
+    selectedTimestamp: null,
+    setSelectedTimestamp: () => {},
+    selectedEmployee: null,
+    setSelectedEmployee: () => {},
+    selectedEmployeeVersion: null,
+    setSelectedEmployeeVersion: () => {},
+    pagesLoaded: 0,
+    limit: 20,
+    totalItems: 0,
+
+    fetchAllEmployees: async () => {},
+    fetchNextEmployees: async () => {},
+    fetchSelectedEmployee: async () => {},
+    fetchSelectedEmployeeVersion: async () => {},
+    sendNewEmployee: async () => {},
+    sendNewVersion: async () => {},
+    restoreToSelectedVersion: async () => {},
+});
+
 export function EmployeesProvider({ children }: { children: ReactNode }) {
-    const [list, setList] = useState<IEmployee[]>([]);
-    const [pagination, setPagination] = useState<IPagination>({
-        current: 0,
-        total: 0,
-        size: 10,
-    });
-
-    const [limit, setLimit] = useState(25);
-
-    const [totalItems, setTotalItems] = useState(0);
+    const { axiosInstance } = useApi();
+    const { selectOne, clearSelection, selectedId } = useSelectedEmployees();
+    const [employeesList, setEmployeesList] = useState<IEmployee[]>([]);
+    const [selectedEmployee, setSelectedEmployee] = useState<IEmployee | null>(
+        null
+    );
+    const [selectedTimestamp, setSelectedTimestamp] =
+        useState<DateTimeString | null>(null);
+    const [selectedEmployeeVersion, setSelectedEmployeeVersion] =
+        useState<IEmployeeVersion | null>(null);
 
     const [pagesLoaded, setPagesLoaded] = useState(0);
+    const [limit, setLimit] = useState(15);
+    const [totalItems, setTotalItems] = useState(0);
 
-    const [allInvalid, setAllInvalid] = useState(false);
+    // region Api
 
-    const [invalidOne, setInvalidOne] = useState<number | null>(null);
-
-    const [needsNext, setNeedsNext] = useState(false);
-
-    function hasMore() {
-        return totalItems > pagesLoaded * limit;
-    }
-
-    function invalidate() {
-        setAllInvalid(true);
-    }
-
-    function invalidateOne(id: number) {
-        setInvalidOne(id);
-    }
-
-    function next() {
-        setNeedsNext(true);
-    }
-
-    useEffect(() => {
-        invalidate();
-    }, []);
-
-    useEffect(() => {
-        if (invalidOne) {
-            fetchInvalidatedOne(invalidOne);
-        }
-    }, [invalidOne]);
-
-    useEffect(() => {
-        console.log(list);
-    }, [list]);
-
-    useEffect(() => {
-        if (allInvalid) {
-            refetchEmployees();
-            setAllInvalid(false);
-        }
-    }, [allInvalid]);
-
-    useEffect(() => {
-        if (needsNext) {
-            fetchNextEmployees();
-            setNeedsNext(false);
-        }
-    }, [needsNext]);
-
-    const { axiosInstance } = useApi();
-
-    async function setPage(page: number) {
-        setPagination({ ...pagination, current: page });
-    }
-
-    async function fetchEmployees(
+    async function _getManyEmployees(
         page: number,
         limit: number
     ): Promise<IPaginatedData<IEmployee>> {
@@ -133,33 +98,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         return data;
     }
 
-    async function refetchEmployees() {
-        setPagesLoaded(0);
-
-        const page = 1;
-
-        const data = await fetchEmployees(page, limit);
-
-        if (data) {
-            const { results, count } = data;
-
-            setPagesLoaded(page);
-            setTotalItems(count);
-            setList(results);
-        }
-    }
-
-    async function fetchInvalidatedOne(id: number) {
-        const employee = await fetchOneEmployee(id);
-
-        setList((list) =>
-            list.map((item) => (item.id === id ? employee : item))
-        );
-
-        setInvalidOne(null);
-    }
-
-    async function fetchOneEmployee(id: number) {
+    async function _getOneEmployee(id: number): Promise<IEmployee> {
         const data = await axiosInstance
             .get(`${EmployeesEndPoint.PREFIX}/${id}/`)
             .then((response) => {
@@ -173,53 +112,253 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         return data;
     }
 
-    async function fetchNextEmployees() {
-        const page = pagesLoaded + 1;
+    async function _getOneEmployeeVersion(
+        id: number,
+        timestamp: DateTimeString
+    ): Promise<IEmployeeVersion> {
+        const data = await axiosInstance
+            .get(
+                `${EmployeesEndPoint.PREFIX}/${id}/${EmployeesEndPoint.VERSIONS}/${timestamp}/`
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return undefined;
+            });
 
-        const data = await fetchEmployees(page, limit);
+        return data;
+    }
+
+    async function _postNewEmployee(
+        version: IEmployeeVersion
+    ): Promise<IEmployee> {
+        const body = {
+            newEmployeeVersion: version,
+        };
+
+        const data = await axiosInstance
+            .post(`${EmployeesEndPoint.PREFIX}/`, body)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return undefined;
+            });
+
+        return data;
+    }
+
+    async function _patchEmployee(id: number, version: IEmployeeVersion) {
+        const body = {
+            newEmployeeVersion: version,
+        };
+
+        const data = await axiosInstance
+            .patch(`${EmployeesEndPoint.PREFIX}/${id}/`, body)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return undefined;
+            });
+
+        return data;
+    }
+
+    async function _deleteEmployee(id: number) {
+        const data = await axiosInstance
+            .delete(`${EmployeesEndPoint.PREFIX}/${id}/`)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return undefined;
+            });
+
+        return data;
+    }
+
+    async function _deleteEmployeeVersion(
+        id: number,
+        timestamp: DateTimeString
+    ) {
+        const data = await axiosInstance
+            .delete(
+                `${EmployeesEndPoint.PREFIX}/${id}/${EmployeesEndPoint.VERSIONS}/${timestamp}/`
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return undefined;
+            });
+
+        return data;
+    }
+
+    async function _restoreEmployeeVersion(
+        id: number,
+        timestamp: DateTimeString
+    ) {
+        const data = await axiosInstance
+            .post(
+                `${EmployeesEndPoint.PREFIX}/${id}/${EmployeesEndPoint.RESTORE}/${timestamp}/`
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return undefined;
+            });
+
+        return data;
+    }
+
+    // endregion
+
+    async function fetchAllEmployees() {
+        const page = 1;
+
+        const data = await _getManyEmployees(page, limit);
 
         if (data) {
             const { results, count } = data;
 
             setPagesLoaded(page);
             setTotalItems(count);
-            setList([...list, ...results]);
+            setEmployeesList(results);
         }
     }
 
-    async function push(
-        employee: IEmployee,
-        employeeVersion: IEmployeeVersion
-    ) {
-        const { id } = employee;
+    useEffect(() => {
+        if (selectedId) {
+            if (!employeesList.find((e) => e.id === selectedId)) {
+                fetchSelectedEmployee();
+            }
+        }
+    }, [employeesList]);
 
-        const body = {
-            newEmployeeVersion: employeeVersion,
-        };
+    useEffect(() => {
+        fetchAllEmployees();
+    }, []);
 
-        await axiosInstance
-            .patch(`${EmployeesEndPoint.PREFIX}/${id}/`, body)
-            .then((response) => {})
-            .catch((error) => {
-                console.log(error);
-            });
+    useEffect(() => {
+        setSelectedEmployeeVersion(null);
+        setSelectedEmployee(null);
+        setSelectedTimestamp(null);
+
+        if (selectedId) {
+            fetchSelectedEmployee();
+        }
+    }, [selectedId]);
+
+    useEffect(() => {
+        if (selectedTimestamp) {
+            fetchSelectedEmployeeVersion();
+        }
+    }, [selectedTimestamp]);
+
+    async function fetchNextEmployees() {
+        const page = pagesLoaded + 1;
+
+        const data = await _getManyEmployees(page, limit);
+
+        if (data) {
+            const { results, count } = data;
+
+            setPagesLoaded(page);
+            setTotalItems(count);
+            setEmployeesList([...employeesList, ...results]);
+        }
     }
 
-    async function remove(ids: number[]) {}
+    async function fetchSelectedEmployee() {
+        if (selectedId) {
+            const data = await _getOneEmployee(selectedId);
+
+            if (data) {
+                if (!employeesList.find((e) => e.id === selectedId)) {
+                    setEmployeesList([data, ...employeesList]);
+                }
+
+                setSelectedEmployee(data);
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (selectedEmployee) {
+            const latestTimestamp = getLatestTimestamp(
+                selectedEmployee.employeeVersionTimestamps
+            );
+
+            setSelectedTimestamp(latestTimestamp);
+        }
+    }, [selectedEmployee]);
+
+    async function fetchSelectedEmployeeVersion() {
+        if (selectedId && selectedTimestamp) {
+            const data = await _getOneEmployeeVersion(
+                selectedId,
+                selectedTimestamp
+            );
+
+            if (data) {
+                setSelectedEmployeeVersion(data);
+            }
+        }
+    }
+
+    async function sendNewVersion(newVersion: IEmployeeVersion) {
+        if (selectedId) {
+            await _patchEmployee(selectedId, newVersion);
+            await fetchSelectedEmployee();
+        }
+    }
+
+    async function sendNewEmployee(newVersion: IEmployeeVersion) {
+        const employee = await _postNewEmployee(newVersion);
+
+        if (employee) {
+            setEmployeesList([employee, ...employeesList]);
+            selectOne(employee.id);
+        }
+    }
+
+    async function restoreToSelectedVersion() {
+        if (selectedId && selectedTimestamp) {
+            await _restoreEmployeeVersion(selectedId, selectedTimestamp);
+            await fetchSelectedEmployee();
+        }
+    }
 
     const context: IEmployeesContext = {
-        list,
-        pagination,
-        setPage,
-        push,
-        remove,
-        allInvalid,
-        invalidate,
-        needsNext,
-        next,
-        hasMore,
-        invalidOne,
-        invalidateOne,
+        employeesList,
+        selectedId,
+        selectedEmployee,
+        selectedEmployeeVersion,
+        selectedTimestamp,
+        pagesLoaded,
+        totalItems,
+        limit,
+        setSelectedEmployee,
+        setSelectedTimestamp,
+        setSelectedEmployeeVersion,
+
+        fetchAllEmployees,
+        fetchNextEmployees,
+        fetchSelectedEmployee,
+        fetchSelectedEmployeeVersion,
+        sendNewVersion,
+        sendNewEmployee,
+        restoreToSelectedVersion,
     };
 
     return (

@@ -1,5 +1,6 @@
-import { useOneSelectedEmployeeVersion } from "@/controller/employee";
+import { useEmployees } from "@/controller/employee";
 import { useEditMode } from "@/controller/employee/EditModeContext";
+import { getLatestTimestamp } from "@/controller/employee/utils";
 import {
     ApplyToolBarButton,
     CancelToolBarButton,
@@ -14,7 +15,12 @@ import { Flex } from "antd";
 export function EmployeeHeaderToolbar() {
     const { editModeEnabled } = useEditMode();
 
-    const { isLatest } = useOneSelectedEmployeeVersion();
+    const { selectedEmployee, selectedTimestamp } = useEmployees();
+
+    const isLatest =
+        selectedEmployee &&
+        selectedTimestamp ===
+            getLatestTimestamp(selectedEmployee.employeeVersionTimestamps);
 
     const toolBar = (
         <Flex
@@ -62,7 +68,7 @@ export function EmployeeHeaderToolbar() {
                                     <ApplyToolBarButton />
                                     <CancelToolBarButton />
                                 </Flex>
-                            ) : isLatest() ? (
+                            ) : isLatest ? (
                                 <Flex>
                                     <EditToolBarButton />
                                     <CloseToolBarButton />

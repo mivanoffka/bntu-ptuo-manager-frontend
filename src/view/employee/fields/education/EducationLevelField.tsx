@@ -1,10 +1,11 @@
-import { SelectField } from "@/view/primitives/fields/derivatives/select/SelectField";
+import { SelectField } from "@/view/primitives/fields/derivatives/SelectField";
 import { EducationLevel } from "@/model";
 import {
     EnumerationName,
     useEnumerations,
 } from "@/controller/enumerations/EnumerationsContext";
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
+import { FieldContainer } from "@/view/primitives";
 
 export function EducationLevelField() {
     const { editModeEnabled } = useEditMode();
@@ -19,12 +20,13 @@ export function EducationLevelField() {
         updateField("educationLevelId", value);
 
     return (
-        <SelectField<EducationLevel>
-            editModeEnabled={editModeEnabled}
-            title="Образование"
-            selectedId={educationLevelId}
-            enumeration={educationLevels}
-            onChange={updateEducationLevel}
-        ></SelectField>
+        <FieldContainer title="Образование">
+            <SelectField<EducationLevel>
+                editModeEnabled={editModeEnabled}
+                selectedId={educationLevelId}
+                enumeration={educationLevels}
+                onChange={updateEducationLevel}
+            ></SelectField>
+        </FieldContainer>
     );
 }

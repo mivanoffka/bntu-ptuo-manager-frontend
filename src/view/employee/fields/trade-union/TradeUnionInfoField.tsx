@@ -1,17 +1,18 @@
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { FieldContainer } from "@/view/primitives";
 import { DateTimeField } from "@/view/primitives/fields";
+import { BooleanField } from "@/view/primitives/fields/derivatives/BooleanField";
 import { Checkbox, CheckboxChangeEvent, Flex } from "antd";
 
-export function TradeUnionInfoEditField() {
+export function TradeUnionInfoField() {
     const { getField, updateField } = useEmployeeEditor();
 
     const isArchived = getField<boolean>("isArchived");
     const isRetired = getField<boolean>("isRetired");
 
-    function onChangeIsArchived(e: CheckboxChangeEvent) {
-        const value = e.target.checked;
+    const { editModeEnabled } = useEditMode();
 
+    function onChangeIsArchived(value: boolean) {
         if (!value) {
             updateField("archivedAt", null);
         } else {
@@ -21,9 +22,7 @@ export function TradeUnionInfoEditField() {
         updateField("isArchived", value);
     }
 
-    function onChangeIsRetired(e: CheckboxChangeEvent) {
-        const value = e.target.checked;
-
+    function onChangeIsRetired(value: boolean) {
         if (!value) {
             updateField("retiredAt", null);
         } else {
@@ -37,7 +36,8 @@ export function TradeUnionInfoEditField() {
         <Flex vertical gap="small" align="center" style={{ width: "100%" }}>
             <Flex gap="small" align="center" style={{ width: "100%" }}>
                 <FieldContainer title="Дата вступления">
-                    <DateTimeField.Edit
+                    <DateTimeField
+                        editModeEnabled={editModeEnabled}
                         value={getField("joinedAt")}
                         onChange={(joinedAt) =>
                             updateField("joinedAt", joinedAt)
@@ -45,7 +45,8 @@ export function TradeUnionInfoEditField() {
                     />
                 </FieldContainer>
                 <FieldContainer title="Дата постановки на учёт">
-                    <DateTimeField.Edit
+                    <DateTimeField
+                        editModeEnabled={editModeEnabled}
                         value={getField("recordedAt")}
                         onChange={(recordedAt) =>
                             updateField("recordedAt", recordedAt)
@@ -64,25 +65,29 @@ export function TradeUnionInfoEditField() {
                                 justify="center"
                                 style={{ width: "100%" }}
                             >
-                                <Checkbox
-                                    checked={isRetired}
+                                <BooleanField
+                                    editModeEnabled={editModeEnabled}
+                                    value={isRetired}
                                     onChange={onChangeIsRetired}
-                                ></Checkbox>
-                                <DateTimeField.Edit
-                                    value={getField("retiredAt")}
-                                    onChange={(retiredAt) =>
-                                        updateField("retiredAt", retiredAt)
-                                    }
-                                />
+                                >
+                                    <DateTimeField
+                                        editModeEnabled={editModeEnabled}
+                                        value={getField("retiredAt")}
+                                        onChange={(retiredAt) =>
+                                            updateField("retiredAt", retiredAt)
+                                        }
+                                    />
+                                </BooleanField>
                             </Flex>
                         </FieldContainer>
                     ) : (
-                        <Checkbox
-                            checked={isRetired}
+                        <BooleanField
+                            editModeEnabled={editModeEnabled}
+                            value={isRetired || false}
                             onChange={onChangeIsRetired}
                         >
                             Неработающий пенсионер
-                        </Checkbox>
+                        </BooleanField>
                     )}
                 </Flex>
 
@@ -95,11 +100,13 @@ export function TradeUnionInfoEditField() {
                                 justify="center"
                                 style={{ width: "100%" }}
                             >
-                                <Checkbox
-                                    checked={isArchived}
+                                <BooleanField
+                                    editModeEnabled={editModeEnabled}
+                                    value={isArchived}
                                     onChange={onChangeIsArchived}
-                                ></Checkbox>
-                                <DateTimeField.Edit
+                                ></BooleanField>
+                                <DateTimeField
+                                    editModeEnabled={editModeEnabled}
                                     value={getField("archivedAt")}
                                     onChange={(archivedAt) =>
                                         updateField("archivedAt", archivedAt)
@@ -108,12 +115,13 @@ export function TradeUnionInfoEditField() {
                             </Flex>
                         </FieldContainer>
                     ) : (
-                        <Checkbox
-                            checked={isArchived}
+                        <BooleanField
+                            editModeEnabled={editModeEnabled}
+                            value={isArchived ?? false}
                             onChange={onChangeIsArchived}
                         >
                             Снят(а) с учёта
-                        </Checkbox>
+                        </BooleanField>
                     )}
                 </Flex>
             </Flex>

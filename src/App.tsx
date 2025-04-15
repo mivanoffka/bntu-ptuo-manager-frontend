@@ -6,14 +6,10 @@ import { AuthProvider } from "@/controller/auth";
 import { Navigate, Route, Routes, BrowserRouter } from "react-router-dom";
 import { SignIn } from "@/view/auth/SignIn";
 import { Content } from "@/view/content";
-import { EmployeesManager } from "@/view/manager";
 import {
     EditModeProvider,
     EmployeeEditorProvider,
     EmployeesProvider,
-    EmployeeVersionsProvider,
-    OneSelectedEmployeeProvider,
-    OneSelectedEmployeeVersionProvider,
     SelectedEmployeesProvider,
 } from "@/controller/employee";
 import { EnumerationsProvider } from "@/controller/enumerations/EnumerationsContext";
@@ -32,39 +28,29 @@ const App: React.FC = () => (
                             <EnumerationsProvider>
                                 <SelectedEmployeesProvider>
                                     <EmployeesProvider>
-                                        <OneSelectedEmployeeProvider>
-                                            <EmployeeVersionsProvider>
-                                                <OneSelectedEmployeeVersionProvider>
-                                                    <EmployeeEditorProvider>
-                                                        <PageContainer>
-                                                            <Content>
-                                                                <TopBar></TopBar>
-                                                                <Routes>
-                                                                    <Route
-                                                                        path="/employees"
-                                                                        element={
-                                                                            <Layout />
-                                                                        }
-                                                                    ></Route>
-                                                                    <Route
-                                                                        path="/auth/sign-in"
-                                                                        element={
-                                                                            <SignIn />
-                                                                        }
-                                                                    />
-                                                                    <Route
-                                                                        path="*"
-                                                                        element={
-                                                                            <Navigate to="/employees" />
-                                                                        }
-                                                                    />
-                                                                </Routes>
-                                                            </Content>
-                                                        </PageContainer>
-                                                    </EmployeeEditorProvider>
-                                                </OneSelectedEmployeeVersionProvider>
-                                            </EmployeeVersionsProvider>
-                                        </OneSelectedEmployeeProvider>
+                                        <EmployeeEditorProvider>
+                                            <PageContainer>
+                                                <Content>
+                                                    <TopBar></TopBar>
+                                                    <Routes>
+                                                        <Route
+                                                            path="/employees"
+                                                            element={<Layout />}
+                                                        ></Route>
+                                                        <Route
+                                                            path="/auth/sign-in"
+                                                            element={<SignIn />}
+                                                        />
+                                                        <Route
+                                                            path="*"
+                                                            element={
+                                                                <Navigate to="/employees" />
+                                                            }
+                                                        />
+                                                    </Routes>
+                                                </Content>
+                                            </PageContainer>
+                                        </EmployeeEditorProvider>
                                     </EmployeesProvider>
                                 </SelectedEmployeesProvider>
                             </EnumerationsProvider>

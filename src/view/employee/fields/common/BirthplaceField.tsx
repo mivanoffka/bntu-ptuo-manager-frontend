@@ -1,7 +1,6 @@
-import { CombinedFieldContainer } from "@/view/primitives/fields/field/CombinedField";
-import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
 import { InputField } from "@/view/primitives/fields/derivatives/InputField";
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
+import { FieldContainer } from "@/view/primitives";
 
 export function BirthplaceField() {
     const { editModeEnabled } = useEditMode();
@@ -13,13 +12,12 @@ export function BirthplaceField() {
         updateField("birthplace", value);
 
     return (
-        <CombinedFieldContainer
-            value={birthplace}
-            onChange={updateBirthplace}
-            editModeEnabled={editModeEnabled}
-            title="Место рождения"
-            DisplayFieldType={LabelField}
-            EditFieldType={InputField}
-        ></CombinedFieldContainer>
+        <FieldContainer title="Место рождения">
+            <InputField
+                value={birthplace}
+                onChange={updateBirthplace}
+                editModeEnabled={editModeEnabled}
+            ></InputField>
+        </FieldContainer>
     );
 }

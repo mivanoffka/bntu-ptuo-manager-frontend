@@ -4,24 +4,23 @@ import {
     useEnumerations,
 } from "@/controller/enumerations/EnumerationsContext";
 import { SelectField } from "@/view/primitives";
+import { IObjectFieldProps } from "@/view/primitives/fields";
 
-export interface IWorkingGroupEditFieldProps {
-    value: IWorkingGroupRecord;
-    onChange: (value: IWorkingGroupRecord) => void;
-}
-
-export function WorkingGroupEditField(props: IWorkingGroupEditFieldProps) {
-    const { value, onChange } = props;
+export function WorkingGroupField(
+    props: IObjectFieldProps<IWorkingGroupRecord>
+) {
+    const { value, onChange, editModeEnabled } = props;
     const { getEnumeration } = useEnumerations();
     const workingGroups = getEnumeration(EnumerationName.WORKING_GROUPS);
 
     return (
-        <SelectField.Edit
+        <SelectField
+            editModeEnabled={editModeEnabled}
             selectedId={value.workingGroupOptionId}
             onChange={(workingGroupOptionId) =>
                 onChange({ ...value, workingGroupOptionId })
             }
             enumeration={workingGroups}
-        ></SelectField.Edit>
+        ></SelectField>
     );
 }

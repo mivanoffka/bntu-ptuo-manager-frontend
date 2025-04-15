@@ -1,5 +1,4 @@
 import { Flex, Typography } from "antd";
-import "./style/field.css";
 import { ReactNode } from "react";
 
 export interface ISecondaryLabelProps {

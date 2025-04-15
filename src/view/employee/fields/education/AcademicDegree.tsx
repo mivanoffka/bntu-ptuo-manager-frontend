@@ -1,10 +1,11 @@
-import { SelectField } from "@/view/primitives/fields/derivatives/select/SelectField";
+import { SelectField } from "@/view/primitives/fields/derivatives/SelectField";
 import { AcademicDegree } from "@/model";
 import {
     EnumerationName,
     useEnumerations,
 } from "@/controller/enumerations/EnumerationsContext";
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
+import { FieldContainer } from "@/view/primitives";
 
 export function AcademicDegreeField() {
     const { editModeEnabled } = useEditMode();
@@ -19,12 +20,13 @@ export function AcademicDegreeField() {
         updateField("academicDegreeId", value);
 
     return (
-        <SelectField<AcademicDegree>
-            editModeEnabled={editModeEnabled}
-            title="Ученая степень"
-            selectedId={academicDegreeId}
-            enumeration={academicDegrees}
-            onChange={updateAcademicDegree}
-        ></SelectField>
+        <FieldContainer title="Ученая степень">
+            <SelectField<AcademicDegree>
+                editModeEnabled={editModeEnabled}
+                selectedId={academicDegreeId}
+                enumeration={academicDegrees}
+                onChange={updateAcademicDegree}
+            ></SelectField>
+        </FieldContainer>
     );
 }
