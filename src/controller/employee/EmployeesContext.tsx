@@ -6,6 +6,10 @@ import { useApi } from "@/controller/api";
 import { EmployeesEndPoint } from "@/controller/employee/constants";
 import dayjs from "dayjs";
 import { getLatestTimestamp } from "@/controller/employee/utils";
+import {
+    DEFAULT_FILTER,
+    IEmployeesFilter,
+} from "@/model/employee/employees.filter";
 
 export interface IPaginatedData<T> {
     results: T[];
@@ -15,6 +19,8 @@ export interface IPaginatedData<T> {
 }
 
 export interface IEmployeesContext {
+    employeesListFilter: IEmployeesFilter;
+    setEmployeesListFilter: (filter: IEmployeesFilter) => void;
     employeesList: IEmployee[];
     selectedId: number | null;
     selectedTimestamp: DateTimeString | null;
@@ -37,6 +43,8 @@ export interface IEmployeesContext {
 }
 
 export const EmployeesContext = createContext<IEmployeesContext>({
+    employeesListFilter: DEFAULT_FILTER,
+    setEmployeesListFilter: (filter: IEmployeesFilter) => {},
     employeesList: [],
     selectedId: null,
     selectedTimestamp: null,
@@ -46,7 +54,7 @@ export const EmployeesContext = createContext<IEmployeesContext>({
     selectedEmployeeVersion: null,
     setSelectedEmployeeVersion: () => {},
     pagesLoaded: 0,
-    limit: 20,
+    limit: 5,
     totalItems: 0,
 
     fetchAllEmployees: async () => {},
@@ -62,6 +70,8 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     const { axiosInstance } = useApi();
     const { selectOne, clearSelection, selectedId } = useSelectedEmployees();
     const [employeesList, setEmployeesList] = useState<IEmployee[]>([]);
+    const [employeesListFilter, setEmployeesListFilter] =
+        useState<IEmployeesFilter>(DEFAULT_FILTER);
     const [selectedEmployee, setSelectedEmployee] = useState<IEmployee | null>(
         null
     );
@@ -71,18 +81,20 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         useState<IEmployeeVersion | null>(null);
 
     const [pagesLoaded, setPagesLoaded] = useState(0);
-    const [limit, setLimit] = useState(15);
+    const [limit, setLimit] = useState(5);
     const [totalItems, setTotalItems] = useState(0);
 
     // region Api
 
     async function _getManyEmployees(
         page: number,
-        limit: number
+        limit: number,
+        filter: IEmployeesFilter
     ): Promise<IPaginatedData<IEmployee>> {
         const params = {
             page,
             limit,
+            ...filter,
         };
 
         const data = await axiosInstance
@@ -226,7 +238,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     async function fetchAllEmployees() {
         const page = 1;
 
-        const data = await _getManyEmployees(page, limit);
+        const data = await _getManyEmployees(page, limit, employeesListFilter);
 
         if (data) {
             const { results, count } = data;
@@ -246,8 +258,12 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     }, [employeesList]);
 
     useEffect(() => {
-        fetchAllEmployees();
-    }, []);
+        const debounceTimeout = setTimeout(() => {
+            fetchAllEmployees();
+        }, 250);
+
+        return () => clearTimeout(debounceTimeout);
+    }, [employeesListFilter]);
 
     useEffect(() => {
         setSelectedEmployeeVersion(null);
@@ -268,7 +284,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     async function fetchNextEmployees() {
         const page = pagesLoaded + 1;
 
-        const data = await _getManyEmployees(page, limit);
+        const data = await _getManyEmployees(page, limit, employeesListFilter);
 
         if (data) {
             const { results, count } = data;
@@ -340,6 +356,8 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     }
 
     const context: IEmployeesContext = {
+        employeesListFilter,
+        setEmployeesListFilter,
         employeesList,
         selectedId,
         selectedEmployee,

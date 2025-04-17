@@ -1,6 +1,8 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import axios, { AxiosInstance } from "axios";
 import { createHook } from "@/controller/utils";
+import { toSnakeCase } from "@/controller/api/utils";
+import qs from "qs";
 
 interface IApiContext {
     axiosInstance: AxiosInstance;
@@ -18,6 +20,8 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
     const axiosInstance = axios.create({
         baseURL: "http://localhost:8000/employees",
+        paramsSerializer: (params) =>
+            qs.stringify(params, { arrayFormat: "repeat" }),
     });
 
     async function reloadAccessToken() {
@@ -34,6 +38,13 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
             return Promise.reject(error);
         }
     );
+
+    axiosInstance.interceptors.request.use((config) => {
+        if (config.method === "get" && config.params) {
+            config.params = toSnakeCase(config.params);
+        }
+        return config;
+    });
 
     axiosInstance.interceptors.response.use(
         (response) => {
