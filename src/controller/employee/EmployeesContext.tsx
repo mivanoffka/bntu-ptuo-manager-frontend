@@ -54,7 +54,7 @@ export const EmployeesContext = createContext<IEmployeesContext>({
     selectedEmployeeVersion: null,
     setSelectedEmployeeVersion: () => {},
     pagesLoaded: 0,
-    limit: 5,
+    limit: 15,
     totalItems: 0,
 
     fetchAllEmployees: async () => {},
@@ -81,7 +81,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         useState<IEmployeeVersion | null>(null);
 
     const [pagesLoaded, setPagesLoaded] = useState(0);
-    const [limit, setLimit] = useState(5);
+    const [limit, setLimit] = useState(15);
     const [totalItems, setTotalItems] = useState(0);
 
     // region Api

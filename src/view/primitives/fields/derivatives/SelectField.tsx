@@ -63,16 +63,18 @@ export function SelectField<T extends IEnumerated>(
 
     return editModeEnabled ? (
         multiple ? (
-            <Select
-                style={{ textAlign: "left", width: "100%" }}
-                size="small"
-                mode="multiple"
-                value={selectedIds}
-                onChange={handleMultipleChange}
-                options={enumToOptions(enumeration)}
-                placeholder={placeholder}
-                allowClear
-            />
+            <Space.Compact>
+                <Select
+                    style={{ textAlign: "left", width: "100%" }}
+                    size="small"
+                    mode="multiple"
+                    value={selectedIds}
+                    onChange={handleMultipleChange}
+                    options={enumToOptions(enumeration)}
+                    placeholder={placeholder}
+                    allowClear
+                />
+            </Space.Compact>
         ) : (
             <Space.Compact>
                 <Select
