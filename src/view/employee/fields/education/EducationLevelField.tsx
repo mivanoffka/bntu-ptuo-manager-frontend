@@ -14,16 +14,18 @@ export function EducationLevelField() {
 
     const educationLevels = getEnumeration(EnumerationName.EDUCATION_LEVELS);
 
-    const educationLevelId = getField<number | null>("educationLevelId");
+    const educationLevelId = [
+        getField<number | null>("educationLevelId"),
+    ].filter((id) => id !== null);
 
-    const updateEducationLevel = (value: number | null) =>
-        updateField("educationLevelId", value);
+    const updateEducationLevel = (values: number[]) =>
+        updateField("educationLevelId", values.length > 0 ? values[0] : null);
 
     return (
         <FieldContainer title="Образование">
             <SelectField<EducationLevel>
                 editModeEnabled={editModeEnabled}
-                selectedId={educationLevelId}
+                selectedIds={educationLevelId}
                 enumeration={educationLevels}
                 onChange={updateEducationLevel}
             ></SelectField>

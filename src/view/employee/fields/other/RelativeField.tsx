@@ -48,10 +48,16 @@ export function RelativeField(props: IObjectFieldProps<IRelative>) {
                 <FieldContainer title="Родство">
                     <SelectField
                         editModeEnabled={editModeEnabled}
-                        onChange={(relativeTypeId) =>
-                            onChange({ ...item, relativeTypeId })
+                        onChange={(values) =>
+                            onChange({
+                                ...item,
+                                relativeTypeId:
+                                    values.length > 0 ? values[0] : null,
+                            })
                         }
-                        selectedId={relativeTypeId}
+                        selectedIds={[relativeTypeId].filter(
+                            (id) => id !== null
+                        )}
                         enumeration={relativeTypes}
                     />
                 </FieldContainer>

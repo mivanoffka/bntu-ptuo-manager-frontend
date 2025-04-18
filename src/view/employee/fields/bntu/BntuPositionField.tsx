@@ -109,7 +109,8 @@ export function BntuPositionField(props: IObjectFieldProps<IBntuPosition>) {
                         ></DateTimeField>
                     </FieldContainer>
                 </Flex>
-                {!item.isDischarged && dischargedCheckBox}
+                {/* {!item.isDischarged && dischargedCheckBox} */}
+                {dischargedCheckBox}
             </Flex>
             {item.isDischarged && (
                 <Flex vertical style={{ width: "100%" }}>

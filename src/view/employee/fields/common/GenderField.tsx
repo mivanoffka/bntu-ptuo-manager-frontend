@@ -14,16 +14,16 @@ export function GenderField() {
 
     const genders = getEnumeration(EnumerationName.GENDERS);
 
-    const genderId = getField<number>("genderId");
+    const genderId = [getField<number>("genderId")].filter((id) => id !== null);
 
-    const updateGenderId = (value: number | null) =>
-        updateField("genderId", value);
+    const updateGenderId = (values: number[]) =>
+        updateField("genderId", values.length > 0 ? values[0] : null);
 
     return (
         <FieldContainer title="Пол">
             <SelectField<Gender>
                 editModeEnabled={editModeEnabled}
-                selectedId={genderId}
+                selectedIds={genderId}
                 enumeration={genders}
                 onChange={updateGenderId}
             ></SelectField>

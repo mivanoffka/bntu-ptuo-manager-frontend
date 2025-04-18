@@ -31,9 +31,17 @@ export function PhoneNumberField(props: IObjectFieldProps<IPhoneNumber>) {
             <FieldContainer title="Тип">
                 <SelectField
                     editModeEnabled={editModeEnabled}
-                    selectedId={item?.phoneNumberTypeId}
-                    onChange={(phoneNumberTypeId) =>
-                        onChange({ ...item, phoneNumberTypeId })
+                    selectedIds={[item?.phoneNumberTypeId].filter(
+                        (id) => id !== null
+                    )}
+                    onChange={(phoneNumberTypeIds) =>
+                        onChange({
+                            ...item,
+                            phoneNumberTypeId:
+                                phoneNumberTypeIds.length > 0
+                                    ? phoneNumberTypeIds[0]
+                                    : null,
+                        })
                     }
                     enumeration={phoneNumberTypes}
                 />

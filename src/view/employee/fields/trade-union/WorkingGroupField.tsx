@@ -10,9 +10,11 @@ export function WorkingGroupField() {
     const workingGroups = getEnumeration(EnumerationName.WORKING_GROUPS);
 
     const { getField, updateField } = useEmployeeEditor();
-    const selectedId = getField<Number>("workingGroupId") as number;
-    const onChange = (value: number | null) =>
-        updateField("workingGroupId", value);
+    const selectedId = [getField<number>("workingGroupId")].filter(
+        (id) => id !== null
+    );
+    const onChange = (values: number[]) =>
+        updateField("workingGroupId", values.length > 0 ? values[0] : null);
 
     const { editModeEnabled } = useEditMode();
 
@@ -20,7 +22,7 @@ export function WorkingGroupField() {
         <FieldContainer title="Профгруппа">
             <SelectField
                 editModeEnabled={editModeEnabled}
-                selectedId={selectedId}
+                selectedIds={selectedId}
                 onChange={onChange}
                 enumeration={workingGroups}
             ></SelectField>

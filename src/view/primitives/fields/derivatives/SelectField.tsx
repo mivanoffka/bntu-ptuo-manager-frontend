@@ -1,26 +1,58 @@
 import { IEnumerated } from "@/model";
 import { Palette, FontSize } from "@/view/constants";
 import { CloseCircleFilled } from "@ant-design/icons";
-import { Button, Input, Select, Space } from "antd";
+import { Select, Input, Space, Button } from "antd";
 
 export interface ISelectFieldProps<T extends IEnumerated> {
-    selectedId: number | null;
-    onChange: (value: number | null) => void;
+    selectedIds: number[];
+    onChange: (values: number[]) => void;
     enumeration: T[];
     placeholder?: string;
     editModeEnabled: boolean;
+    multiple?: boolean;
 }
 
 export function SelectField<T extends IEnumerated>(
     props: ISelectFieldProps<T>
 ) {
     const {
-        selectedId,
+        selectedIds,
         onChange,
         enumeration,
         placeholder = "Не выбрано",
         editModeEnabled,
+        multiple = false,
     } = props;
+
+    const selectMode = multiple ? "multiple" : undefined;
+
+    const selectValue = multiple
+        ? selectedIds
+        : selectedIds.length > 0
+        ? selectedIds[0]
+        : undefined;
+
+    const handleSingleChange = (selected: number | undefined) => {
+        onChange(selected !== undefined ? [selected] : []);
+    };
+
+    const handleMultipleChange = (selected: number[]) => {
+        onChange(selected);
+    };
+
+    const onChangeHandler = multiple
+        ? handleMultipleChange
+        : handleSingleChange;
+
+    const getDisplayValue = () => {
+        if (selectedIds.length === 0) {
+            return placeholder;
+        }
+        const selectedLabels = selectedIds.map(
+            (id) => enumeration.find((item) => item.id === id)?.label || ""
+        );
+        return selectedLabels.join(", ");
+    };
 
     function enumToOptions<T extends IEnumerated>(enumeration: T[]) {
         return enumeration.map((item) => ({
@@ -29,30 +61,40 @@ export function SelectField<T extends IEnumerated>(
         }));
     }
 
-    const selectedItem =
-        enumeration.find((item: T) => item.id === selectedId)?.label ||
-        placeholder;
-
     return editModeEnabled ? (
-        <Space.Compact>
+        multiple ? (
             <Select
                 style={{ textAlign: "left", width: "100%" }}
                 size="small"
-                value={selectedId}
-                onChange={onChange}
+                mode="multiple"
+                value={selectedIds}
+                onChange={handleMultipleChange}
                 options={enumToOptions(enumeration)}
                 placeholder={placeholder}
+                allowClear
             />
-            <Button onClick={() => onChange(null)}>
-                <CloseCircleFilled
-                    style={{
-                        color: Palette.LIGHT_GRAY,
-                        fontSize: FontSize.SMALL,
-                    }}
+        ) : (
+            <Space.Compact>
+                <Select
+                    style={{ textAlign: "left", width: "100%" }}
+                    size="small"
+                    value={selectedIds.length > 0 ? selectedIds[0] : undefined}
+                    onChange={handleSingleChange}
+                    options={enumToOptions(enumeration)}
+                    placeholder={placeholder}
+                    allowClear
                 />
-            </Button>
-        </Space.Compact>
+                <Button onClick={() => onChange([])}>
+                    <CloseCircleFilled
+                        style={{
+                            color: Palette.LIGHT_GRAY,
+                            fontSize: FontSize.SMALL,
+                        }}
+                    />
+                </Button>
+            </Space.Compact>
+        )
     ) : (
-        <Input readOnly value={selectedItem}></Input>
+        <Input readOnly value={getDisplayValue()} />
     );
 }

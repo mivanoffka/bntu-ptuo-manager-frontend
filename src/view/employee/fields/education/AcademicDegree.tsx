@@ -14,16 +14,18 @@ export function AcademicDegreeField() {
 
     const academicDegrees = getEnumeration(EnumerationName.ACADEMIC_DEGREES);
 
-    const academicDegreeId = getField<number | null>("academicDegreeId");
+    const academicDegreeId = [
+        getField<number | null>("academicDegreeId"),
+    ].filter((id) => id !== null);
 
-    const updateAcademicDegree = (value: number | null) =>
-        updateField("academicDegreeId", value);
+    const updateAcademicDegree = (values: number[]) =>
+        updateField("academicDegreeId", values.length > 0 ? values[0] : null);
 
     return (
         <FieldContainer title="Ученая степень">
             <SelectField<AcademicDegree>
                 editModeEnabled={editModeEnabled}
-                selectedId={academicDegreeId}
+                selectedIds={academicDegreeId}
                 enumeration={academicDegrees}
                 onChange={updateAcademicDegree}
             ></SelectField>
