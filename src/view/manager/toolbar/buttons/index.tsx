@@ -2,7 +2,6 @@ import {
     useEditMode,
     useEmployeeEditor,
     useEmployees,
-    useSelectedEmployees,
 } from "@/controller/employee";
 import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
 import {
@@ -19,14 +18,15 @@ import {
 import { Palette } from "@/view/constants";
 import { getLatestTimestamp } from "@/controller/employee/utils";
 import { DateTimeString } from "@/model";
+import { useNavigate } from "react-router-dom";
 
 export function CloseToolBarButton() {
-    const { clearSelection } = useSelectedEmployees();
+    const navigate = useNavigate();
 
     return (
         <ToolBarButton
             color={Palette.BLUE}
-            onClick={clearSelection}
+            onClick={() => navigate("/employees")}
             title={"Закрыть"}
             icon={<CloseOutlined />}
         />

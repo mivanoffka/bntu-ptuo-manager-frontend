@@ -10,7 +10,6 @@ import {
     EditModeProvider,
     EmployeeEditorProvider,
     EmployeesProvider,
-    SelectedEmployeesProvider,
 } from "@/controller/employee";
 import { EnumerationsProvider } from "@/controller/enumerations/EnumerationsContext";
 import { ConfigProvider } from "antd";
@@ -18,44 +17,50 @@ import { TreesProvider } from "@/controller/trees";
 import { Layout } from "@/view/layout/Layout";
 import { THEME } from "@/view/constants";
 
+export const AppProviders: React.FC<{ children: React.ReactNode }> = ({
+    children,
+}) => (
+    <EditModeProvider>
+        <TreesProvider>
+            <EnumerationsProvider>
+                <EmployeesProvider>
+                    <EmployeeEditorProvider>{children}</EmployeeEditorProvider>
+                </EmployeesProvider>
+            </EnumerationsProvider>
+        </TreesProvider>
+    </EditModeProvider>
+);
+
 const App: React.FC = () => (
     <ConfigProvider componentSize="small" theme={THEME}>
         <BrowserRouter>
             <ApiProvider>
                 <AuthProvider>
-                    <EditModeProvider>
-                        <TreesProvider>
-                            <EnumerationsProvider>
-                                <SelectedEmployeesProvider>
-                                    <EmployeesProvider>
-                                        <EmployeeEditorProvider>
-                                            <PageContainer>
-                                                <Content>
-                                                    <TopBar></TopBar>
-                                                    <Routes>
-                                                        <Route
-                                                            path="/employees"
-                                                            element={<Layout />}
-                                                        ></Route>
-                                                        <Route
-                                                            path="/auth/sign-in"
-                                                            element={<SignIn />}
-                                                        />
-                                                        <Route
-                                                            path="*"
-                                                            element={
-                                                                <Navigate to="/employees" />
-                                                            }
-                                                        />
-                                                    </Routes>
-                                                </Content>
-                                            </PageContainer>
-                                        </EmployeeEditorProvider>
-                                    </EmployeesProvider>
-                                </SelectedEmployeesProvider>
-                            </EnumerationsProvider>
-                        </TreesProvider>
-                    </EditModeProvider>
+                    <Routes>
+                        <Route path="/auth/sign-in" element={<SignIn />} />
+                        <Route
+                            path="*"
+                            element={
+                                <PageContainer>
+                                    <Content>
+                                        <TopBar />
+                                        <Routes>
+                                            <Route
+                                                path="/employees/:id?"
+                                                element={<Layout />}
+                                            />
+                                            <Route
+                                                path="*"
+                                                element={
+                                                    <Navigate to="/employees" />
+                                                }
+                                            />
+                                        </Routes>
+                                    </Content>
+                                </PageContainer>
+                            }
+                        />
+                    </Routes>
                 </AuthProvider>
             </ApiProvider>
         </BrowserRouter>

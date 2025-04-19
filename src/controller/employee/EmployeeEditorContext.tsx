@@ -1,6 +1,5 @@
 import { useEditMode } from "@/controller/employee/EditModeContext";
 import { useEmployees } from "@/controller/employee/EmployeesContext";
-import { useSelectedEmployees } from "@/controller/employee/SelectedEmployeesContext";
 import { getCopy, getNewEmployee } from "@/controller/employee/utils";
 import { createHook } from "@/controller/utils";
 import { IEmployeeVersion, IPrimaryKeyed } from "@/model";

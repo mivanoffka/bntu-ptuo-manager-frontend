@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { createHook } from "@/controller/utils";
 import { DateTimeString, IEmployee, IEmployeeVersion } from "@/model";
-import { useSelectedEmployees } from "@/controller/employee/SelectedEmployeesContext";
 import { useApi } from "@/controller/api";
 import { EmployeesEndPoint } from "@/controller/employee/constants";
 import dayjs from "dayjs";
@@ -10,6 +9,7 @@ import {
     DEFAULT_FILTER,
     IEmployeesFilter,
 } from "@/model/employee/employees.filter";
+import { useNavigate, useParams } from "react-router-dom";
 
 export interface IPaginatedData<T> {
     results: T[];
@@ -67,8 +67,11 @@ export const EmployeesContext = createContext<IEmployeesContext>({
 });
 
 export function EmployeesProvider({ children }: { children: ReactNode }) {
+    const { id } = useParams();
+    const selectedId = id ? parseInt(id) : null;
+    const navigate = useNavigate();
+
     const { axiosInstance } = useApi();
-    const { selectOne, clearSelection, selectedId } = useSelectedEmployees();
     const [employeesList, setEmployeesList] = useState<IEmployee[]>([]);
     const [employeesListFilter, setEmployeesListFilter] =
         useState<IEmployeesFilter>(DEFAULT_FILTER);
@@ -270,6 +273,8 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         setSelectedEmployee(null);
         setSelectedTimestamp(null);
 
+        console.log(selectedId);
+
         if (selectedId) {
             fetchSelectedEmployee();
         }
@@ -344,7 +349,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
         if (employee) {
             setEmployeesList([employee, ...employeesList]);
-            selectOne(employee.id);
+            navigate(`/employees/${employee.id}`);
         }
     }
 

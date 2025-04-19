@@ -1,16 +1,18 @@
-import { useSelectedEmployees } from "@/controller/employee";
 import { useEmployees } from "@/controller/employee/EmployeesContext";
-import { EmployeesListItem } from "@/view/manager/EmployeeListItem";
 import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
 import { EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
 import { Flex, List } from "antd";
 import { useEffect, useRef } from "react";
 import "./list-item.css";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function EmployeesList() {
+    const { id } = useParams();
+    const selectedId = id ? parseInt(id) : null;
+
+    const navigate = useNavigate();
+
     const { employeesList, fetchNextEmployees } = useEmployees();
-    const { selectedIds, toggleSingularSelection, selectMany, selectOne } =
-        useSelectedEmployees();
 
     const handleLoadMore = () => {
         fetchNextEmployees();
@@ -30,17 +32,23 @@ export function EmployeesList() {
             <List
                 dataSource={employeesList}
                 renderItem={(employee, index) => {
-                    const isSelected = selectedIds.includes(employee.id);
+                    const isSelected = selectedId === employee.id;
                     const rowClass = `employee-row ${
                         index % 2 === 0 ? "even" : "odd"
                     } ${isSelected ? "selected" : ""}`;
+
+                    const { latestEmployeeVersion: employeeVersion } = employee;
+                    const { firstName, lastName, middleName } = employeeVersion;
+                    const label = `${lastName} ${firstName} ${middleName}`;
                     return (
                         <List.Item
                             style={{ height: "30px" }}
                             className={rowClass}
-                            onClick={() => selectOne(employee.id)}
+                            onClick={() => {
+                                navigate(`/employees/${employee.id}`);
+                            }}
                         >
-                            <EmployeesListItem employee={employee} />
+                            {label}
                         </List.Item>
                     );
                 }}
