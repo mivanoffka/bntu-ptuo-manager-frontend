@@ -20,7 +20,11 @@ export function TopBar() {
     return (
         <div className="top-bar">
             <div className="top-bar-menu">
-                <Typography.Text>ППО работников БНТУ</Typography.Text>
+                <Flex vertical>
+                    <Typography.Text>
+                        Первичная профсоюзная организация
+                    </Typography.Text>
+                </Flex>
 
                 <SignOutButton></SignOutButton>
             </div>

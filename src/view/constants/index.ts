@@ -1,9 +1,10 @@
 import { ThemeConfig } from "antd";
 
 export const enum Palette {
-    RED = "#cf1322",
-    GREEN = "#237804",
-    BLUE = "#1677ff",
+    RED = "#de2358",
+    GREEN = "#36b553",
+    // BLUE = "#665fde",
+    BLUE = "#5a72e8",
 
     LIGHT_GRAY = "#c0c0c0",
     GRAY = "#858585",
