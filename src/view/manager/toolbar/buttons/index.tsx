@@ -17,6 +17,8 @@ import {
     UserAddOutlined,
 } from "@ant-design/icons";
 import { Palette } from "@/view/constants";
+import { getLatestTimestamp } from "@/controller/employee/utils";
+import { DateTimeString } from "@/model";
 
 export function CloseToolBarButton() {
     const { clearSelection } = useSelectedEmployees();
@@ -83,12 +85,19 @@ export function DeleteVersionToolBarButton() {
 }
 
 export function ToLatestVersionToolBarButton() {
-    // const { selectLatestVersion } = useEmployeeVersions();
+    const { setSelectedTimestamp, selectedEmployee } = useEmployees();
+
+    const latestTimestamp = selectedEmployee
+        ? getLatestTimestamp(selectedEmployee?.employeeVersionTimestamps)
+        : null;
 
     return (
         <ToolBarButton
             color={Palette.GREEN}
-            onClick={null}
+            onClick={() => {
+                if (latestTimestamp != null)
+                    setSelectedTimestamp(latestTimestamp);
+            }}
             title={"К актуальной версии"}
             icon={<ArrowUpOutlined />}
         />

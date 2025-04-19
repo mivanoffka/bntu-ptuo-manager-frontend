@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Input, Space, TreeDataNode, TreeSelect } from "antd";
 import { AntTreeNodeProps } from "antd/es/tree";
+import "./style.css";
 
 export interface ISelectTreeFieldProps<T extends ITreeNode> {
     selectedPath: string | null;
@@ -74,33 +75,28 @@ export function SelectTreeField<T extends ITreeNode>(
         findNodeByPath(tree, selectedPath)?.label || placeholder;
 
     return editModeEnabled ? (
-        <Space.Compact>
-            <TreeSelect
-                showSearch
-                style={{ width: "100%", textAlign: "left" }}
-                value={selectedPath}
-                dropdownStyle={{
-                    maxHeight: 400,
-                    minWidth: 300,
-                    overflow: "auto",
-                }}
-                placeholder={placeholder}
-                onChange={onChange}
-                treeData={transformPathToKey(tree)}
-                treeDefaultExpandAll
-                treeLine
-                switcherIcon={(props: AntTreeNodeProps) =>
-                    props.expanded ? <DownOutlined /> : <RightOutlined />
-                }
-            />
-            <Button onClick={() => onChange(null)}>
-                <CloseCircleFilled
+        <Space.Compact style={{ width: "100%" }}>
+            <div style={{ width: "100%", maxWidth: "100%", display: "block" }}>
+                <TreeSelect
+                    className="fixed-width-tree-select"
+                    showSearch
                     style={{
-                        color: Palette.LIGHT_GRAY,
-                        fontSize: FontSize.SMALL,
+                        width: "100%",
+                        textAlign: "left",
                     }}
+                    value={selectedPath}
+                    dropdownStyle={{
+                        maxHeight: 400,
+                        minWidth: 300,
+                        overflow: "auto",
+                    }}
+                    placeholder={placeholder}
+                    onChange={onChange}
+                    treeData={transformPathToKey(tree)}
+                    treeLine
+                    switcherIcon={<DownOutlined />}
                 />
-            </Button>
+            </div>
         </Space.Compact>
     ) : (
         <Input readOnly value={selectedItem}></Input>

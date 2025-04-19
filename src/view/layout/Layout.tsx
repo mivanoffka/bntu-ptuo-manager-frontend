@@ -16,7 +16,7 @@ export function Layout() {
                     vertical
                     align="center"
                     justify="center"
-                    style={{ width: "35%", height: "100%" }}
+                    style={{ width: "30%", height: "100%" }}
                 >
                     <EmployeesSearch></EmployeesSearch>
                 </Flex>
@@ -24,7 +24,7 @@ export function Layout() {
                     align="center"
                     justify="center"
                     vertical
-                    style={{ width: "65%", height: "100%" }}
+                    style={{ width: "70%", height: "100%" }}
                 >
                     <EmployeesViewer></EmployeesViewer>
                 </Flex>

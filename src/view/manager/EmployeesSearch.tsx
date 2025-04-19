@@ -73,7 +73,7 @@ export function EmployeesSearch() {
                 align="center"
                 vertical
                 gap="middle"
-                style={{ width: "100%", height: "80%" }}
+                style={{ width: "100%", height: "90%" }}
             >
                 <Flex
                     align="center"
@@ -87,7 +87,20 @@ export function EmployeesSearch() {
                     vertical
                     style={{ width: "90%", height: "50%" }}
                 >
-                    <Flex vertical align="center" style={{ width: "100%" }}>
+                    <FieldContainer title="Искать по">
+                        <SelectField
+                            multiple
+                            editModeEnabled
+                            selectedIds={employeesListFilter.searchFields}
+                            onChange={setSearchFields}
+                            enumeration={searchFields}
+                        ></SelectField>
+                    </FieldContainer>
+                    <Flex
+                        vertical
+                        align="center"
+                        style={{ width: "100%", overflow: "auto" }}
+                    >
                         <Divider orientation="center">
                             {<SecondaryLabel>Фильтрация</SecondaryLabel>}
                         </Divider>
@@ -167,19 +180,8 @@ export function EmployeesSearch() {
 
                         <Divider />
                     </Flex>
-                    <FieldContainer title="Искать по">
-                        <SelectField
-                            multiple
-                            editModeEnabled
-                            selectedIds={employeesListFilter.searchFields}
-                            onChange={setSearchFields}
-                            enumeration={searchFields}
-                        ></SelectField>
-                    </FieldContainer>
                 </Flex>
             </Flex>
-
-            <Toolbar></Toolbar>
         </Flex>
     );
 }

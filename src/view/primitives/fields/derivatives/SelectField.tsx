@@ -1,7 +1,7 @@
 import { IEnumerated } from "@/model";
 import { Palette, FontSize } from "@/view/constants";
 import { CloseCircleFilled } from "@ant-design/icons";
-import { Select, Input, Space, Button } from "antd";
+import { Select, Input, Space, Button, Flex } from "antd";
 
 export interface ISelectFieldProps<T extends IEnumerated> {
     selectedIds: number[];
@@ -63,7 +63,7 @@ export function SelectField<T extends IEnumerated>(
 
     return editModeEnabled ? (
         multiple ? (
-            <Space.Compact>
+            <Space.Compact style={{ width: "100%" }}>
                 <Select
                     style={{ textAlign: "left", width: "100%" }}
                     size="small"
@@ -72,7 +72,6 @@ export function SelectField<T extends IEnumerated>(
                     onChange={handleMultipleChange}
                     options={enumToOptions(enumeration)}
                     placeholder={placeholder}
-                    allowClear
                 />
             </Space.Compact>
         ) : (
@@ -84,7 +83,6 @@ export function SelectField<T extends IEnumerated>(
                     onChange={handleSingleChange}
                     options={enumToOptions(enumeration)}
                     placeholder={placeholder}
-                    allowClear
                 />
                 <Button onClick={() => onChange([])}>
                     <CloseCircleFilled

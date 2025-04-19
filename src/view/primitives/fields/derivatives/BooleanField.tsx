@@ -19,7 +19,7 @@ export function BooleanField(props: IBooleanFieldProps) {
     };
 
     return editModeEnabled ? (
-        <Checkbox onChange={onChange} value={value}>
+        <Checkbox defaultChecked={value} onChange={onChange} value={value}>
             {children}
         </Checkbox>
     ) : value ? (

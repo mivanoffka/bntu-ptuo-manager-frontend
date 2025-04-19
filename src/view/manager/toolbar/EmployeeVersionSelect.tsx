@@ -25,7 +25,7 @@ export function EmployeeVersionSelect() {
             gap="small"
             style={{ width: "100%" }}
         >
-            <Flex style={{ width: "45px" }}>
+            <Flex style={{ width: "55px" }}>
                 <SecondaryLabel>Версия</SecondaryLabel>
             </Flex>
             <Select
