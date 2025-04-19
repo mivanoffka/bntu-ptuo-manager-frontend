@@ -3,9 +3,11 @@ import { getLatestTimestamp } from "@/controller/employee/utils";
 import { Palette, FontSize } from "@/view/constants";
 import { SecondaryLabel } from "@/view/primitives";
 import { Flex, Typography } from "antd";
+import { useParams } from "react-router-dom";
 
 export function EmployeeVersionRelevanceLabel() {
-    const { selectedEmployee, selectedTimestamp } = useEmployees();
+    const { selectedEmployee } = useEmployees();
+    const { id, timestamp: selectedTimestamp } = useParams();
 
     const isLatest =
         selectedEmployee &&
@@ -14,17 +16,21 @@ export function EmployeeVersionRelevanceLabel() {
 
     const { editModeEnabled } = useEditMode();
 
-    const label = editModeEnabled
-        ? "РЕДАКТИРОВАНИE"
-        : isLatest
-        ? "АКТУАЛЬНАЯ ВЕРСИЯ"
-        : "НЕАКТУАЛЬНАЯ ВЕРСИЯ";
+    const label = selectedTimestamp
+        ? editModeEnabled
+            ? "РЕДАКТИРОВАНИE"
+            : isLatest
+            ? "АКТУАЛЬНАЯ ВЕРСИЯ"
+            : "НЕАКТУАЛЬНАЯ ВЕРСИЯ"
+        : "АКТУАЛЬНАЯ ВЕРСИЯ";
 
-    const color = editModeEnabled
-        ? Palette.BLUE
-        : isLatest
-        ? Palette.GRAY
-        : Palette.RED;
+    const color = selectedTimestamp
+        ? editModeEnabled
+            ? Palette.BLUE
+            : isLatest
+            ? Palette.GRAY
+            : Palette.RED
+        : Palette.GRAY;
 
     return (
         <Flex align="center" justify="center">

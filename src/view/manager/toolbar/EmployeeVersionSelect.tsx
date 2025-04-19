@@ -1,11 +1,15 @@
 import { useEditMode, useEmployees } from "@/controller/employee";
 import { SecondaryLabel } from "@/view/primitives";
 import { Flex, Select, Typography } from "antd";
+import { time } from "console";
 import dayjs from "dayjs";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function EmployeeVersionSelect() {
-    const { selectedEmployee, setSelectedTimestamp, selectedTimestamp } =
-        useEmployees();
+    const { selectedEmployee } = useEmployees();
+    const { id, timestamp } = useParams();
+    const selectedId = id ? parseInt(id) : null;
+    const navigate = useNavigate();
 
     const { editModeEnabled } = useEditMode();
 
@@ -28,13 +32,17 @@ export function EmployeeVersionSelect() {
             <Flex style={{ width: "55px" }}>
                 <SecondaryLabel>Версия</SecondaryLabel>
             </Flex>
-            <Select
-                disabled={editModeEnabled}
-                style={{ textAlign: "left", width: "80%" }}
-                value={selectedTimestamp}
-                onChange={setSelectedTimestamp}
-                options={options}
-            ></Select>
+            <Flex style={{ width: "80%" }}>
+                <Select
+                    disabled={editModeEnabled}
+                    style={{ textAlign: "left", width: "100%" }}
+                    value={timestamp}
+                    onChange={(value) =>
+                        navigate(`/employees/${selectedId}/${value}`)
+                    }
+                    options={options}
+                ></Select>
+            </Flex>
         </Flex>
     );
 }

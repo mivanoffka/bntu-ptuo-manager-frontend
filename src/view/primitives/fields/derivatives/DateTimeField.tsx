@@ -22,7 +22,11 @@ export function DateTimeField(props: IValueFieldProps<DateTimeString>) {
     };
 
     return editModeEnabled ? (
-        <DatePicker onChange={onChangeDateValue} value={getDateValue(value)} />
+        <DatePicker
+            style={{ width: "100%" }}
+            onChange={onChangeDateValue}
+            value={getDateValue(value)}
+        />
     ) : (
         <Input readOnly value={displayValue || ""}></Input>
     );

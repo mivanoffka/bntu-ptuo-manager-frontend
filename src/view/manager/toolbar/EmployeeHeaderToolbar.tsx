@@ -11,16 +11,19 @@ import {
 import { EmployeeVersionRelevanceLabel } from "@/view/manager/toolbar/EmployeeVersionRelevanceLabel";
 import { EmployeeVersionSelect } from "@/view/manager/toolbar/EmployeeVersionSelect";
 import { Flex } from "antd";
+import { useParams } from "react-router-dom";
 
 export function EmployeeHeaderToolbar() {
     const { editModeEnabled } = useEditMode();
+    const { timestamp: selectedTimestamp } = useParams();
 
-    const { selectedEmployee, selectedTimestamp } = useEmployees();
+    const { selectedEmployee } = useEmployees();
 
     const isLatest =
-        selectedEmployee &&
-        selectedTimestamp ===
-            getLatestTimestamp(selectedEmployee.employeeVersionTimestamps);
+        !selectedTimestamp ||
+        (selectedEmployee &&
+            selectedTimestamp ===
+                getLatestTimestamp(selectedEmployee.employeeVersionTimestamps));
 
     const toolBar = (
         <Flex
@@ -49,13 +52,13 @@ export function EmployeeHeaderToolbar() {
                     <Flex
                         align="center"
                         justify="center"
-                        style={{ width: "60%" }}
+                        style={{ width: "40%" }}
                     >
                         <EmployeeVersionRelevanceLabel />
                     </Flex>
                     <Flex
                         align="center"
-                        justify="center"
+                        justify="right"
                         style={{ width: "30%" }}
                     >
                         <Flex

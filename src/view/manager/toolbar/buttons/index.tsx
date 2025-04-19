@@ -18,7 +18,7 @@ import {
 import { Palette } from "@/view/constants";
 import { getLatestTimestamp } from "@/controller/employee/utils";
 import { DateTimeString } from "@/model";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function CloseToolBarButton() {
     const navigate = useNavigate();
@@ -85,7 +85,10 @@ export function DeleteVersionToolBarButton() {
 }
 
 export function ToLatestVersionToolBarButton() {
-    const { setSelectedTimestamp, selectedEmployee } = useEmployees();
+    const { selectedEmployee } = useEmployees();
+    const { id, timestamp } = useParams();
+    const selectedId = id ? parseInt(id) : null;
+    const navigate = useNavigate();
 
     const latestTimestamp = selectedEmployee
         ? getLatestTimestamp(selectedEmployee?.employeeVersionTimestamps)
@@ -96,7 +99,7 @@ export function ToLatestVersionToolBarButton() {
             color={Palette.GREEN}
             onClick={() => {
                 if (latestTimestamp != null)
-                    setSelectedTimestamp(latestTimestamp);
+                    navigate(`/employees/${selectedId}/${latestTimestamp}`);
             }}
             title={"К актуальной версии"}
             icon={<ArrowUpOutlined />}

@@ -46,7 +46,7 @@ const App: React.FC = () => (
                                         <TopBar />
                                         <Routes>
                                             <Route
-                                                path="/employees/:id?"
+                                                path="/employees/:id?/:timestamp?"
                                                 element={<Layout />}
                                             />
                                             <Route

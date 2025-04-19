@@ -23,8 +23,6 @@ export interface IEmployeesContext {
     setEmployeesListFilter: (filter: IEmployeesFilter) => void;
     employeesList: IEmployee[];
     selectedId: number | null;
-    selectedTimestamp: DateTimeString | null;
-    setSelectedTimestamp: (timestamp: DateTimeString) => void;
     selectedEmployee: IEmployee | null;
     setSelectedEmployee: (employee: IEmployee) => void;
     selectedEmployeeVersion: IEmployeeVersion | null;
@@ -47,8 +45,6 @@ export const EmployeesContext = createContext<IEmployeesContext>({
     setEmployeesListFilter: (filter: IEmployeesFilter) => {},
     employeesList: [],
     selectedId: null,
-    selectedTimestamp: null,
-    setSelectedTimestamp: () => {},
     selectedEmployee: null,
     setSelectedEmployee: () => {},
     selectedEmployeeVersion: null,
@@ -67,7 +63,7 @@ export const EmployeesContext = createContext<IEmployeesContext>({
 });
 
 export function EmployeesProvider({ children }: { children: ReactNode }) {
-    const { id } = useParams();
+    const { id, timestamp } = useParams();
     const selectedId = id ? parseInt(id) : null;
     const navigate = useNavigate();
 
@@ -78,8 +74,6 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     const [selectedEmployee, setSelectedEmployee] = useState<IEmployee | null>(
         null
     );
-    const [selectedTimestamp, setSelectedTimestamp] =
-        useState<DateTimeString | null>(null);
     const [selectedEmployeeVersion, setSelectedEmployeeVersion] =
         useState<IEmployeeVersion | null>(null);
 
@@ -269,22 +263,18 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     }, [employeesListFilter]);
 
     useEffect(() => {
-        setSelectedEmployeeVersion(null);
-        setSelectedEmployee(null);
-        setSelectedTimestamp(null);
-
-        console.log(selectedId);
-
         if (selectedId) {
             fetchSelectedEmployee();
+        } else {
+            navigate("/employees");
         }
     }, [selectedId]);
 
     useEffect(() => {
-        if (selectedTimestamp) {
+        if (timestamp) {
             fetchSelectedEmployeeVersion();
         }
-    }, [selectedTimestamp]);
+    }, [timestamp]);
 
     async function fetchNextEmployees() {
         const page = pagesLoaded + 1;
@@ -320,15 +310,15 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
                 selectedEmployee.employeeVersionTimestamps
             );
 
-            setSelectedTimestamp(latestTimestamp);
+            navigate(`/employees/${selectedEmployee.id}/${latestTimestamp}`);
         }
     }, [selectedEmployee]);
 
     async function fetchSelectedEmployeeVersion() {
-        if (selectedId && selectedTimestamp) {
+        if (selectedId && timestamp) {
             const data = await _getOneEmployeeVersion(
                 selectedId,
-                selectedTimestamp
+                timestamp as DateTimeString
             );
 
             if (data) {
@@ -349,13 +339,18 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
         if (employee) {
             setEmployeesList([employee, ...employeesList]);
-            navigate(`/employees/${employee.id}`);
+            navigate(
+                `/employees/${employee.id}/${employee.latestEmployeeVersion.createdAt}`
+            );
         }
     }
 
     async function restoreToSelectedVersion() {
-        if (selectedId && selectedTimestamp) {
-            await _restoreEmployeeVersion(selectedId, selectedTimestamp);
+        if (selectedId && timestamp) {
+            await _restoreEmployeeVersion(
+                selectedId,
+                timestamp as DateTimeString
+            );
             await fetchSelectedEmployee();
         }
     }
@@ -367,12 +362,10 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         selectedId,
         selectedEmployee,
         selectedEmployeeVersion,
-        selectedTimestamp,
         pagesLoaded,
         totalItems,
         limit,
         setSelectedEmployee,
-        setSelectedTimestamp,
         setSelectedEmployeeVersion,
 
         fetchAllEmployees,

@@ -45,7 +45,9 @@ export function EmployeesList() {
                             style={{ height: "30px" }}
                             className={rowClass}
                             onClick={() => {
-                                navigate(`/employees/${employee.id}`);
+                                navigate(
+                                    `/employees/${employee.id}/${employee.latestEmployeeVersion.createdAt}`
+                                );
                             }}
                         >
                             {label}
