@@ -4,11 +4,11 @@ import { EmployeeFooterToolbar } from "@/view/manager/toolbar/EmployeeFooterTool
 import { EmployeeHeaderToolbar } from "@/view/manager/toolbar/EmployeeHeaderToolbar";
 import { CreateToolBarButton } from "@/view/manager/toolbar/buttons";
 import { Palette, FontSize } from "@/view/constants";
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { useEmployees } from "@/controller/employee/EmployeesContext";
+import { useEffect, useState } from "react";
 
 export function EmployeesViewer() {
-    // const { selectedEmployeeVersion } = useEmployees();
     const { displayedEmployeeVersion } = useEmployeeEditor();
 
     const emptyContent = (

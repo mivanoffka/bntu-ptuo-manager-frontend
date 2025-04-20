@@ -19,10 +19,16 @@ export interface IPaginatedData<T> {
 }
 
 export interface IEmployeesContext {
+    selectedId: number | null;
+    selectedTimestamp: DateTimeString | null;
+    latestTimestamp: DateTimeString | null;
+    selectId: (id: number | null) => void;
+    selectTimestamp: (timestamp: DateTimeString | null) => void;
+    isLatest: boolean;
+
     employeesListFilter: IEmployeesFilter;
     setEmployeesListFilter: (filter: IEmployeesFilter) => void;
     employeesList: IEmployee[];
-    selectedId: number | null;
     selectedEmployee: IEmployee | null;
     setSelectedEmployee: (employee: IEmployee) => void;
     selectedEmployeeVersion: IEmployeeVersion | null;
@@ -41,10 +47,16 @@ export interface IEmployeesContext {
 }
 
 export const EmployeesContext = createContext<IEmployeesContext>({
+    selectedId: null,
+    selectedTimestamp: null,
+    selectId: () => {},
+    selectTimestamp: () => {},
+    latestTimestamp: null,
+    isLatest: false,
+
     employeesListFilter: DEFAULT_FILTER,
     setEmployeesListFilter: (filter: IEmployeesFilter) => {},
     employeesList: [],
-    selectedId: null,
     selectedEmployee: null,
     setSelectedEmployee: () => {},
     selectedEmployeeVersion: null,
@@ -65,7 +77,27 @@ export const EmployeesContext = createContext<IEmployeesContext>({
 export function EmployeesProvider({ children }: { children: ReactNode }) {
     const { id, timestamp } = useParams();
     const selectedId = id ? parseInt(id) : null;
+    const selectedTimestamp = timestamp ? (timestamp as DateTimeString) : null;
     const navigate = useNavigate();
+    const [isLatest, setIsLatest] = useState(false);
+
+    const [latestTimestamp, setLatestTimestamp] =
+        useState<DateTimeString | null>(null);
+
+    function selectId(id: number | null) {
+        if (!id) {
+            return navigate("/employees");
+        }
+        return navigate(`/employees/${id}`);
+    }
+
+    function selectTimestamp(timestamp: DateTimeString | null) {
+        if (!timestamp) {
+            return navigate(`/employees/${selectedId}`);
+        }
+
+        return navigate(`/employees/${selectedId}/${timestamp}`);
+    }
 
     const { axiosInstance } = useApi();
     const [employeesList, setEmployeesList] = useState<IEmployee[]>([]);
@@ -232,6 +264,13 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
     // endregion
 
+    useEffect(() => {
+        setIsLatest(selectedTimestamp === latestTimestamp);
+
+        console.log("selectedTimestamp", selectedTimestamp);
+        console.log("latestTimestamp", latestTimestamp);
+    }, [selectedEmployeeVersion]);
+
     async function fetchAllEmployees() {
         const page = 1;
 
@@ -267,14 +306,16 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
             fetchSelectedEmployee();
         } else {
             navigate("/employees");
+            setSelectedEmployee(null);
+            setSelectedEmployeeVersion(null);
         }
     }, [selectedId]);
 
     useEffect(() => {
-        if (timestamp) {
+        if (selectedTimestamp) {
             fetchSelectedEmployeeVersion();
         }
-    }, [timestamp]);
+    }, [selectedTimestamp]);
 
     async function fetchNextEmployees() {
         const page = pagesLoaded + 1;
@@ -305,12 +346,19 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     }
 
     useEffect(() => {
+        selectTimestamp(latestTimestamp);
+    }, [latestTimestamp]);
+
+    useEffect(() => {
         if (selectedEmployee) {
             const latestTimestamp = getLatestTimestamp(
                 selectedEmployee.employeeVersionTimestamps
             );
 
-            navigate(`/employees/${selectedEmployee.id}/${latestTimestamp}`);
+            setLatestTimestamp(latestTimestamp);
+        } else {
+            selectTimestamp(null);
+            setSelectedEmployeeVersion(null);
         }
     }, [selectedEmployee]);
 
@@ -356,10 +404,16 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     }
 
     const context: IEmployeesContext = {
+        selectId,
+        selectTimestamp,
+        selectedId,
+        selectedTimestamp,
+        latestTimestamp,
+        isLatest,
+
         employeesListFilter,
         setEmployeesListFilter,
         employeesList,
-        selectedId,
         selectedEmployee,
         selectedEmployeeVersion,
         pagesLoaded,

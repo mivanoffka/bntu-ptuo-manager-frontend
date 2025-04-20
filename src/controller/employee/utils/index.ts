@@ -4,8 +4,9 @@ import dayjs from "dayjs";
 export function getNewEmployee(): IEmployeeVersion {
     return {
         id: tempIds.generate(),
-        names: [],
-        newName: null,
+        firstName: null,
+        middleName: null,
+        lastName: null,
 
         birthdate: null,
         birthplace: null,
@@ -14,10 +15,10 @@ export function getNewEmployee(): IEmployeeVersion {
         bntuPositions: [],
 
         tradeUnionPositions: [],
-        tradeUnionDepartmentRecords: [],
-        newTradeUnionDepartmentRecord: null,
-        workingGroupRecords: [],
-        newWorkingGroupRecord: null,
+        tradeUnionDepartmentAuthenticLabel: null,
+        tradeUnionDepartmentPath: null,
+        workingGroupAuthenticLabel: null,
+        workingGroupId: null,
 
         joinedAt: null,
         recordedAt: null,

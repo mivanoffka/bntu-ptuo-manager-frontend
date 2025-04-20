@@ -1,18 +1,13 @@
 import { useEmployees } from "@/controller/employee/EmployeesContext";
 import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
 import { EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
-import { Flex, List } from "antd";
+import { Flex, List, Typography } from "antd";
 import { useEffect, useRef } from "react";
 import "./list-item.css";
-import { useNavigate, useParams } from "react-router-dom";
 
 export function EmployeesList() {
-    const { id } = useParams();
-    const selectedId = id ? parseInt(id) : null;
-
-    const navigate = useNavigate();
-
-    const { employeesList, fetchNextEmployees } = useEmployees();
+    const { employeesList, fetchNextEmployees, selectedId, selectId } =
+        useEmployees();
 
     const handleLoadMore = () => {
         fetchNextEmployees();
@@ -32,25 +27,32 @@ export function EmployeesList() {
             <List
                 dataSource={employeesList}
                 renderItem={(employee, index) => {
-                    const isSelected = selectedId === employee.id;
+                    const {
+                        id: employeeId,
+                        latestEmployeeVersion: {
+                            firstName,
+                            lastName,
+                            middleName,
+                        },
+                    } = employee;
+                    const label = `${lastName} ${firstName} ${middleName}`;
+
+                    const isSelected = selectedId === employeeId;
                     const rowClass = `employee-row ${
                         index % 2 === 0 ? "even" : "odd"
                     } ${isSelected ? "selected" : ""}`;
 
-                    const { latestEmployeeVersion: employeeVersion } = employee;
-                    const { firstName, lastName, middleName } = employeeVersion;
-                    const label = `${lastName} ${firstName} ${middleName}`;
                     return (
                         <List.Item
-                            style={{ height: "30px" }}
+                            style={{ height: "25px" }}
                             className={rowClass}
                             onClick={() => {
-                                navigate(
-                                    `/employees/${employee.id}/${employee.latestEmployeeVersion.createdAt}`
-                                );
+                                selectId(employeeId);
                             }}
                         >
-                            {label}
+                            <Typography.Text style={{ fontSize: "13px" }}>
+                                {label}
+                            </Typography.Text>
                         </List.Item>
                     );
                 }}
@@ -59,7 +61,7 @@ export function EmployeesList() {
                         justify="center"
                         align="center"
                         style={{
-                            height: "30px",
+                            height: "25px",
                         }}
                     >
                         <ToolBarButton

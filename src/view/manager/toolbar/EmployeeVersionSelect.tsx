@@ -1,17 +1,32 @@
 import { useEditMode, useEmployees } from "@/controller/employee";
+import { DateTimeString } from "@/model";
 import { SecondaryLabel } from "@/view/primitives";
-import { Flex, Select, Typography } from "antd";
-import { time } from "console";
+import { Flex, Select } from "antd";
 import dayjs from "dayjs";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+export interface IEmployeeVersionSelectProps {}
 
 export function EmployeeVersionSelect() {
-    const { selectedEmployee } = useEmployees();
-    const { id, timestamp } = useParams();
-    const selectedId = id ? parseInt(id) : null;
-    const navigate = useNavigate();
+    const {
+        selectedEmployee,
+        selectedId,
+        selectedTimestamp,
+        selectTimestamp,
+        selectedEmployeeVersion,
+    } = useEmployees();
 
     const { editModeEnabled } = useEditMode();
+    const [displayedTimestamp, setDisplayedTimestamp] =
+        useState<DateTimeString | null>(
+            dayjs().toISOString() as DateTimeString
+        );
+
+    useEffect(() => {
+        if (selectedEmployeeVersion) {
+            setDisplayedTimestamp(selectedTimestamp);
+        }
+    }, [selectedEmployeeVersion]);
 
     const options = selectedEmployee?.employeeVersionTimestamps
         .map((timestamp) => ({
@@ -29,17 +44,15 @@ export function EmployeeVersionSelect() {
             gap="small"
             style={{ width: "100%" }}
         >
-            <Flex style={{ width: "55px" }}>
+            <Flex style={{ width: "65px" }}>
                 <SecondaryLabel>Версия</SecondaryLabel>
             </Flex>
             <Flex style={{ width: "80%" }}>
                 <Select
                     disabled={editModeEnabled}
                     style={{ textAlign: "left", width: "100%" }}
-                    value={timestamp}
-                    onChange={(value) =>
-                        navigate(`/employees/${selectedId}/${value}`)
-                    }
+                    value={displayedTimestamp}
+                    onChange={selectTimestamp}
                     options={options}
                 ></Select>
             </Flex>

@@ -6,6 +6,7 @@ import { AuthProvider } from "@/controller/auth";
 import { Navigate, Route, Routes, BrowserRouter } from "react-router-dom";
 import { SignIn } from "@/view/auth/SignIn";
 import { Content } from "@/view/content";
+import ruRU from "antd/lib/locale/ru_RU";
 import {
     EditModeProvider,
     EmployeeEditorProvider,
@@ -32,7 +33,7 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({
 );
 
 const App: React.FC = () => (
-    <ConfigProvider componentSize="small" theme={THEME}>
+    <ConfigProvider locale={ruRU} componentSize="small" theme={THEME}>
         <BrowserRouter>
             <ApiProvider>
                 <AuthProvider>
