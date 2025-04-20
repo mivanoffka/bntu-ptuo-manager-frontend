@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from "axios";
 import { createHook } from "@/controller/utils";
 import { toSnakeCase } from "@/controller/api/utils";
 import qs from "qs";
+import { message } from "antd"; // Импортируем message из antd
 
 interface IApiContext {
     axiosInstance: AxiosInstance;
@@ -28,13 +29,25 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
         setAccessToken(localStorage.getItem("accessToken"));
     }
 
+    useEffect(() => {
+        if (error) {
+            message.error(error);
+            setError(null);
+        }
+    }, [error]);
+
     axiosInstance.interceptors.request.use(
         (config) => {
             setLoading(true);
+            const token = localStorage.getItem("accessToken");
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
             return config;
         },
         (error) => {
             setLoading(false);
+            setError(error.message);
             return Promise.reject(error);
         }
     );
@@ -53,22 +66,12 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
         },
         (error) => {
             setLoading(false);
-            setError(error.message);
-            return Promise.reject(error);
-        }
-    );
-
-    axiosInstance.interceptors.request.use(
-        (config) => {
-            setLoading(true);
-            const token = localStorage.getItem("accessToken");
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            setLoading(false);
+            // Можно настроить более детализированное сообщение об ошибке
+            const errorMessage =
+                error.response?.data?.message ||
+                error.message ||
+                "Произошла ошибка";
+            setError(errorMessage);
             return Promise.reject(error);
         }
     );

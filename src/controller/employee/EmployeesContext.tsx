@@ -10,6 +10,7 @@ import {
     IEmployeesFilter,
 } from "@/model/employee/employees.filter";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEditMode } from "@/controller/employee/EditModeContext";
 
 export interface IPaginatedData<T> {
     results: T[];
@@ -41,8 +42,8 @@ export interface IEmployeesContext {
     fetchNextEmployees: () => Promise<void>;
     fetchSelectedEmployee: () => Promise<void>;
     fetchSelectedEmployeeVersion: () => Promise<void>;
-    sendNewEmployee: (version: IEmployeeVersion) => Promise<void>;
-    sendNewVersion: (version: IEmployeeVersion) => Promise<void>;
+    sendNewEmployee: (version: IEmployeeVersion) => Promise<IEmployee>;
+    sendNewVersion: (version: IEmployeeVersion) => Promise<IEmployeeVersion>;
     restoreToSelectedVersion: () => Promise<void>;
 }
 
@@ -75,6 +76,8 @@ export const EmployeesContext = createContext<IEmployeesContext>({
 });
 
 export function EmployeesProvider({ children }: { children: ReactNode }) {
+    const { disableEditMode } = useEditMode();
+
     const { id, timestamp } = useParams();
     const selectedId = id ? parseInt(id) : null;
     const selectedTimestamp = timestamp ? (timestamp as DateTimeString) : null;
@@ -377,9 +380,16 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
     async function sendNewVersion(newVersion: IEmployeeVersion) {
         if (selectedId) {
-            await _patchEmployee(selectedId, newVersion);
-            await fetchSelectedEmployee();
+            const version = await _patchEmployee(selectedId, newVersion);
+
+            if (version) {
+                await fetchSelectedEmployee();
+            }
+
+            return version;
         }
+
+        return undefined;
     }
 
     async function sendNewEmployee(newVersion: IEmployeeVersion) {
@@ -391,6 +401,8 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
                 `/employees/${employee.id}/${employee.latestEmployeeVersion.createdAt}`
             );
         }
+
+        return employee;
     }
 
     async function restoreToSelectedVersion() {

@@ -91,16 +91,15 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
             return;
         }
 
-        console.log(selectedEmployee);
+        const result = selectedEmployee
+            ? await sendNewVersion(displayedEmployeeVersion)
+            : await sendNewEmployee(displayedEmployeeVersion);
 
-        if (selectedEmployee) {
-            await sendNewVersion(displayedEmployeeVersion);
-        } else {
-            await sendNewEmployee(displayedEmployeeVersion);
+        if (result) {
+            // setDisplayedEmployeeVersion(null);
+
+            disableEditMode();
         }
-
-        setDisplayedEmployeeVersion(null);
-        disableEditMode();
     }
 
     function getField<T>(fieldName: string): T | null {

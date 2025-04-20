@@ -21,5 +21,8 @@ export const THEME: ThemeConfig = {
         colorPrimary: Palette.BLUE,
         colorLink: Palette.BLUE,
         fontSize: FontSize.MEDIUM,
+        colorError: Palette.RED,
+        colorSuccess: Palette.GREEN,
+        colorInfo: Palette.BLUE,
     },
 };
