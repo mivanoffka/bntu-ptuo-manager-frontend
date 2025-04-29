@@ -1,5 +1,6 @@
 import { useEditMode } from "@/controller/employee";
 import { useTrees } from "@/controller/trees";
+import { TreeName } from "@/controller/trees/constants";
 import { IBntuPosition } from "@/model";
 import { FieldContainer, InputField, SelectField } from "@/view/primitives";
 import { DateTimeField, IObjectFieldProps } from "@/view/primitives/fields";
@@ -9,7 +10,9 @@ import { Flex, Tree } from "antd";
 
 export function BntuPositionField(props: IObjectFieldProps<IBntuPosition>) {
     const { value: item, onChange } = props;
-    const { bntuDepartmentsTree } = useTrees();
+    const { getTree } = useTrees();
+    const bntuDepartmentsTree = getTree(TreeName.BNTU_DEPARTMENTS);
+
     const { editModeEnabled } = useEditMode();
 
     function onIsDischargedChange(value: boolean) {

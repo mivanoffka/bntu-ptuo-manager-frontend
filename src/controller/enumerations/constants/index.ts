@@ -1,3 +1,3 @@
 export const enum EnumerationsEndPoint {
-    PREFIX = "employees/enumerations",
+    PREFIX = "references",
 }

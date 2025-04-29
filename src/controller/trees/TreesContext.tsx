@@ -1,13 +1,11 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { createHook } from "@/controller/utils";
 import { useApi } from "@/controller/api";
+import { TreesEndPoint } from "@/controller/trees/constants";
 import { ITreeNode } from "@/model";
 
 interface ITreesContext {
-    bntuDepartmentsTree: ITreeNode[];
-    tradeUnionDepartmentsTree: ITreeNode[];
-    setBntuDepartmentsTree: (value: ITreeNode[]) => void;
-    setTradeUnionDepartmentsTree: (value: ITreeNode[]) => void;
+    getTree: (name: string) => ITreeNode[];
     loading: boolean;
     error: string | null;
     reloadTrees: () => void;
@@ -17,47 +15,25 @@ const Trees = createContext<ITreesContext | undefined>(undefined);
 
 export const TreesProvider = ({ children }: { children: ReactNode }) => {
     const { axiosInstance } = useApi();
-    const [bntuDepartmentsTree, setBntuDepartmentsTree] = useState<ITreeNode[]>(
-        []
-    );
-    const [tradeUnionDepartmentsTree, setTradeUnionDepartmentsTree] = useState<
-        ITreeNode[]
-    >([]);
+    const [enumerations, setTrees] = useState<Record<string, ITreeNode[]>>({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const getTree = (name: string) => {
+        return enumerations[name] || [];
+    };
 
     async function fetchTrees() {
         setLoading(true);
         setError(null);
         try {
-            await Promise.all([
-                fetchBntuDepartmentsTree(),
-                fetchTradeUnionDepartmentsTree(),
-            ]);
+            const response = await axiosInstance.get(TreesEndPoint.PREFIX);
+            setTrees(response.data || {});
         } catch (err) {
-            setError("Failed to fetch some trees");
+            console.log(err);
+            setError("Failed to fetch enumerations");
         } finally {
             setLoading(false);
-        }
-    }
-
-    async function fetchBntuDepartmentsTree() {
-        try {
-            const response = await axiosInstance.get("bntu-departments");
-            setBntuDepartmentsTree(response.data || []);
-        } catch (err) {
-            console.log(err);
-            throw err;
-        }
-    }
-
-    async function fetchTradeUnionDepartmentsTree() {
-        try {
-            const response = await axiosInstance.get("trade-union-departments");
-            setTradeUnionDepartmentsTree(response.data || []);
-        } catch (err) {
-            console.log(err);
-            throw err;
         }
     }
 
@@ -66,10 +42,7 @@ export const TreesProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const context: ITreesContext = {
-        bntuDepartmentsTree,
-        tradeUnionDepartmentsTree,
-        setBntuDepartmentsTree,
-        setTradeUnionDepartmentsTree,
+        getTree,
         loading,
         error,
         reloadTrees: fetchTrees,
