@@ -5,7 +5,7 @@ import "./tool-bar-button.css";
 import React from "react";
 
 export interface IToolBarButtonProps {
-    onClick: () => void;
+    onClick: (() => any) | null;
     title: React.ReactNode;
     icon: React.ReactNode;
     color?: string;

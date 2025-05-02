@@ -11,7 +11,7 @@ export function EmployeeFooterToolbar() {
     const { isLatest } = useEmployees();
     const { editModeEnabled } = useEditMode();
 
-    const toolBarLatest = (
+    const toolBarLatest = editModeEnabled && (
         <Flex align="center" justify="center" gap="small">
             <Flex>
                 <DeleteToolBarButton />

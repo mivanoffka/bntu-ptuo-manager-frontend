@@ -12,13 +12,10 @@ import {
     CloseOutlined,
     StopOutlined,
     ArrowUpOutlined,
-    PlusOutlined,
     UserAddOutlined,
+    RollbackOutlined,
 } from "@ant-design/icons";
 import { Palette } from "@/view/constants";
-import { getLatestTimestamp } from "@/controller/employee/utils";
-import { DateTimeString } from "@/model";
-import { useNavigate, useParams } from "react-router-dom";
 
 export function CloseToolBarButton() {
     const { selectId } = useEmployees();
@@ -47,13 +44,12 @@ export function EditToolBarButton() {
 }
 
 export function DeleteToolBarButton() {
-    const { editModeEnabled } = useEditMode();
+    const { deleteSelectedEmployee } = useEmployees();
 
     return (
         <ToolBarButton
             color={Palette.RED}
-            disabled={editModeEnabled}
-            onClick={null}
+            onClick={deleteSelectedEmployee}
             title={"Удалить запись"}
             icon={<DeleteOutlined />}
         />
@@ -73,11 +69,12 @@ export function RestoreVersionToolBarButton() {
 }
 
 export function DeleteVersionToolBarButton() {
+    const { deleteSelectedVersion } = useEmployees();
+
     return (
         <ToolBarButton
-            disabled
             color={Palette.RED}
-            onClick={null}
+            onClick={deleteSelectedVersion}
             title={"Удалить версию из истории"}
             icon={<DeleteOutlined />}
         />
@@ -119,7 +116,7 @@ export function CancelToolBarButton() {
             color={Palette.RED}
             onClick={cancelEdit}
             title={"Отменить"}
-            icon={<StopOutlined />}
+            icon={<RollbackOutlined />}
         />
     );
 }

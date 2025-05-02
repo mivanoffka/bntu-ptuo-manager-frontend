@@ -45,6 +45,8 @@ export interface IEmployeesContext {
     sendNewEmployee: (version: IEmployeeVersion) => Promise<IEmployee>;
     sendNewVersion: (version: IEmployeeVersion) => Promise<IEmployeeVersion>;
     restoreToSelectedVersion: () => Promise<void>;
+    deleteSelectedVersion: () => Promise<void>;
+    deleteSelectedEmployee: () => Promise<void>;
 }
 
 export const EmployeesContext = createContext<IEmployeesContext>({
@@ -70,9 +72,15 @@ export const EmployeesContext = createContext<IEmployeesContext>({
     fetchNextEmployees: async () => {},
     fetchSelectedEmployee: async () => {},
     fetchSelectedEmployeeVersion: async () => {},
-    sendNewEmployee: async () => {},
-    sendNewVersion: async () => {},
+    sendNewEmployee: async (version: IEmployeeVersion) => {
+        return {} as IEmployee;
+    },
+    sendNewVersion: async (version: IEmployeeVersion) => {
+        return {} as IEmployeeVersion;
+    },
     restoreToSelectedVersion: async () => {},
+    deleteSelectedVersion: async () => {},
+    deleteSelectedEmployee: async () => {},
 });
 
 export function EmployeesProvider({ children }: { children: ReactNode }) {
@@ -415,6 +423,23 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         }
     }
 
+    async function deleteSelectedVersion() {
+        if (selectedId && timestamp) {
+            await _deleteEmployeeVersion(
+                selectedId,
+                timestamp as DateTimeString
+            );
+            await fetchSelectedEmployee();
+        }
+    }
+
+    async function deleteSelectedEmployee() {
+        if (selectedId) {
+            await _deleteEmployee(selectedId);
+            await fetchAllEmployees();
+        }
+    }
+
     const context: IEmployeesContext = {
         selectId,
         selectTimestamp,
@@ -441,6 +466,8 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         sendNewVersion,
         sendNewEmployee,
         restoreToSelectedVersion,
+        deleteSelectedVersion,
+        deleteSelectedEmployee,
     };
 
     return (
