@@ -1,11 +1,9 @@
 import { SelectField } from "@/view/primitives/fields/derivatives/SelectField";
-import {
-    EnumerationName,
-    useEnumerations,
-} from "@/controller/enumerations/EnumerationsContext";
+import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { Gender } from "@/model";
 import { FieldContainer } from "@/view/primitives";
+import { EnumerationName } from "@/controller/enumerations/constants";
 
 export function GenderField() {
     const { editModeEnabled } = useEditMode();

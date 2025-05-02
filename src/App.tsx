@@ -7,30 +7,14 @@ import { Navigate, Route, Routes, BrowserRouter } from "react-router-dom";
 import { SignIn } from "@/view/auth/SignIn";
 import { Content } from "@/view/content";
 import ruRU from "antd/lib/locale/ru_RU";
-import {
-    EditModeProvider,
-    EmployeeEditorProvider,
-    EmployeesProvider,
-} from "@/controller/employee";
+
 import { EnumerationsProvider } from "@/controller/enumerations/EnumerationsContext";
 import { ConfigProvider } from "antd";
-import { TreesProvider } from "@/controller/trees";
-import { Layout } from "@/view/layout/Layout";
 import { THEME } from "@/view/constants";
-
-export const AppProviders: React.FC<{ children: React.ReactNode }> = ({
-    children,
-}) => (
-    <EditModeProvider>
-        <TreesProvider>
-            <EnumerationsProvider>
-                <EmployeesProvider>
-                    <EmployeeEditorProvider>{children}</EmployeeEditorProvider>
-                </EmployeesProvider>
-            </EnumerationsProvider>
-        </TreesProvider>
-    </EditModeProvider>
-);
+import { EditModeProvider } from "@/controller/employee";
+import { TreesProvider } from "@/controller/trees";
+import { Employees } from "@/view/manager/Employees";
+import { References } from "@/view/references/References";
 
 const App: React.FC = () => (
     <ConfigProvider locale={ruRU} componentSize="small" theme={THEME}>
@@ -44,19 +28,33 @@ const App: React.FC = () => (
                             element={
                                 <PageContainer>
                                     <Content>
-                                        <TopBar />
-                                        <Routes>
-                                            <Route
-                                                path="/employees/:id?/:timestamp?"
-                                                element={<Layout />}
-                                            />
-                                            <Route
-                                                path="*"
-                                                element={
-                                                    <Navigate to="/employees" />
-                                                }
-                                            />
-                                        </Routes>
+                                        <EditModeProvider>
+                                            <TreesProvider>
+                                                <EnumerationsProvider>
+                                                    <TopBar />
+                                                    <Routes>
+                                                        <Route
+                                                            path="/employees/:id?/:timestamp?"
+                                                            element={
+                                                                <Employees />
+                                                            }
+                                                        />
+                                                        <Route
+                                                            path="/references"
+                                                            element={
+                                                                <References />
+                                                            }
+                                                        />
+                                                        <Route
+                                                            path="*"
+                                                            element={
+                                                                <Navigate to="/employees" />
+                                                            }
+                                                        />
+                                                    </Routes>
+                                                </EnumerationsProvider>
+                                            </TreesProvider>
+                                        </EditModeProvider>
                                     </Content>
                                 </PageContainer>
                             }

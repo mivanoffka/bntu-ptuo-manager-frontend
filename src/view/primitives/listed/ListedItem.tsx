@@ -8,11 +8,11 @@ export interface IListedItemProps {
     index: number;
     children: ReactNode;
     remove: (item: any) => void;
+    editModeEnabled?: boolean;
 }
 
 export function ListedItem(props: IListedItemProps) {
-    const { index, children, remove } = props;
-    const { editModeEnabled } = useEditMode();
+    const { index, children, remove, editModeEnabled = false } = props;
 
     return (
         <Flex gap="small" align="start" style={{ width: "100%" }}>

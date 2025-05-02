@@ -1,9 +1,6 @@
 import { useEmployees } from "@/controller/employee/EmployeesContext";
-import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
-import { EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
-import { Flex, List, Typography } from "antd";
-import { useEffect, useRef } from "react";
-import "./list-item.css";
+import { Flex } from "antd";
+import { SelectableList } from "@/view/list/SelectableList";
 
 export function EmployeesList() {
     const { employeesList, fetchNextEmployees, selectedId, selectId } =
@@ -24,53 +21,17 @@ export function EmployeesList() {
                 overflow: "auto",
             }}
         >
-            <List
-                dataSource={employeesList}
-                renderItem={(employee, index) => {
-                    const {
-                        id: employeeId,
-                        latestEmployeeVersion: {
-                            firstName,
-                            lastName,
-                            middleName,
-                        },
-                    } = employee;
-                    const label = `${lastName} ${firstName} ${middleName}`;
-
-                    const isSelected = selectedId === employeeId;
-                    const rowClass = `employee-row ${
-                        index % 2 === 0 ? "even" : "odd"
-                    } ${isSelected ? "selected" : ""}`;
-
-                    return (
-                        <List.Item
-                            style={{ height: "25px" }}
-                            className={rowClass}
-                            onClick={() => {
-                                selectId(employeeId);
-                            }}
-                        >
-                            <Typography.Text style={{ fontSize: "13px" }}>
-                                {label}
-                            </Typography.Text>
-                        </List.Item>
-                    );
+            <SelectableList
+                data={employeesList}
+                selectedId={selectedId}
+                onSelect={(id) => selectId(id)}
+                onLoadMore={handleLoadMore}
+                renderLabel={(employee) => {
+                    const { firstName, lastName, middleName } =
+                        employee.latestEmployeeVersion;
+                    return `${lastName} ${firstName} ${middleName}`;
                 }}
-                loadMore={
-                    <Flex
-                        justify="center"
-                        align="center"
-                        style={{
-                            height: "25px",
-                        }}
-                    >
-                        <ToolBarButton
-                            onClick={handleLoadMore}
-                            title="Больше"
-                            icon={<PlusOutlined />}
-                        />
-                    </Flex>
-                }
+                getId={(employee) => employee.id}
             />
         </Flex>
     );

@@ -1,6 +1,5 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Divider, Flex, Input, Select, Space } from "antd";
-import "./list-item.css";
 import { Palette } from "@/view/constants";
 
 import { Toolbar } from "@/view/manager/toolbar/Toolbar";
@@ -14,10 +13,8 @@ import {
     SelectField,
 } from "@/view/primitives";
 import { EmployeesFilterField } from "@/model/employee/employees.filter";
-import {
-    EnumerationName,
-    useEnumerations,
-} from "@/controller/enumerations/EnumerationsContext";
+import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
+import { EnumerationName } from "@/controller/enumerations/constants";
 
 export function EmployeesSearch() {
     const { fetchAllEmployees, employeesListFilter, setEmployeesListFilter } =

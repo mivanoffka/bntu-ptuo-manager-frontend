@@ -1,8 +1,6 @@
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
-import {
-    EnumerationName,
-    useEnumerations,
-} from "@/controller/enumerations/EnumerationsContext";
+import { EnumerationName } from "@/controller/enumerations/constants";
+import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
 import { FieldContainer, SelectField } from "@/view/primitives";
 
 export function WorkingGroupField() {

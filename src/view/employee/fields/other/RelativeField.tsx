@@ -4,11 +4,9 @@ import { IRelative } from "@/model";
 import { FieldContainer, SelectField } from "@/view/primitives";
 
 import { useEditMode } from "@/controller/employee";
-import {
-    EnumerationName,
-    useEnumerations,
-} from "@/controller/enumerations/EnumerationsContext";
+import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
 import { DateTimeField, IObjectFieldProps } from "@/view/primitives/fields";
+import { EnumerationName } from "@/controller/enumerations/constants";
 
 export function RelativeField(props: IObjectFieldProps<IRelative>) {
     const { editModeEnabled } = useEditMode();

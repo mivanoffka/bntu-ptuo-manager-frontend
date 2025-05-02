@@ -1,37 +1,11 @@
-import { EmployeesList } from "@/view/manager/EmployeesList";
 import "./style/index.css";
-import { EmployeesViewer } from "@/view/manager/EmployeeViewer";
-import { Flex } from "antd";
-import { EmployeesSearch } from "@/view/manager/EmployeesSearch";
-import { AppProviders } from "@/App";
 
-export function Layout() {
-    return (
-        <AppProviders>
-            <div className="layout">
-                <Flex
-                    align="center"
-                    justify="center"
-                    style={{ width: "100%", height: "100%" }}
-                >
-                    <Flex
-                        vertical
-                        align="center"
-                        justify="center"
-                        style={{ width: "30%", height: "100%" }}
-                    >
-                        <EmployeesSearch></EmployeesSearch>
-                    </Flex>
-                    <Flex
-                        align="center"
-                        justify="center"
-                        vertical
-                        style={{ width: "70%", height: "100%" }}
-                    >
-                        <EmployeesViewer></EmployeesViewer>
-                    </Flex>
-                </Flex>
-            </div>
-        </AppProviders>
-    );
+export interface ILayoutProps {
+    children?: React.ReactNode;
+}
+
+export function Layout(props: ILayoutProps) {
+    const { children } = props;
+
+    return <div className="layout">{children}</div>;
 }

@@ -1,1 +1,1 @@
-export { EmployeesManager } from "@/view/manager/EmployeesManager";
+export { Employees } from "@/view/manager/Employees";

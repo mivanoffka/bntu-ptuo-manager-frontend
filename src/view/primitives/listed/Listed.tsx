@@ -1,15 +1,14 @@
-import { useEditMode } from "@/controller/employee/EditModeContext";
 import { IPrimaryKeyed } from "@/model";
-import { Expandable } from "@/view/primitives/containers/Expandable";
+import { IObjectFieldProps } from "@/view/primitives/fields";
 import { SecondaryLabel } from "@/view/primitives/fields/SecondaryLabel";
-import { IEditFieldProps } from "@/view/primitives/fields/types";
 import { ListedItem } from "@/view/primitives/listed/ListedItem";
 import { Button, Divider, Flex } from "antd";
 import { ReactNode } from "react";
 
 export interface IListedProps<T extends IPrimaryKeyed> {
+    editModeEnabled?: boolean;
     items: T[];
-    FieldType: React.FC<IEditFieldProps<T>>;
+    FieldType: React.FC<IObjectFieldProps<T>>;
     newItemGetter: () => T;
     onChange: (item: T | null) => void;
     onDelete: (item: T) => void;
@@ -17,7 +16,6 @@ export interface IListedProps<T extends IPrimaryKeyed> {
 }
 
 export function Listed<T extends IPrimaryKeyed>(props: IListedProps<T>) {
-    const { editModeEnabled } = useEditMode();
     const {
         items,
         FieldType,
@@ -25,6 +23,7 @@ export function Listed<T extends IPrimaryKeyed>(props: IListedProps<T>) {
         onChange,
         onDelete,
         title: titleBase,
+        editModeEnabled = false,
     } = props;
 
     const handleAddClick = (e: React.MouseEvent) => {
@@ -59,12 +58,14 @@ export function Listed<T extends IPrimaryKeyed>(props: IListedProps<T>) {
                     {items.map((item, index) => {
                         const field = (
                             <FieldType
+                                editModeEnabled={editModeEnabled}
                                 value={item}
                                 onChange={onChange}
                             ></FieldType>
                         );
                         return (
                             <ListedItem
+                                editModeEnabled={editModeEnabled}
                                 index={index}
                                 remove={() => onDelete(item)}
                             >

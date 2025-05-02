@@ -8,9 +8,9 @@ import {
 import { Flex } from "antd";
 import { useEditMode } from "@/controller/employee";
 import {
-    EnumerationName,
     useEnumerations,
 } from "@/controller/enumerations/EnumerationsContext";
+import { EnumerationName } from "@/controller/enumerations/constants";
 
 export function PhoneNumberField(props: IObjectFieldProps<IPhoneNumber>) {
     const { value: item, onChange } = props;

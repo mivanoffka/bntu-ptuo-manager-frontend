@@ -2,22 +2,17 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 import { createHook } from "@/controller/utils";
 import { useApi } from "@/controller/api";
 import { EnumerationsEndPoint } from "@/controller/enumerations/constants";
-
-export enum EnumerationName {
-    GENDERS = "genders",
-    PHONE_NUMBER_TYPES = "phoneNumberTypes",
-    EDUCATION_LEVELS = "educationLevels",
-    ACADEMIC_DEGREES = "academicDegrees",
-    WORKING_GROUPS = "workingGroups",
-    RELATIVE_TYPES = "relativeTypes",
-}
+import { toSnakeCase } from "@/controller/api/utils";
 
 interface IEnumerationsContext {
     getEnumeration: (name: string) => { id: number; label: string }[];
-    setEnumeration: (
-        name: string,
-        value: { id: number; label: string }[]
-    ) => void;
+    addToEnumeration: (tableName: string, label: string) => Promise<void>;
+    updateEnumeration: (
+        tableName: string,
+        id: number,
+        label: string
+    ) => Promise<void>;
+    removeFromEnumeration: (tableName: string, id: number) => Promise<void>;
     loading: boolean;
     error: string | null;
     reloadEnumerations: () => void;
@@ -32,20 +27,6 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
     >({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-    const getEnumeration = (name: string) => {
-        return enumerations[name] || [];
-    };
-
-    const setEnumeration = (
-        name: string,
-        value: { id: number; label: string }[]
-    ) => {
-        setEnumerations((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
 
     async function fetchEnumerations() {
         setLoading(true);
@@ -63,13 +44,97 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
         }
     }
 
+    async function postToEnumerations(tableName: string, label: string) {
+        setLoading(true);
+        setError(null);
+        try {
+            await axiosInstance.post(
+                `${EnumerationsEndPoint.PREFIX}/?table_name=${tableName}`,
+                { label }
+            );
+        } catch (err) {
+            console.log(err);
+            setError("Failed to post");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function putToEnumerations(
+        tableName: string,
+        id: number,
+        label: string
+    ) {
+        setLoading(true);
+        setError(null);
+        try {
+            await axiosInstance.put(
+                `${EnumerationsEndPoint.PREFIX}/?table_name=${tableName}&id=${id}`,
+                { label }
+            );
+        } catch (err) {
+            console.log(err);
+            setError("Failed to put");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function deleteFromEnumerations(tableName: string, id: number) {
+        setLoading(true);
+        setError(null);
+        try {
+            await axiosInstance.delete(
+                `${EnumerationsEndPoint.PREFIX}/?table_name=${tableName}&id=${id}`
+            );
+        } catch (err) {
+            console.log(err);
+            setError("Failed to delete");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const getEnumeration = (name: string) => {
+        return enumerations[name] || [];
+    };
+
+    const addToEnumeration = async (tableName: string, label: string) => {
+        const tableNameSnakeCase = toSnakeCase(tableName) as string;
+
+        await postToEnumerations(tableNameSnakeCase, label);
+        await fetchEnumerations();
+    };
+
+    const updateEnumeration = async (
+        tableName: string,
+        id: number,
+        label: string
+    ) => {
+        const tableNameSnakeCase = toSnakeCase(tableName) as string;
+
+        await putToEnumerations(tableNameSnakeCase, id, label);
+        await fetchEnumerations();
+    };
+
+    const removeFromEnumeration = async (tableName: string, id: number) => {
+        const tableNameSnakeCase = toSnakeCase(tableName) as string;
+
+        console.log(tableNameSnakeCase);
+
+        await deleteFromEnumerations(tableNameSnakeCase, id);
+        await fetchEnumerations();
+    };
+
     useEffect(() => {
         fetchEnumerations();
     }, []);
 
     const context: IEnumerationsContext = {
+        addToEnumeration,
+        updateEnumeration,
+        removeFromEnumeration,
         getEnumeration,
-        setEnumeration,
         loading,
         error,
         reloadEnumerations: fetchEnumerations,

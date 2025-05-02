@@ -1,11 +1,9 @@
 import { SelectField } from "@/view/primitives/fields/derivatives/SelectField";
 import { AcademicDegree } from "@/model";
-import {
-    EnumerationName,
-    useEnumerations,
-} from "@/controller/enumerations/EnumerationsContext";
+import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
 import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { FieldContainer } from "@/view/primitives";
+import { EnumerationName } from "@/controller/enumerations/constants";
 
 export function AcademicDegreeField() {
     const { editModeEnabled } = useEditMode();
