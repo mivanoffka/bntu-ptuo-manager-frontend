@@ -51,7 +51,7 @@ export function Employee() {
                         justify="center"
                         style={{ width: "200px" }}
                     >
-                        <Image style={{ width: "150px", height: "150px" }} />
+                        <Image style={{ width: "112px", height: "150px" }} />
                     </Flex>
                     <Flex
                         gap="small"

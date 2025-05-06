@@ -56,9 +56,7 @@ export function TopBar() {
         <div className="top-bar">
             <div className="top-bar-menu">
                 <Flex align="center" justify="center" style={{ width: "20%" }}>
-                    <Typography.Text>
-                        Первичная профсоюзная организация
-                    </Typography.Text>
+                    <Typography.Text>ППО работников БНТУ</Typography.Text>
                 </Flex>
                 <Flex align="center" justify="center" style={{ width: "60%" }}>
                     <Menu

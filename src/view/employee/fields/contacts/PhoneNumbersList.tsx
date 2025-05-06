@@ -2,10 +2,11 @@ import { Listed } from "@/view/primitives/listed/Listed";
 import { IPhoneNumber } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { PhoneNumberField } from "@/view/employee/fields/contacts/PhoneNumberField";
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 
 export function PhoneNumbersList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
+    const { editModeEnabled } = useEditMode();
 
     const getPhoneNumbers = () => getList<IPhoneNumber>("phoneNumbers");
 
@@ -29,6 +30,7 @@ export function PhoneNumbersList() {
 
     return (
         <Listed<IPhoneNumber>
+            editModeEnabled={editModeEnabled}
             items={getPhoneNumbers()}
             FieldType={PhoneNumberField}
             newItemGetter={getNewPhoneNumber}

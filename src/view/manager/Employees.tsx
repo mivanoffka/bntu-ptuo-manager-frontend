@@ -16,7 +16,7 @@ export function Employees() {
                         align="center"
                         justify="center"
                         style={{
-                            width: "60%",
+                            width: "80%",
                             height: "100%",
                             backgroundColor: "white",
                         }}

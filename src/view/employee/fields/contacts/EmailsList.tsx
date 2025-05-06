@@ -2,10 +2,11 @@ import { Listed } from "@/view/primitives/listed/Listed";
 import { IEmail } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { EmailField } from "@/view/employee/fields/contacts/EmailField";
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 
 export function EmailsList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
+    const { editModeEnabled } = useEditMode();
 
     const getEmails = () => getList<IEmail>("emails");
 
@@ -28,6 +29,7 @@ export function EmailsList() {
 
     return (
         <Listed<IEmail>
+            editModeEnabled={editModeEnabled}
             items={getEmails()}
             FieldType={EmailField}
             newItemGetter={getNewEmail}

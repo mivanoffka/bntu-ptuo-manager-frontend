@@ -2,10 +2,11 @@ import { Listed } from "@/view/primitives/listed/Listed";
 import { IEducationalInstitution } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { EducationalInstitutionField } from "@/view/employee/fields/education/EducationalInstitutionField";
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEmployeeEditor, useEditMode } from "@/controller/employee";
 
 export function EducationalInstitutionsList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
+    const { editModeEnabled } = useEditMode();
 
     const getEducationalInstitutions = () =>
         getList<IEducationalInstitution>("educationalInstitutions");
@@ -36,6 +37,7 @@ export function EducationalInstitutionsList() {
 
     return (
         <Listed<IEducationalInstitution>
+            editModeEnabled={editModeEnabled}
             items={getEducationalInstitutions()}
             FieldType={EducationalInstitutionField}
             newItemGetter={getNewEducationalInstitution}

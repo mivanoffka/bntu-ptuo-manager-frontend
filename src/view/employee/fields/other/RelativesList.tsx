@@ -2,10 +2,11 @@ import { Listed } from "@/view/primitives/listed/Listed";
 import { IRelative } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { RelativeField } from "@/view/employee/fields/other/RelativeField";
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 
 export function RelativesList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
+    const { editModeEnabled } = useEditMode();
 
     const getRelatives = () => getList<IRelative>("relatives");
 
@@ -28,6 +29,7 @@ export function RelativesList() {
 
     return (
         <Listed<IRelative>
+            editModeEnabled={editModeEnabled}
             items={getRelatives()}
             FieldType={RelativeField}
             newItemGetter={getNewRelative}

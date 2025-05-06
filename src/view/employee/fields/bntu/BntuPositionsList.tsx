@@ -1,11 +1,12 @@
 import { Listed } from "@/view/primitives/listed/Listed";
 import { IBntuPosition } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 import { BntuPositionField } from "@/view/employee/fields/bntu/BntuPositionField";
 
 export function BntuPositionsList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
+    const { editModeEnabled } = useEditMode();
 
     const getBntuPositions = () => getList<IBntuPosition>("bntuPositions");
 
@@ -34,6 +35,7 @@ export function BntuPositionsList() {
 
     return (
         <Listed<IBntuPosition>
+            editModeEnabled={editModeEnabled}
             items={getBntuPositions()}
             FieldType={BntuPositionField}
             newItemGetter={getNewBntuPosition}

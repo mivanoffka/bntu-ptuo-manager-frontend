@@ -128,7 +128,7 @@ export function CreateToolBarButton() {
         <ToolBarButton
             color={Palette.BLUE}
             onClick={createNew}
-            title={"Добавить сотрудника"}
+            title={"Добавить учётную карточку"}
             icon={<UserAddOutlined />}
         />
     );

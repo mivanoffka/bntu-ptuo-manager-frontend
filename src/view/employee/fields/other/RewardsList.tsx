@@ -2,10 +2,11 @@ import { Listed } from "@/view/primitives/listed/Listed";
 import { IReward } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { RewardField } from "@/view/employee/fields/other/RewardField";
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 
 export function RewardsList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
+    const { editModeEnabled } = useEditMode();
 
     const getRewards = () => getList<IReward>("rewards");
 
@@ -27,6 +28,7 @@ export function RewardsList() {
 
     return (
         <Listed<IReward>
+            editModeEnabled={editModeEnabled}
             items={getRewards()}
             FieldType={RewardField}
             newItemGetter={getNewReward}

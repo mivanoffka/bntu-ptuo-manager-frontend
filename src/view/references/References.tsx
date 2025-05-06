@@ -65,7 +65,7 @@ export function References() {
                 align="center"
                 justify="center"
                 style={{
-                    width: "30%",
+                    width: "45%",
                     height: "100%",
                     backgroundColor: "white",
                 }}

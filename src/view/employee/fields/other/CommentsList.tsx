@@ -2,10 +2,11 @@ import { Listed } from "@/view/primitives/listed/Listed";
 import { IComment } from "@/model";
 import { tempIds } from "@/controller/employee/utils";
 import { CommentField } from "@/view/employee/fields/other/CommentField";
-import { useEmployeeEditor } from "@/controller/employee";
+import { useEditMode, useEmployeeEditor } from "@/controller/employee";
 
 export function CommentsList() {
     const { getList, updateList, removeFromList } = useEmployeeEditor();
+    const { editModeEnabled } = useEditMode();
 
     const getComments = () => getList<IComment>("comments");
 
@@ -25,6 +26,7 @@ export function CommentsList() {
 
     return (
         <Listed<IComment>
+            editModeEnabled={editModeEnabled}
             items={getComments()}
             FieldType={CommentField}
             newItemGetter={getNewComment}
