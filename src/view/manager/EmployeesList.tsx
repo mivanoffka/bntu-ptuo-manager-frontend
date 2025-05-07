@@ -1,14 +1,51 @@
 import { useEmployees } from "@/controller/employee/EmployeesContext";
 import { Flex } from "antd";
 import { SelectableList } from "@/view/list/SelectableList";
+import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
+import { DownloadOutlined, PlusOutlined } from "@ant-design/icons";
+import { Palette } from "@/view/constants";
 
 export function EmployeesList() {
-    const { employeesList, fetchNextEmployees, selectedId, selectId } =
-        useEmployees();
+    const {
+        employeesList,
+        fetchNextEmployees,
+        selectedId,
+        selectId,
+        downloadAllEmployeesExcel,
+    } = useEmployees();
 
     const handleLoadMore = () => {
         fetchNextEmployees();
     };
+
+    const footer = (
+        <Flex justify="space-around" align="center" style={{ height: "25px" }}>
+            <Flex justify="center" align="center" style={{ width: "33%" }}>
+                <ToolBarButton
+                    color={Palette.GREEN}
+                    onClick={downloadAllEmployeesExcel}
+                    title="Экспорт"
+                    icon={<DownloadOutlined />}
+                />
+            </Flex>
+
+            <div
+                style={{
+                    width: "1px",
+                    height: "100%",
+                    backgroundColor: Palette.LIGHT_GRAY,
+                }}
+            />
+
+            <Flex justify="center" align="center" style={{ width: "67%" }}>
+                <ToolBarButton
+                    onClick={handleLoadMore}
+                    title="Больше..."
+                    icon={<PlusOutlined />}
+                />
+            </Flex>
+        </Flex>
+    );
 
     return (
         <Flex
@@ -25,7 +62,7 @@ export function EmployeesList() {
                 data={employeesList}
                 selectedId={selectedId}
                 onSelect={(id) => selectId(id)}
-                onLoadMore={handleLoadMore}
+                footer={footer}
                 renderLabel={(employee) => {
                     const { firstName, lastName, middleName } =
                         employee.latestEmployeeVersion;

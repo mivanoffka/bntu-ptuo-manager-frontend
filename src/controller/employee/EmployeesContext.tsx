@@ -39,6 +39,7 @@ export interface IEmployeesContext {
     totalItems: number;
 
     fetchAllEmployees: () => Promise<void>;
+    downloadAllEmployeesExcel: () => Promise<void>;
     fetchNextEmployees: () => Promise<void>;
     fetchSelectedEmployee: () => Promise<void>;
     fetchSelectedEmployeeVersion: () => Promise<void>;
@@ -69,6 +70,7 @@ export const EmployeesContext = createContext<IEmployeesContext>({
     totalItems: 0,
 
     fetchAllEmployees: async () => {},
+    downloadAllEmployeesExcel: async () => {},
     fetchNextEmployees: async () => {},
     fetchSelectedEmployee: async () => {},
     fetchSelectedEmployeeVersion: async () => {},
@@ -148,6 +150,51 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
             });
 
         return data;
+    }
+
+    async function _getManyEmployeesExcel(
+        filter: IEmployeesFilter
+    ): Promise<boolean> {
+        try {
+            const params = { ...filter };
+
+            const response = await axiosInstance.get(
+                `${EmployeesEndPoint.PREFIX}/export-excel`,
+                {
+                    params,
+                    responseType: "blob",
+                }
+            );
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+
+            const link = document.createElement("a");
+            link.href = url;
+
+            const contentDisposition = response.headers["content-disposition"];
+            let filename = `employees_${new Date()
+                .toISOString()
+                .replace(/[:.]/g, "-")}.xlsx`;
+            if (contentDisposition) {
+                const match = contentDisposition.match(/filename="(.+)"/);
+                if (match && match[1]) {
+                    filename = match[1];
+                }
+            }
+            link.setAttribute("download", filename);
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Clean up the blob URL
+            window.URL.revokeObjectURL(url);
+
+            return true;
+        } catch (error) {
+            console.error("Error downloading Excel file:", error);
+            return false;
+        }
     }
 
     async function _getOneEmployee(id: number): Promise<IEmployee> {
@@ -294,6 +341,10 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
             setTotalItems(count);
             setEmployeesList(results);
         }
+    }
+
+    async function downloadAllEmployeesExcel() {
+        await _getManyEmployeesExcel(employeesListFilter);
     }
 
     useEffect(() => {
@@ -460,6 +511,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         setSelectedEmployeeVersion,
 
         fetchAllEmployees,
+        downloadAllEmployeesExcel,
         fetchNextEmployees,
         fetchSelectedEmployee,
         fetchSelectedEmployeeVersion,

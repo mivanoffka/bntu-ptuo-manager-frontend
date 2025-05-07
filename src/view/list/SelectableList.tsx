@@ -1,23 +1,19 @@
-import { List, Typography, Flex } from "antd";
-import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
-import { PlusOutlined } from "@ant-design/icons";
+import { List, Typography } from "antd";
 import "./list-item.css";
+import { ReactNode } from "react";
 
-export function SelectableList({
-    data,
-    selectedId,
-    onSelect,
-    onLoadMore,
-    renderLabel,
-    getId,
-}: {
+export interface ISelectableListProps {
     data: any[];
     selectedId: string | number | null;
-    onSelect: (id: string | number) => void;
-    onLoadMore?: () => void;
+    onSelect: (id: number | null) => void;
+    footer?: ReactNode;
     renderLabel: (item: any) => string;
     getId: (item: any) => string | number;
-}) {
+}
+
+export function SelectableList(props: ISelectableListProps) {
+    const { data, selectedId, onSelect, renderLabel, getId, footer } = props;
+
     return (
         <List
             dataSource={data}
@@ -40,21 +36,7 @@ export function SelectableList({
                     </List.Item>
                 );
             }}
-            loadMore={
-                onLoadMore && (
-                    <Flex
-                        justify="center"
-                        align="center"
-                        style={{ height: "25px" }}
-                    >
-                        <ToolBarButton
-                            onClick={onLoadMore || (() => {})}
-                            title="Больше"
-                            icon={<PlusOutlined />}
-                        />
-                    </Flex>
-                )
-            }
+            loadMore={footer}
         />
     );
 }
