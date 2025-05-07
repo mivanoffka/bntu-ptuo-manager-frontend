@@ -21,3 +21,5 @@ export {
 } from "@/view/employee/fields/education";
 
 export * from "@/view/employee/fields/bntu";
+
+export * from "@/view/employee/fields/image";

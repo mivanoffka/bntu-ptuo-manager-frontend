@@ -1,3 +1,4 @@
+import { useApi } from "@/controller/api";
 import { useEditMode } from "@/controller/employee/EditModeContext";
 import { useEmployees } from "@/controller/employee/EmployeesContext";
 import { getCopy, getNewEmployee } from "@/controller/employee/utils";
@@ -25,6 +26,9 @@ export interface IEmployeeEditorContext {
     updateList: <T extends IPrimaryKeyed>(fieldName: string, value: T) => void;
     getList: <T extends IPrimaryKeyed>(fieldName: string) => T[];
     updateField: <T>(fieldName: string, value: T | null) => void;
+
+    getNewImage: () => File | null | undefined;
+    setNewImage: (value: File | null | undefined) => void;
 }
 
 export const EmployeeEditorContext = createContext<IEmployeeEditorContext>({
@@ -38,9 +42,15 @@ export const EmployeeEditorContext = createContext<IEmployeeEditorContext>({
     getList: () => [],
     updateField: () => {},
     getField: () => null,
+
+    getNewImage: () => null,
+    setNewImage: () => {},
 });
 
 export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
+    const { axiosInstance } = useApi();
+    const [newImage, setNewImage] = useState<File | null | undefined>(null);
+
     const { editModeEnabled, enableEditMode, disableEditMode } = useEditMode();
 
     const {
@@ -52,6 +62,7 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         setDisplayedEmployeeVersion(selectedEmployeeVersion);
+        setNewImage(undefined);
     }, [selectedEmployeeVersion]);
 
     const [displayedEmployeeVersion, setDisplayedEmployeeVersion] =
@@ -64,6 +75,7 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         enableEditMode();
         const newEmployee = getNewEmployee();
         setDisplayedEmployeeVersion(newEmployee);
+        setNewImage(undefined);
     }
 
     function startEdit() {
@@ -74,6 +86,7 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         enableEditMode();
         setEmployeeVersionBackUp(displayedEmployeeVersion);
         setDisplayedEmployeeVersion(getCopy(displayedEmployeeVersion));
+        setNewImage(undefined);
     }
 
     function cancelEdit() {
@@ -84,6 +97,7 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         setDisplayedEmployeeVersion(employeeVersionBackUp);
         setEmployeeVersionBackUp(null);
         disableEditMode();
+        setNewImage(undefined);
     }
 
     async function applyEdit() {
@@ -91,9 +105,21 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
             return;
         }
 
+        let { imagePath } = displayedEmployeeVersion;
+
+        if (newImage) {
+            imagePath = await uploadImage(newImage);
+        } else {
+            if (newImage === null) {
+                imagePath = null;
+            }
+        }
+
+        const newEmployeeVersion = { ...displayedEmployeeVersion, imagePath };
+
         const result = selectedEmployee
-            ? await sendNewVersion(displayedEmployeeVersion)
-            : await sendNewEmployee(displayedEmployeeVersion);
+            ? await sendNewVersion(newEmployeeVersion)
+            : await sendNewEmployee(newEmployeeVersion);
 
         if (result) {
             // setDisplayedEmployeeVersion(null);
@@ -175,6 +201,34 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         });
     }
 
+    async function uploadImage(file: File) {
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const response = await axiosInstance.post(
+                "media-upload/images/",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            const { file: pathBase } = response.data;
+
+            const path = pathBase.replace("http://localhost:8000", "");
+
+            console.log(path);
+
+            return path;
+        } catch (error) {
+            console.error("Upload failed:", error);
+            throw error;
+        }
+    }
+
     const context: IEmployeeEditorContext = {
         displayedEmployeeVersion,
         startEdit,
@@ -186,6 +240,8 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         getList,
         updateField,
         getField,
+        getNewImage: () => newImage,
+        setNewImage: (value) => setNewImage(value),
     };
 
     return (

@@ -1,4 +1,4 @@
-import { Divider, Flex, Image, Tabs } from "antd";
+import { Divider, Flex, Tabs } from "antd";
 import {
     PhoneNumbersList,
     EmailsList,
@@ -12,6 +12,7 @@ import {
     EducationLevelField,
     AcademicDegreeField,
     FullNameField,
+    EmployeePhotoField,
 } from "@/view/employee/fields";
 
 import "./style/employee.css";
@@ -51,7 +52,7 @@ export function Employee() {
                         justify="center"
                         style={{ width: "200px" }}
                     >
-                        <Image style={{ width: "112px", height: "150px" }} />
+                        <EmployeePhotoField />
                     </Flex>
                     <Flex
                         gap="small"

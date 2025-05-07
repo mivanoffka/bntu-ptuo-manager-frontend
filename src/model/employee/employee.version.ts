@@ -20,6 +20,8 @@ export interface IEmployeeVersion extends IPrimaryKeyed, ITimeStamped {
     birthplace: string | null;
     genderId: number | null;
 
+    imagePath: string | null;
+
     // BNTU
 
     bntuPositions: IBntuPosition[];
