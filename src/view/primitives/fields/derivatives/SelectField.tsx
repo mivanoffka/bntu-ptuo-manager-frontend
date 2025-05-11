@@ -10,6 +10,8 @@ export interface ISelectFieldProps<T extends IEnumerated> {
     placeholder?: string;
     editModeEnabled: boolean;
     multiple?: boolean;
+    allowEmpty?: boolean;
+    disabled?: boolean;
 }
 
 export function SelectField<T extends IEnumerated>(
@@ -22,6 +24,8 @@ export function SelectField<T extends IEnumerated>(
         placeholder = "Не выбрано",
         editModeEnabled,
         multiple = false,
+        allowEmpty = true,
+        disabled = false,
     } = props;
 
     const selectMode = multiple ? "multiple" : undefined;
@@ -72,10 +76,11 @@ export function SelectField<T extends IEnumerated>(
                     onChange={handleMultipleChange}
                     options={enumToOptions(enumeration)}
                     placeholder={placeholder}
+                    disabled={disabled}
                 />
             </Space.Compact>
         ) : (
-            <Space.Compact>
+            <Space.Compact style={{ textAlign: "left", width: "100%" }}>
                 <Select
                     style={{ textAlign: "left", width: "100%" }}
                     size="small"
@@ -83,15 +88,18 @@ export function SelectField<T extends IEnumerated>(
                     onChange={handleSingleChange}
                     options={enumToOptions(enumeration)}
                     placeholder={placeholder}
+                    disabled={disabled}
                 />
-                <Button onClick={() => onChange([])}>
-                    <CloseCircleFilled
-                        style={{
-                            color: Palette.LIGHT_GRAY,
-                            fontSize: FontSize.SMALL,
-                        }}
-                    />
-                </Button>
+                {allowEmpty && (
+                    <Button disabled={disabled} onClick={() => onChange([])}>
+                        <CloseCircleFilled
+                            style={{
+                                color: Palette.LIGHT_GRAY,
+                                fontSize: FontSize.SMALL,
+                            }}
+                        />
+                    </Button>
+                )}
             </Space.Compact>
         )
     ) : (

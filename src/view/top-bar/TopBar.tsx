@@ -52,7 +52,6 @@ export function TopBar() {
         {
             label: "Пользователи",
             key: "/users",
-            disabled: true,
             icon: <TeamOutlined />,
         },
     ];

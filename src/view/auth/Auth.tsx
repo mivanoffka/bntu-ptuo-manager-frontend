@@ -1,3 +1,4 @@
+import { useNavigate, useLocation } from "react-router-dom";
 import { SignIn } from "@/view/auth/SignIn";
 import { SignUp } from "@/view/auth/SignUp";
 import { FontSize } from "@/view/constants";
@@ -5,24 +6,31 @@ import { Layout } from "@/view/layout/Layout";
 import { Flex, Tabs, Typography } from "antd";
 
 export function Auth() {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const tabKey = location.pathname.endsWith("sign-up")
+        ? "sign-up"
+        : "sign-in";
+
     const items = [
         {
-            key: "1",
+            key: "sign-in",
             label: (
                 <Typography.Text style={{ fontSize: FontSize.SMALL }}>
                     ВХОД В СИСТЕМУ
                 </Typography.Text>
             ),
-            children: <SignIn></SignIn>,
+            children: <SignIn />,
         },
         {
-            key: "2",
+            key: "sign-up",
             label: (
                 <Typography.Text style={{ fontSize: FontSize.SMALL }}>
                     РЕГИСТРАЦИЯ
                 </Typography.Text>
             ),
-            children: <SignUp></SignUp>,
+            children: <SignUp />,
         },
     ];
 
@@ -43,9 +51,11 @@ export function Auth() {
                 >
                     <Tabs
                         centered
+                        activeKey={tabKey}
+                        onChange={(key) => navigate(`/auth/${key}`)}
                         style={{ width: "100%" }}
                         items={items}
-                    ></Tabs>
+                    />
                 </Flex>
             </Flex>
         </Layout>

@@ -14,6 +14,7 @@ import {
     StopOutlined,
 } from "@ant-design/icons";
 import { Palette } from "@/view/constants";
+import { EnumerationsListItem } from "@/view/references/fields/EnumerationsListItem";
 
 export interface IEnumerationListProps {
     title: string;
@@ -68,7 +69,7 @@ export function EnumerationList(props: IEnumerationListProps) {
                 >
                     <SelectableList
                         data={enumeration}
-                        renderLabel={(item) => item.label}
+                        RenderItem={EnumerationsListItem}
                         getId={(item) => item.id}
                         selectedId={selectedId}
                         onSelect={(id) => {

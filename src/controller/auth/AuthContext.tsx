@@ -5,16 +5,16 @@ import { useNavigate } from "react-router-dom";
 
 interface IAuthContext {
     isAuthorized: boolean;
-    signIn: (username: string, password: string) => void;
-    signUp: (username: string, password: string) => void;
+    signIn: (username: string, password: string) => Promise<void>;
+    signUp: (username: string, password: string) => Promise<void>;
     signOut: () => void;
     username: string | null;
 }
 
 const Auth = createContext<IAuthContext>({
     isAuthorized: false,
-    signIn: () => {},
-    signUp: () => {},
+    signIn: async () => {},
+    signUp: async () => {},
     signOut: () => {},
     username: null,
 });

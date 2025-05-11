@@ -17,6 +17,7 @@ import { Employees } from "@/view/manager/Employees";
 import { References } from "@/view/references/References";
 import { SignUp } from "@/view/auth/SignUp";
 import { Auth } from "@/view/auth/Auth";
+import { Users } from "@/view/users/Users";
 
 const App: React.FC = () => (
     <ConfigProvider locale={ruRU} componentSize="small" theme={THEME}>
@@ -34,18 +35,23 @@ const App: React.FC = () => (
                                                 <EnumerationsProvider>
                                                     <TopBar />
                                                     <Routes>
-                                                        {/* <Route
-                                                            path="/auth/sign-in"
-                                                            element={<SignIn />}
-                                                        />
                                                         <Route
-                                                            path="/auth/sign-up"
-                                                            element={<SignUp />}
-                                                        /> */}
-                                                        <Route
-                                                            path="/auth"
+                                                            path="/auth/*"
                                                             element={<Auth />}
-                                                        ></Route>
+                                                        >
+                                                            <Route
+                                                                path="sign-in"
+                                                                element={
+                                                                    <SignIn />
+                                                                }
+                                                            />
+                                                            <Route
+                                                                path="sign-up"
+                                                                element={
+                                                                    <SignUp />
+                                                                }
+                                                            />
+                                                        </Route>
 
                                                         <Route
                                                             path="/employees/:id?/:timestamp?"
@@ -58,6 +64,10 @@ const App: React.FC = () => (
                                                             element={
                                                                 <References />
                                                             }
+                                                        />
+                                                        <Route
+                                                            path="/users"
+                                                            element={<Users />}
                                                         />
                                                         <Route
                                                             path="*"

@@ -1,18 +1,32 @@
-import { List, Typography } from "antd";
+import { Flex, List, Typography } from "antd";
 import "./list-item.css";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 
-export interface ISelectableListProps {
-    data: any[];
+export interface ISelectableListItemProps<T> {
+    item: T;
+}
+
+export interface ISelectableListProps<T> {
+    data: T[];
     selectedId: string | number | null;
     onSelect: (id: number | null) => void;
     footer?: ReactNode;
-    renderLabel: (item: any) => string;
+    RenderItem: React.FC<ISelectableListItemProps<T>>;
     getId: (item: any) => string | number;
+    height: string;
+    isSelectable?: boolean;
 }
 
-export function SelectableList(props: ISelectableListProps) {
-    const { data, selectedId, onSelect, renderLabel, getId, footer } = props;
+export function SelectableList<T>(props: ISelectableListProps<T>) {
+    const {
+        data,
+        selectedId,
+        onSelect,
+        RenderItem,
+        getId,
+        footer,
+        height = "25px",
+    } = props;
 
     return (
         <List
@@ -26,12 +40,16 @@ export function SelectableList(props: ISelectableListProps) {
 
                 return (
                     <List.Item
-                        style={{ height: "25px" }}
+                        style={{ height, width: "100%" }}
                         className={rowClass}
                         onClick={() => onSelect(id)}
                     >
-                        <Typography.Text style={{ fontSize: "13px" }}>
-                            {renderLabel(item)}
+                        <Typography.Text
+                            style={{ fontSize: "13px", width: "100%" }}
+                        >
+                            <Flex>
+                                <RenderItem item={item} />
+                            </Flex>
                         </Typography.Text>
                     </List.Item>
                 );

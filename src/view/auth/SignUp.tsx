@@ -4,9 +4,10 @@ import {
     PasswordField,
     UsernameField,
 } from "@/view/auth/fields";
+import { FontSize, Palette } from "@/view/constants";
 import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
-import { CheckOutlined } from "@ant-design/icons";
-import { Flex } from "antd";
+import { CheckOutlined, ReloadOutlined } from "@ant-design/icons";
+import { Flex, Typography } from "antd";
 import { useState } from "react";
 
 export function SignUp() {
@@ -17,9 +18,34 @@ export function SignUp() {
     const [passwordConfirmation, setPasswordConfirmation] =
         useState<string>("");
 
-    function onClick() {
+    async function onClick() {
         if (password !== passwordConfirmation) return;
-        signUp(username, password);
+        await signUp(username, password);
+        setHasApplied(true);
+    }
+
+    const [hasApplied, setHasApplied] = useState<boolean>(false);
+
+    if (hasApplied) {
+        return (
+            <Flex
+                vertical
+                align="center"
+                justify="space-evenly"
+                gap="large"
+                style={{ width: "100%" }}
+            >
+                <Typography.Text
+                    style={{
+                        fontSize: FontSize.SMALL,
+                        color: Palette.GRAY,
+                    }}
+                >
+                    Вы успешно подали заявку на регистрацию. Дождитесь, пока она
+                    будет одобрена администратором.
+                </Typography.Text>
+            </Flex>
+        );
     }
 
     return (

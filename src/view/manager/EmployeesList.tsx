@@ -4,6 +4,7 @@ import { SelectableList } from "@/view/list/SelectableList";
 import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
 import { DownloadOutlined, PlusOutlined } from "@ant-design/icons";
 import { Palette } from "@/view/constants";
+import { EmployeesListItem } from "@/view/manager/EmployeesListItem";
 
 export function EmployeesList() {
     const {
@@ -63,11 +64,7 @@ export function EmployeesList() {
                 selectedId={selectedId}
                 onSelect={(id) => selectId(id)}
                 footer={footer}
-                renderLabel={(employee) => {
-                    const { firstName, lastName, middleName } =
-                        employee.latestEmployeeVersion;
-                    return `${lastName} ${firstName} ${middleName}`;
-                }}
+                RenderItem={EmployeesListItem}
                 getId={(employee) => employee.id}
             />
         </Flex>
