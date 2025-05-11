@@ -1,35 +1,40 @@
-import { SecondaryLabel } from "@/view/primitives/fields/SecondaryLabel";
-import { LabelField } from "@/view/primitives/fields/derivatives/LabelField";
-import { Collapse, Divider, Flex } from "antd";
-import { ReactNode, useState } from "react";
+import { MessageOutlined } from "@ant-design/icons";
+import { Dropdown, DropdownProps, Flex, MenuProps } from "antd";
+import { ReactNode } from "react";
 
-export interface IDropDownProps {
-    title: ReactNode;
+export interface IExpandableProps {
     children?: ReactNode;
+    content?: ReactNode;
+    icon?: ReactNode;
+    placement?: DropdownProps["placement"];
 }
 
-export function Expandable(props: IDropDownProps) {
-    const { title, children: childrenBase } = props;
+export function Expandable(props: IExpandableProps) {
+    const { children, content, icon, placement } = props;
 
-    const children = childrenBase ? (
-        childrenBase
-    ) : (
-        <SecondaryLabel>ПУСТО</SecondaryLabel>
-    );
+    const items: MenuProps["items"] = [
+        {
+            key: 0,
+            label: (
+                <Flex vertical style={{ width: "100%" }}>
+                    {content}
+                </Flex>
+            ),
+        },
+    ];
 
     return (
-        <Flex
-            vertical
-            align="center"
-            justify="center"
-            style={{
-                width: "100%",
-                height: "100%",
-            }}
+        <Dropdown
+            placement={placement || "bottom"}
+            trigger={["click"]}
+            menu={{ items }}
         >
-            <Divider orientation="left">{title}</Divider>
-            {children}
-            <Divider />
-        </Flex>
+            <a onClick={(e) => e.preventDefault()}>
+                <Flex gap="small">
+                    {children}
+                    {content ? icon ? icon : <MessageOutlined /> : <div></div>}
+                </Flex>
+            </a>
+        </Dropdown>
     );
 }

@@ -6,16 +6,21 @@ import { SignOutButton } from "@/view/auth/buttons/SignOutButton";
 import {
     AuditOutlined,
     DatabaseOutlined,
+    FormatPainterFilled,
     TeamOutlined,
+    UserOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { FontSize, Palette } from "@/view/constants";
+import { Expandable } from "@/view/primitives/containers";
+import { Logo } from "@/view/logo/Logo";
 
 export interface ITopBar {
     children?: React.ReactNode;
 }
 
 export function TopBar() {
-    const { isAuthorized } = useAuth();
+    const { isAuthorized, username } = useAuth();
 
     if (!isAuthorized) {
         return;
@@ -55,8 +60,23 @@ export function TopBar() {
     return (
         <div className="top-bar">
             <div className="top-bar-menu">
-                <Flex align="center" justify="center" style={{ width: "20%" }}>
-                    <Typography.Text>ППО работников БНТУ</Typography.Text>
+                <Flex
+                    gap="middle"
+                    align="center"
+                    justify="center"
+                    style={{ width: "20%" }}
+                >
+                    <Logo></Logo>
+                    <Typography.Text
+                        style={{
+                            margin: 0,
+                            padding: 0,
+                            color: Palette.GRAY,
+                            fontSize: 12,
+                        }}
+                    >
+                        РАБОТНИКОВ БНТУ
+                    </Typography.Text>
                 </Flex>
                 <Flex align="center" justify="center" style={{ width: "60%" }}>
                     <Menu
@@ -68,7 +88,22 @@ export function TopBar() {
                     />
                 </Flex>
                 <Flex align="center" justify="center" style={{ width: "20%" }}>
-                    <SignOutButton></SignOutButton>
+                    <Expandable
+                        content={
+                            <Flex align="center" justify="center">
+                                <SignOutButton></SignOutButton>
+                            </Flex>
+                        }
+                        icon={
+                            <UserOutlined
+                                style={{ color: Palette.BLUE }}
+                            ></UserOutlined>
+                        }
+                    >
+                        <Flex gap="small" align="center" justify="center">
+                            <Typography.Text>{username}</Typography.Text>
+                        </Flex>
+                    </Expandable>
                 </Flex>
             </div>
         </div>

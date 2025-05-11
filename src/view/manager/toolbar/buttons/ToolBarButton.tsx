@@ -3,6 +3,7 @@ import { Button, Flex, Typography } from "antd";
 import "./tool-bar-button.css";
 
 import React from "react";
+import { BaseButtonProps } from "antd/es/button/button";
 
 export interface IToolBarButtonProps {
     onClick: (() => any) | null;
@@ -10,10 +11,18 @@ export interface IToolBarButtonProps {
     icon: React.ReactNode;
     color?: string;
     disabled?: boolean;
+    isPrimary?: boolean;
 }
 
 export function ToolBarButton(props: IToolBarButtonProps) {
-    const { onClick, title, icon, color, disabled = false } = props;
+    const {
+        onClick,
+        title,
+        icon,
+        color,
+        disabled = false,
+        isPrimary = false,
+    } = props;
 
     const actuallyDisabled =
         onClick !== undefined && onClick !== null ? disabled : true;
@@ -25,17 +34,27 @@ export function ToolBarButton(props: IToolBarButtonProps) {
         <Button
             className="toolbar-button"
             disabled={actuallyDisabled}
-            type="link"
+            type={isPrimary ? "primary" : "link"}
             onClick={onClick}
+            color={color}
+            style={{ width: "100%" }}
         >
-            <Flex style={{ width: "100%", color: iconColor }} gap="small">
-                {icon}
+            <Flex
+                align="center"
+                justify="center"
+                style={{ width: "100%", color: iconColor }}
+                gap="small"
+            >
                 <Typography.Text
                     className="toolbar-text"
-                    style={{ color: textColor, fontSize: FontSize.SMALL }}
+                    style={{
+                        color: isPrimary ? "white" : textColor,
+                        fontSize: FontSize.SMALL,
+                    }}
                 >
                     {title}
                 </Typography.Text>
+                {icon}
             </Flex>
         </Button>
     );

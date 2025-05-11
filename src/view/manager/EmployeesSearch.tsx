@@ -6,7 +6,7 @@ import { Toolbar } from "@/view/manager/toolbar/Toolbar";
 import { EmployeesList } from "@/view/manager/EmployeesList";
 import { useEmployees } from "@/controller/employee";
 import {
-    Expandable,
+    GroupBox,
     FieldContainer,
     InputField,
     SecondaryLabel,

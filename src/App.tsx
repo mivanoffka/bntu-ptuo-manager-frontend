@@ -15,6 +15,8 @@ import { EditModeProvider } from "@/controller/employee";
 import { TreesProvider } from "@/controller/trees";
 import { Employees } from "@/view/manager/Employees";
 import { References } from "@/view/references/References";
+import { SignUp } from "@/view/auth/SignUp";
+import { Auth } from "@/view/auth/Auth";
 
 const App: React.FC = () => (
     <ConfigProvider locale={ruRU} componentSize="small" theme={THEME}>
@@ -22,7 +24,6 @@ const App: React.FC = () => (
             <ApiProvider>
                 <AuthProvider>
                     <Routes>
-                        <Route path="/auth/sign-in" element={<SignIn />} />
                         <Route
                             path="*"
                             element={
@@ -33,6 +34,19 @@ const App: React.FC = () => (
                                                 <EnumerationsProvider>
                                                     <TopBar />
                                                     <Routes>
+                                                        {/* <Route
+                                                            path="/auth/sign-in"
+                                                            element={<SignIn />}
+                                                        />
+                                                        <Route
+                                                            path="/auth/sign-up"
+                                                            element={<SignUp />}
+                                                        /> */}
+                                                        <Route
+                                                            path="/auth"
+                                                            element={<Auth />}
+                                                        ></Route>
+
                                                         <Route
                                                             path="/employees/:id?/:timestamp?"
                                                             element={

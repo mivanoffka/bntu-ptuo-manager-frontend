@@ -1,4 +1,4 @@
-export { Expandable } from "@/view/primitives/containers";
+export { GroupBox } from "@/view/primitives/containers";
 export {
     FieldContainer,
     SecondaryLabel,

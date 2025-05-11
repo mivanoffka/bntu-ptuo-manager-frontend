@@ -159,7 +159,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
             const params = { ...filter };
 
             const response = await axiosInstance.get(
-                `${EmployeesEndPoint.PREFIX}/export-excel`,
+                `${EmployeesEndPoint.PREFIX}/${EmployeesEndPoint.EXCEL}`,
                 {
                     params,
                     responseType: "blob",
@@ -306,8 +306,8 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         timestamp: DateTimeString
     ) {
         const data = await axiosInstance
-            .post(
-                `${EmployeesEndPoint.PREFIX}/${id}/${EmployeesEndPoint.RESTORE}/${timestamp}/`
+            .patch(
+                `${EmployeesEndPoint.PREFIX}/${id}/${EmployeesEndPoint.VERSIONS}/${timestamp}/${EmployeesEndPoint.RESTORE}/`
             )
             .then((response) => {
                 return response.data;
@@ -470,6 +470,9 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
                 selectedId,
                 timestamp as DateTimeString
             );
+            if (latestTimestamp) {
+                selectTimestamp(latestTimestamp);
+            }
             await fetchSelectedEmployee();
         }
     }
@@ -480,6 +483,9 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
                 selectedId,
                 timestamp as DateTimeString
             );
+            if (latestTimestamp) {
+                selectTimestamp(latestTimestamp);
+            }
             await fetchSelectedEmployee();
         }
     }
@@ -487,6 +493,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     async function deleteSelectedEmployee() {
         if (selectedId) {
             await _deleteEmployee(selectedId);
+            selectId(null);
             await fetchAllEmployees();
         }
     }

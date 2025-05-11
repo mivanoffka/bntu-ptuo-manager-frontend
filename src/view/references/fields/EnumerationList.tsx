@@ -3,7 +3,7 @@ import { useEnumerations } from "@/controller/enumerations/EnumerationsContext";
 import { SelectableList } from "@/view/list/SelectableList";
 import { useEffect, useState } from "react";
 import { Button, Flex } from "antd";
-import { Expandable, InputField, SecondaryLabel } from "@/view/primitives";
+import { GroupBox, InputField, SecondaryLabel } from "@/view/primitives";
 import { IEnumerated } from "@/model";
 import { ToolBarButton } from "@/view/manager/toolbar/buttons/ToolBarButton";
 import {

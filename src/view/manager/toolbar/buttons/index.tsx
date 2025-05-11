@@ -116,7 +116,7 @@ export function CancelToolBarButton() {
             color={Palette.RED}
             onClick={cancelEdit}
             title={"Отменить"}
-            icon={<RollbackOutlined />}
+            icon={<StopOutlined />}
         />
     );
 }
