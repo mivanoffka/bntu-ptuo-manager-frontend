@@ -69,7 +69,7 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
         setError(null);
         try {
             await axiosInstance.put(
-                `${EnumerationsEndPoint.PREFIX}/?table_name=${tableName}&id=${id}`,
+                `${EnumerationsEndPoint.PREFIX}/${id}/?table_name=${tableName}`,
                 { label }
             );
         } catch (err) {
@@ -85,7 +85,7 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
         setError(null);
         try {
             await axiosInstance.delete(
-                `${EnumerationsEndPoint.PREFIX}/?table_name=${tableName}&id=${id}`
+                `${EnumerationsEndPoint.PREFIX}/${id}/?table_name=${tableName}`
             );
         } catch (err) {
             console.log(err);

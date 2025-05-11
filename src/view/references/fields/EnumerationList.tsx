@@ -15,6 +15,7 @@ import {
 } from "@ant-design/icons";
 import { Palette } from "@/view/constants";
 import { EnumerationsListItem } from "@/view/references/fields/EnumerationsListItem";
+import { update } from "lodash";
 
 export interface IEnumerationListProps {
     title: string;
@@ -116,10 +117,19 @@ export function EnumerationList(props: IEnumerationListProps) {
                                     onClick={async () => {
                                         if (selectedItem === null) return;
 
-                                        await addToEnumeration(
-                                            enumerationName,
-                                            selectedItem.label
-                                        );
+                                        if (selectedItem.id >= 0) {
+                                            await updateEnumeration(
+                                                enumerationName,
+                                                selectedItem.id,
+                                                selectedItem.label
+                                            );
+                                        } else {
+                                            await addToEnumeration(
+                                                enumerationName,
+                                                selectedItem.label
+                                            );
+                                        }
+
                                         setEditModeEnabled(false);
                                         setSelectedItem(null);
                                     }}
