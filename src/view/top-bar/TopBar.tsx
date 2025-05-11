@@ -20,9 +20,9 @@ export interface ITopBar {
 }
 
 export function TopBar() {
-    const { isAuthorized, username } = useAuth();
+    const { user } = useAuth();
 
-    if (!isAuthorized) {
+    if (!user) {
         return;
     }
 
@@ -100,7 +100,7 @@ export function TopBar() {
                         }
                     >
                         <Flex gap="small" align="center" justify="center">
-                            <Typography.Text>{username}</Typography.Text>
+                            <Typography.Text>{user.username}</Typography.Text>
                         </Flex>
                     </Expandable>
                 </Flex>

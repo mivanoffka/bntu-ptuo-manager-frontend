@@ -64,6 +64,6 @@ export const Logo = () => (
         size={22}
         fontSize={28}
         colors={[Palette.GREEN, Palette.GREEN, Palette.BLUE]}
-        fontFamily="Century Gothic"
+        // fontFamily="Exotc350 Bd BT"
     />
 );

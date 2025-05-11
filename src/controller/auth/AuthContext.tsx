@@ -2,28 +2,26 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 import { createHook } from "@/controller/utils";
 import { useApi } from "@/controller/api";
 import { useNavigate } from "react-router-dom";
+import { IUser } from "@/model/user";
 
 interface IAuthContext {
-    isAuthorized: boolean;
     signIn: (username: string, password: string) => Promise<void>;
     signUp: (username: string, password: string) => Promise<void>;
     signOut: () => void;
-    username: string | null;
+    user: IUser | null;
 }
 
 const Auth = createContext<IAuthContext>({
-    isAuthorized: false,
     signIn: async () => {},
     signUp: async () => {},
     signOut: () => {},
-    username: null,
+    user: null,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { axiosInstance } = useApi();
-    const [isAuthorized, setIsAuthorized] = useState(false);
     const navigate = useNavigate();
-    const [username, setUsername] = useState<string | null>(null);
+    const [user, setUser] = useState<IUser | null>(null);
 
     async function signIn(username: string, password: string) {
         const body = { username, password };
@@ -32,14 +30,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             .then(async (res) => {
                 const {
                     tokens: { access },
-                    user: { username },
+                    user,
                 } = res.data;
 
                 localStorage.setItem("accessToken", access);
-                localStorage.setItem("username", username);
+                localStorage.setItem("user", JSON.stringify(user));
 
-                setIsAuthorized(true);
-                setUsername(username);
+                setUser(user);
             })
             .catch((err) => console.log(err));
     }
@@ -54,28 +51,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     async function signOut() {
         localStorage.removeItem("accessToken");
-        setIsAuthorized(false);
+        setUser(null);
     }
 
     useEffect(() => {
-        setIsAuthorized(!!localStorage.getItem("accessToken"));
-        setUsername(localStorage.getItem("username"));
+        const userStr = localStorage.getItem("user");
+        setUser(userStr ? JSON.parse(userStr) : null);
     }, []);
 
     useEffect(() => {
-        if (isAuthorized) {
+        if (user) {
             navigate("/employees");
         } else {
             navigate("/auth");
         }
-    }, [isAuthorized]);
+    }, [user]);
 
     const context: IAuthContext = {
-        isAuthorized,
         signIn,
         signUp,
         signOut,
-        username,
+        user,
     };
 
     return <Auth.Provider value={context}>{children}</Auth.Provider>;

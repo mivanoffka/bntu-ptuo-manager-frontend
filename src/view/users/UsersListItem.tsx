@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 export function UsersListItem(props: ISelectableListItemProps<IUser>) {
     const { item: user } = props;
     const { updateUserRole } = useUsers();
-    const { username } = useAuth();
+    const { user: authUser } = useAuth();
 
     const getDateValue = (value: DateTimeString | null): dayjs.Dayjs | null => {
         if (!value) return null;
@@ -42,7 +42,7 @@ export function UsersListItem(props: ISelectableListItemProps<IUser>) {
                     onChange={async (value) => {
                         updateUserRole(user.id, value[0]);
                     }}
-                    disabled={username === user.username}
+                    disabled={authUser.username === user.username}
                     editModeEnabled={true}
                     allowEmpty={false}
                 ></SelectField>
