@@ -1,24 +1,28 @@
 import React from "react";
-import { PageContainer } from "@/view/page-container";
-import { TopBar } from "@/view/top-bar";
-import { ApiProvider } from "@/controller/api";
-import { AuthProvider } from "@/controller/auth";
+import { ApiProvider } from "@/contexts/api";
+import { AuthProvider } from "@/contexts/auth";
 import { Navigate, Route, Routes, BrowserRouter } from "react-router-dom";
-import { SignIn } from "@/view/auth/SignIn";
-import { Content } from "@/view/content";
-import ruRU from "antd/lib/locale/ru_RU";
-
-import { EnumerationsProvider } from "@/controller/enumerations/EnumerationsContext";
+import { EnumerationsProvider } from "@/contexts/enumerations";
 import { ConfigProvider } from "antd";
-import { THEME } from "@/view/constants";
-import { EditModeProvider } from "@/controller/employee";
-import { TreesProvider } from "@/controller/trees";
-import { Employees } from "@/view/manager/Employees";
-import { References } from "@/view/references/References";
-import { SignUp } from "@/view/auth/SignUp";
-import { Auth } from "@/view/auth/Auth";
-import { Users } from "@/view/users/Users";
+import { THEME } from "@/constants";
+import { TreesProvider } from "@/contexts/trees";
+import dayjs from "dayjs";
+import "dayjs/locale/ru";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import updateLocale from "dayjs/plugin/updateLocale";
+import ruRU from "antd/lib/locale/ru_RU";
+import { PageContainer } from "@/components/page";
+import { TopBar } from "@/components/page/top-bar";
+import { EditModeProvider } from "@/contexts/employees/edit-mode";
+import { AuthPage, EmployeesPage } from "@/pages";
+import { SignIn } from "@/pages/auth/sign-in";
+import { SignUp } from "@/pages/auth/sign-up";
+import { ReferencesPage } from "@/pages/references";
+import { UsersPage } from "@/pages/users";
 
+dayjs.locale("ru");
+dayjs.extend(localizedFormat);
+dayjs.extend(updateLocale);
 const App: React.FC = () => (
     <ConfigProvider locale={ruRU} componentSize="small" theme={THEME}>
         <BrowserRouter>
@@ -29,57 +33,50 @@ const App: React.FC = () => (
                             path="*"
                             element={
                                 <PageContainer>
-                                    <Content>
-                                        <EditModeProvider>
-                                            <TreesProvider>
-                                                <EnumerationsProvider>
-                                                    <TopBar />
-                                                    <Routes>
+                                    <EditModeProvider>
+                                        <TreesProvider>
+                                            <EnumerationsProvider>
+                                                <Routes>
+                                                    <Route
+                                                        path="/auth/*"
+                                                        element={<AuthPage />}
+                                                    >
                                                         <Route
-                                                            path="/auth/*"
-                                                            element={<Auth />}
-                                                        >
-                                                            <Route
-                                                                path="sign-in"
-                                                                element={
-                                                                    <SignIn />
-                                                                }
-                                                            />
-                                                            <Route
-                                                                path="sign-up"
-                                                                element={
-                                                                    <SignUp />
-                                                                }
-                                                            />
-                                                        </Route>
+                                                            path="sign-in"
+                                                            element={<SignIn />}
+                                                        />
+                                                        <Route
+                                                            path="sign-up"
+                                                            element={<SignUp />}
+                                                        />
+                                                    </Route>
 
-                                                        <Route
-                                                            path="/employees/:id?/:timestamp?"
-                                                            element={
-                                                                <Employees />
-                                                            }
-                                                        />
-                                                        <Route
-                                                            path="/references"
-                                                            element={
-                                                                <References />
-                                                            }
-                                                        />
-                                                        <Route
-                                                            path="/users"
-                                                            element={<Users />}
-                                                        />
-                                                        <Route
-                                                            path="*"
-                                                            element={
-                                                                <Navigate to="/employees" />
-                                                            }
-                                                        />
-                                                    </Routes>
-                                                </EnumerationsProvider>
-                                            </TreesProvider>
-                                        </EditModeProvider>
-                                    </Content>
+                                                    <Route
+                                                        path="/employees/:id?/:timestamp?"
+                                                        element={
+                                                            <EmployeesPage />
+                                                        }
+                                                    />
+                                                    <Route
+                                                        path="/references"
+                                                        element={
+                                                            <ReferencesPage />
+                                                        }
+                                                    />
+                                                    <Route
+                                                        path="/users"
+                                                        element={<UsersPage />}
+                                                    />
+                                                    <Route
+                                                        path="*"
+                                                        element={
+                                                            <Navigate to="/employees" />
+                                                        }
+                                                    />
+                                                </Routes>
+                                            </EnumerationsProvider>
+                                        </TreesProvider>
+                                    </EditModeProvider>
                                 </PageContainer>
                             }
                         />

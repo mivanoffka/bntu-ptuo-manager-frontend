@@ -1,0 +1,58 @@
+.root-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+    align-content: center;
+    justify-content: center;
+    background-color: black;
+}
+
+.page-container {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+    align-content: center;
+    justify-content: center;
+    background-color: whitesmoke;
+}
+
+.layout {
+    min-width: 1200px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-self: center;
+    align-content: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.content-container {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+    align-content: center;
+    justify-content: center;
+    background-color: whitesmoke;
+}
