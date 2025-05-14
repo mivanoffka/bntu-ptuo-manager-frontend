@@ -60,13 +60,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(userStr ? JSON.parse(userStr) : null);
     }, []);
 
-    // useEffect(() => {
-    //     if (user) {
-    //         navigate("/employees");
-    //     } else {
-    //         navigate("/auth");
-    //     }
-    // }, [user]);
+    useEffect(() => {
+        if (user) {
+            navigate("/employees");
+        } else {
+            navigate("/auth");
+        }
+    }, [user]);
 
     const context: IAuthContext = {
         signIn,

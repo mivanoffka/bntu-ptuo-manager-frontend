@@ -38,7 +38,7 @@ export function AuthPage() {
             vertical
             align="center"
             justify="center"
-            style={{ width: "20%", backgroundColor: "white" }}
+            style={{ width: "25%", backgroundColor: "white" }}
         >
             <Flex
                 vertical
