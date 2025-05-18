@@ -13,6 +13,7 @@ import {
     UserAddOutlined,
 } from "@ant-design/icons";
 import { FormInstance } from "antd";
+import { useEffect, useState } from "react";
 
 export function CloseIconButton() {
     const { selectId } = useEmployees();
@@ -97,11 +98,12 @@ export interface IApplyIconButtonProps {
 }
 
 export function ApplyIconButton(props: IApplyIconButtonProps) {
-    const { applyEdit } = useEmployeeEditor();
+    const { applyEdit, isValid } = useEmployeeEditor();
     const { form } = props;
 
     return (
         <IconButton
+            disabled={!isValid}
             color={Palette.GREEN}
             onClick={() => applyEdit(form)}
             title={"Применить"}

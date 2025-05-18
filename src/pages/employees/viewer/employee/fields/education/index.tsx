@@ -1,90 +1,94 @@
-import { FieldContainer } from "@/components/containers/field-container";
+import { FieldContainer } from "@/components/containers";
 import { IListedItemProps } from "@/components/listed";
+import { DateTimeField } from "@/components/fields/datetime";
+import { SelectField } from "@/components/fields/select";
+import { TextField } from "@/components/fields/text";
 import { useEnumerations } from "@/contexts/enumerations";
 import { EnumerationName } from "@/contexts/enumerations/constants";
-import { DatePicker, Flex, Input, Select } from "antd";
-import dayjs from "dayjs";
+import { Flex, Form } from "antd";
+import { IFieldProps } from "@/components/fields/shared";
 
-export function AcademicDegreeField() {
+export function AcademicDegreeField(props: IFieldProps) {
+    const { isEditable } = props;
     const { getEnumeration } = useEnumerations();
-
     const academicDegrees = getEnumeration(EnumerationName.ACADEMIC_DEGREES);
 
     return (
-        <FieldContainer
-            title="Ученая степень"
-            name="academicDegreeId"
-            rules={[{ required: true, message: "" }]}
-        >
-            <Select
-                style={{ textAlign: "left", width: "100%" }}
-                placeholder=""
-                options={academicDegrees.map((item) => ({
-                    value: item.id,
-                    label: item.label,
-                }))}
-                allowClear
-            />
+        <FieldContainer title="Ученая степень">
+            <Form.Item
+                name="academicDegreeId"
+                rules={[{ required: true, message: "" }]}
+            >
+                <SelectField
+                    isEditable={isEditable}
+                    options={academicDegrees.map((item) => ({
+                        value: item.id,
+                        label: item.label,
+                    }))}
+                ></SelectField>
+            </Form.Item>
         </FieldContainer>
     );
 }
 
-export function EducationLevelField() {
+export function EducationLevelField(props: IFieldProps) {
+    const { isEditable } = props;
     const { getEnumeration } = useEnumerations();
-
     const educationLevels = getEnumeration(EnumerationName.EDUCATION_LEVELS);
 
     return (
-        <FieldContainer
-            title="Уровень образования"
-            name="educationLevelId"
-            rules={[{ required: true, message: "" }]}
-        >
-            <Select
-                style={{ textAlign: "left", width: "100%" }}
-                placeholder=""
-                options={educationLevels.map((item) => ({
-                    value: item.id,
-                    label: item.label,
-                }))}
-                allowClear
-            />
+        <FieldContainer title="Уровень образования">
+            <Form.Item
+                name="educationLevelId"
+                rules={[{ required: true, message: "" }]}
+            >
+                <SelectField
+                    isEditable={isEditable}
+                    options={educationLevels.map((item) => ({
+                        value: item.id,
+                        label: item.label,
+                    }))}
+                ></SelectField>
+            </Form.Item>
         </FieldContainer>
     );
 }
 
 export function EducationalInstitutionField(props: IListedItemProps) {
-    const { index } = props;
+    const { index, isEditable } = props;
 
     return (
         <Flex vertical gap="small" style={{ width: "100%" }}>
             <Flex gap="small" style={{ width: "100%" }}>
                 <Flex style={{ width: "75%" }}>
-                    <FieldContainer
-                        title="Название"
-                        name={[index, "label"]}
-                        rules={[{ required: true, message: "" }]}
-                    >
-                        <Input allowClear></Input>
+                    <FieldContainer title="Название">
+                        <Form.Item
+                            name={[index, "label"]}
+                            rules={[{ required: true, message: "" }]}
+                        >
+                            <TextField isEditable={isEditable}></TextField>
+                        </Form.Item>
                     </FieldContainer>
                 </Flex>
                 <Flex style={{ width: "25%" }}>
-                    <FieldContainer
-                        title="Год окончания"
-                        name={[index, "graduatedAt"]}
-                        rules={[{ required: true, message: "" }]}
-                    >
-                        <DatePicker
-                            allowClear
-                            format="YYYY"
-                            style={{ width: "100%" }}
-                        />
+                    <FieldContainer title="Год окончания">
+                        <Form.Item
+                            name={[index, "graduatedAt"]}
+                            rules={[{ required: true, message: "" }]}
+                        >
+                            <DateTimeField
+                                isEditable={isEditable}
+                                format="YYYY г."
+                            ></DateTimeField>
+                        </Form.Item>
                     </FieldContainer>
                 </Flex>
             </Flex>
             <Flex style={{ width: "100%" }}>
-                <FieldContainer title="Комментарий" name={[index, "comment"]}>
-                    <Input allowClear></Input>
+                <FieldContainer title="Комментарий">
+                    <Form.Item name={[index, "comment"]}>
+                        <TextField isEditable={isEditable}></TextField>
+                    </Form.Item>
                 </FieldContainer>
             </Flex>
         </Flex>

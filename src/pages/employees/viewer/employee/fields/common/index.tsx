@@ -1,84 +1,86 @@
 import { FieldContainer } from "@/components/containers";
+import { DateTimeField } from "@/components/fields/datetime";
+import { SelectField } from "@/components/fields/select";
+import { IFieldProps, NOT_NULL_RULES } from "@/components/fields/shared";
+import { TextField } from "@/components/fields/text";
 import { useEnumerations } from "@/contexts/enumerations";
 import { EnumerationName } from "@/contexts/enumerations/constants";
-import { DatePicker, Flex, Input, Select } from "antd";
+import { Flex, Form } from "antd";
 
-export function BirthdateField() {
+export function BirthdateField(props: IFieldProps) {
+    const { isEditable } = props;
+
     return (
-        <FieldContainer
-            title="Дата рождения"
-            name="birthdate"
-            rules={[{ required: true, message: "" }]}
-        >
-            <DatePicker
-                allowClear
-                format="DD MMMM YYYY"
-                style={{ width: "100%" }}
-            />
+        <FieldContainer title="Дата рождения">
+            <Form.Item name="birthdate" rules={NOT_NULL_RULES}>
+                <DateTimeField isEditable={isEditable}></DateTimeField>
+            </Form.Item>
         </FieldContainer>
     );
 }
 
-export function BirthplaceField() {
+export function BirthplaceField(props: IFieldProps) {
+    const { isEditable } = props;
+
     return (
-        <FieldContainer
-            title="Место рождения"
-            name="birthplace"
-            rules={[
-                {
-                    required: true,
-                    message: "",
-                },
-            ]}
-        >
-            <Input></Input>
+        <FieldContainer title="Место рождения">
+            <Form.Item name="birthplace" rules={NOT_NULL_RULES}>
+                <TextField isEditable={isEditable}></TextField>
+            </Form.Item>
         </FieldContainer>
     );
 }
 
-export function FullNameField() {
+export function FullNameField(props: IFieldProps) {
+    const { isEditable } = props;
+
     return (
         <Flex gap="small" style={{ width: "100%" }}>
-            <FieldContainer
-                title="Фамилия"
-                name="lastName"
-                rules={[{ required: true, message: "" }]}
-            >
-                <Input allowClear></Input>
+            <FieldContainer title="Фамилия">
+                <Form.Item
+                    name="lastName"
+                    rules={[{ required: true, message: "" }]}
+                >
+                    <TextField isEditable={isEditable}></TextField>
+                </Form.Item>
             </FieldContainer>
-            <FieldContainer
-                title="Имя"
-                name="firstName"
-                rules={[{ required: true, message: "" }]}
-            >
-                <Input allowClear></Input>
+            <FieldContainer title="Имя">
+                <Form.Item
+                    name="firstName"
+                    rules={[{ required: true, message: "" }]}
+                >
+                    <TextField isEditable={isEditable}></TextField>
+                </Form.Item>
             </FieldContainer>
-            <FieldContainer title="Отчество" name="middleName">
-                <Input allowClear></Input>
+            <FieldContainer title="Отчество">
+                <Form.Item name="middleName">
+                    <TextField isEditable={isEditable}></TextField>
+                </Form.Item>
             </FieldContainer>
         </Flex>
     );
 }
 
-export function GenderField() {
+export function GenderField(props: IFieldProps) {
+    const { isEditable } = props;
+
     const { getEnumeration } = useEnumerations();
     const genders = getEnumeration(EnumerationName.GENDERS);
 
     return (
-        <FieldContainer
-            title="Пол"
-            name="genderId"
-            rules={[{ required: true, message: "" }]}
-        >
-            <Select
-                style={{ textAlign: "left", width: "100%" }}
-                placeholder="Выберите пол"
-                options={genders.map((item) => ({
-                    value: item.id,
-                    label: item.label,
-                }))}
-                allowClear
-            />
+        <FieldContainer title="Пол">
+            <Form.Item
+                name="genderId"
+                rules={[{ required: true, message: "" }]}
+            >
+                <SelectField
+                    isEditable={isEditable}
+                    options={genders.map((item) => ({
+                        value: item.id,
+                        label: item.label,
+                    }))}
+                ></SelectField>
+            </Form.Item>
         </FieldContainer>
     );
 }

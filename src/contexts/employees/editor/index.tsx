@@ -30,6 +30,9 @@ export interface IEmployeeEditorContext {
 
     getNewImage: () => File | null | undefined;
     setNewImage: (value: File | null | undefined) => void;
+
+    isValid: boolean;
+    setIsValid: (value: boolean) => void;
 }
 
 export const EmployeeEditorContext = createContext<IEmployeeEditorContext>({
@@ -46,6 +49,9 @@ export const EmployeeEditorContext = createContext<IEmployeeEditorContext>({
 
     getNewImage: () => null,
     setNewImage: () => {},
+
+    isValid: false,
+    setIsValid: () => {},
 });
 
 export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
@@ -53,6 +59,8 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
     const [newImage, setNewImage] = useState<File | null | undefined>(null);
 
     const { editModeEnabled, enableEditMode, disableEditMode } = useEditMode();
+
+    const [isValid, setIsValid] = useState(true);
 
     const {
         selectedEmployeeVersion,
@@ -122,30 +130,6 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         const newEmployeeVersion = {
             ...formJson,
             imagePath,
-            birthdate: formJson?.birthdate?.toISOString() || null,
-            educationalInstitutions: formJson?.educationalInstitutions?.map(
-                (ei) => ({
-                    ...ei,
-                    graduatedAt: ei?.graduatedAt.toISOString() || null,
-                })
-            ),
-            rewards: formJson?.rewards?.map((r) => ({
-                ...r,
-                grantedAt: r?.grantedAt?.toISOString() || null,
-            })),
-            relatives: formJson?.relatives?.map((r) => ({
-                ...r,
-                birthdate: r?.birthdate?.toISOString() || null,
-            })),
-            bntuPositions: formJson?.bntuPositions?.map((p) => ({
-                ...p,
-                hiredAt: p?.hiredAt?.toISOString() || null,
-                dischargedAt: p?.dischargedAt?.toISOString() || null,
-            })),
-            joinedAt: formJson?.joinedAt?.toISOString() || null,
-            recordedAt: formJson?.recordedAt?.toISOString() || null,
-            archivedAt: formJson?.archivedAt?.toISOString() || null,
-            retiredAt: formJson?.retiredAt?.toISOString() || null,
         };
 
         const result = selectedEmployee
@@ -153,8 +137,6 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
             : await sendNewEmployee(newEmployeeVersion);
 
         if (result) {
-            // setDisplayedEmployeeVersion(null);
-
             disableEditMode();
         }
     }
@@ -273,6 +255,8 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         getField,
         getNewImage: () => newImage,
         setNewImage: (value) => setNewImage(value),
+        isValid,
+        setIsValid: (value) => setIsValid(value),
     };
 
     return (

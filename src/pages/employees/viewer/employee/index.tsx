@@ -23,10 +23,13 @@ import { Tabs, Flex, Divider, Form, Input } from "antd";
 import { FormInstance } from "antd/lib";
 import "./style.css";
 import { Listed } from "@/components/listed";
+import { useEditMode } from "@/contexts/employees/edit-mode";
 
 const { TabPane } = Tabs;
 
 export function Employee() {
+    const { editModeEnabled: isEditable } = useEditMode();
+
     return (
         <Flex
             vertical
@@ -52,7 +55,7 @@ export function Employee() {
                         justify="center"
                         style={{ width: "200px" }}
                     >
-                        <EmployeePhotoField />
+                        <EmployeePhotoField isEditable={isEditable} />
                     </Flex>
                     <Flex
                         gap="small"
@@ -61,8 +64,8 @@ export function Employee() {
                         justify="center"
                         style={{ width: "100%" }}
                     >
-                        <FullNameField />
-                        <BirthplaceField />
+                        <FullNameField isEditable={isEditable} />
+                        <BirthplaceField isEditable={isEditable} />
                         <Flex
                             align="center"
                             justify="center"
@@ -74,14 +77,14 @@ export function Employee() {
                                 justify="center"
                                 style={{ width: "50%" }}
                             >
-                                <BirthdateField />
+                                <BirthdateField isEditable={isEditable} />
                             </Flex>
                             <Flex
                                 align="center"
                                 justify="center"
                                 style={{ width: "50%" }}
                             >
-                                <GenderField />
+                                <GenderField isEditable={isEditable} />
                             </Flex>
                         </Flex>
                     </Flex>
@@ -106,6 +109,7 @@ export function Employee() {
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
                                 <Listed
+                                    isEditable={isEditable}
                                     name="bntuPositions"
                                     title="Места работы"
                                     FieldType={BntuPositionField}
@@ -119,11 +123,15 @@ export function Employee() {
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
                                 <Flex gap="small" style={{ width: "100%" }}>
-                                    <TradeUnionDepartmentField />
-                                    <WorkingGroupField />
+                                    <TradeUnionDepartmentField
+                                        isEditable={isEditable}
+                                    />
+                                    <WorkingGroupField
+                                        isEditable={isEditable}
+                                    />
                                 </Flex>
                                 <Divider></Divider>
-                                <TradeUnionInfoField />
+                                <TradeUnionInfoField isEditable={isEditable} />
                             </Flex>
                         </TabPane>
                         <TabPane tab="Контакты" key="contacts">
@@ -131,16 +139,19 @@ export function Employee() {
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
                                 <Listed
+                                    isEditable={isEditable}
                                     name="phoneNumbers"
                                     title="Номера телефонов"
                                     FieldType={PhoneNumberField}
                                 />
                                 <Listed
+                                    isEditable={isEditable}
                                     name="emails"
                                     title="Электронная почта"
                                     FieldType={EmailField}
                                 />
                                 <Listed
+                                    isEditable={isEditable}
                                     name="addresses"
                                     title="Адреса проживания"
                                     FieldType={AddressField}
@@ -154,10 +165,15 @@ export function Employee() {
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
                                 <Flex gap="small" style={{ width: "100%" }}>
-                                    <EducationLevelField />
-                                    <AcademicDegreeField />
+                                    <EducationLevelField
+                                        isEditable={isEditable}
+                                    />
+                                    <AcademicDegreeField
+                                        isEditable={isEditable}
+                                    />
                                 </Flex>
                                 <Listed
+                                    isEditable={isEditable}
                                     name="educationalInstitutions"
                                     title="Учрежднения образования"
                                     FieldType={EducationalInstitutionField}
@@ -169,23 +185,23 @@ export function Employee() {
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
                                 <Listed
+                                    isEditable={isEditable}
                                     name="relatives"
                                     title="Родственники"
                                     FieldType={RelativeField}
                                 />
                                 <Listed
+                                    isEditable={isEditable}
                                     name="rewards"
                                     title="Премии"
                                     FieldType={RewardField}
                                 />
                                 <Listed
+                                    isEditable={isEditable}
                                     name="comments"
                                     title="Комментарии"
                                     FieldType={CommentField}
                                 />
-                                {/* <RelativesList />
-                                <RewardsList />
-                                <CommentsList /> */}
                             </div>
                         </TabPane>
                     </Tabs>

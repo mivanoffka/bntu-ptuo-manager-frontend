@@ -1,51 +1,36 @@
 import { useEmployeeEditor } from "@/contexts/employees/editor";
-import { IEmployeeVersion } from "@/model";
-import { Employee } from "@/pages/employees/viewer/employee";
 import { CreateIconButton } from "@/pages/employees/viewer/toolbar/buttons";
 import { EmployeeFooterToolbar } from "@/pages/employees/viewer/toolbar/footer";
 import { EmployeeHeaderToolbar } from "@/pages/employees/viewer/toolbar/header";
+import { Employee } from "@/pages/employees/viewer/employee";
 import { Flex, Form } from "antd";
-import dayjs from "dayjs";
 import { useEffect } from "react";
+import { useEditMode } from "@/contexts/employees/edit-mode";
 
 export function EmployeesViewer() {
-    const { displayedEmployeeVersion } = useEmployeeEditor();
+    const { displayedEmployeeVersion, setIsValid, isValid } =
+        useEmployeeEditor();
+    const { editModeEnabled } = useEditMode();
     const [form] = Form.useForm();
 
     useEffect(() => {
-        const employee = {
-            ...displayedEmployeeVersion,
-            birthdate: dayjs(displayedEmployeeVersion?.birthdate) || null,
-            educationalInstitutions:
-                displayedEmployeeVersion?.educationalInstitutions?.map(
-                    (ei) => ({
-                        ...ei,
-                        graduatedAt: dayjs(ei?.graduatedAt) || null,
-                    })
-                ),
-            rewards: displayedEmployeeVersion?.rewards?.map((r) => ({
-                ...r,
-                grantedAt: dayjs(r?.grantedAt) || null,
-            })),
-            relatives: displayedEmployeeVersion?.relatives?.map((r) => ({
-                ...r,
-                birthdate: dayjs(r?.birthdate) || null,
-            })),
-            bntuPositions: displayedEmployeeVersion?.bntuPositions?.map(
-                (p) => ({
-                    ...p,
-                    hiredAt: dayjs(p?.hiredAt) || null,
-                    dischargedAt: dayjs(p?.dischargedAt) || null,
-                })
-            ),
-            joinedAt: dayjs(displayedEmployeeVersion?.joinedAt) || null,
-            recordedAt: dayjs(displayedEmployeeVersion?.recordedAt) || null,
-            archivedAt: dayjs(displayedEmployeeVersion?.archivedAt) || null,
-            retiredAt: dayjs(displayedEmployeeVersion?.retiredAt) || null,
+        form.setFieldsValue(displayedEmployeeVersion);
+    }, [displayedEmployeeVersion]);
+
+    useEffect(() => {
+        const validateForm = async () => {
+            try {
+                await form.validateFields({ warnings: false });
+                setIsValid(true);
+            } catch (error) {
+                setIsValid(false);
+            }
         };
 
-        form.setFieldsValue(employee);
-    }, [displayedEmployeeVersion]);
+        const intervalId = setInterval(validateForm, 300);
+
+        return () => clearInterval(intervalId); // Cleanup on unmount
+    }, [form]);
 
     const emptyContent = (
         <Flex
@@ -66,9 +51,9 @@ export function EmployeesViewer() {
                 vertical
                 style={{ width: "100%", height: "100%" }}
             >
-                <EmployeeHeaderToolbar form={form}></EmployeeHeaderToolbar>
-                {displayedEmployeeVersion && <Employee></Employee>}
-                <EmployeeFooterToolbar></EmployeeFooterToolbar>
+                <EmployeeHeaderToolbar form={form} />
+                {displayedEmployeeVersion && <Employee />}
+                <EmployeeFooterToolbar />
             </Flex>
         </Form>
     );

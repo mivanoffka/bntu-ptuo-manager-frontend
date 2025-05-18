@@ -1,10 +1,9 @@
 import { ImageField } from "@/components/fields/image";
-import { useEditMode } from "@/contexts/employees/edit-mode";
+import { IFieldProps } from "@/components/fields/shared";
 import { useEmployeeEditor } from "@/contexts/employees/editor";
 
-export function EmployeePhotoField() {
-    const { editModeEnabled } = useEditMode();
-
+export function EmployeePhotoField(props: IFieldProps) {
+    const { isEditable } = props;
     const { getNewImage, setNewImage, getField } = useEmployeeEditor();
 
     const imagePath = getField<string | null>("imagePath");
@@ -12,7 +11,7 @@ export function EmployeePhotoField() {
 
     return (
         <ImageField
-            editModeEnabled={editModeEnabled}
+            editModeEnabled={isEditable}
             newImage={getNewImage()}
             setNewImage={setNewImage}
             baseImageUrl={baseImageUrl}

@@ -1,116 +1,92 @@
-import { FieldContainer } from "@/components/containers/field-container";
-import { BooleanField } from "@/components/fields/boolean";
+import { FieldContainer } from "@/components/containers";
 import { DateTimeField } from "@/components/fields/datetime";
 import { TextField } from "@/components/fields/text";
-import { SelectTreeField } from "@/components/fields/tree-select";
-import { transformPathToKey } from "@/components/fields/tree-select/utils";
+import { TreeSelectField } from "@/components/fields/tree-select";
 import { IListedItemProps } from "@/components/listed";
 import { useTrees } from "@/contexts/trees";
 import { TreeName } from "@/contexts/trees/constants";
-import { DownOutlined } from "@ant-design/icons";
-import { Checkbox, DatePicker, Flex, Form, Input, TreeSelect } from "antd";
-import dayjs from "dayjs";
+import { transformPathToKey } from "@/components/fields/tree-select/utils";
+import { Flex, Form } from "antd";
+import { CheckboxField } from "@/components/fields/checkbox";
 
 export function BntuPositionField(props: IListedItemProps) {
-    const { index } = props;
-
+    const { index, isEditable } = props;
     const { getTree } = useTrees();
-
     const tree = getTree(TreeName.BNTU_DEPARTMENTS);
 
+    const treeData = transformPathToKey(tree);
+
     return (
-        <Flex vertical gap="small" align="center" style={{ width: "100%" }}>
+        <Flex vertical gap="small" style={{ width: "100%" }}>
             <Flex gap="small" style={{ width: "100%" }}>
-                <Flex style={{ width: "33%" }}>
-                    <FieldContainer
-                        title="Должность"
+                <FieldContainer title="Должность">
+                    <Form.Item
                         name={[index, "label"]}
                         rules={[{ required: true, message: "" }]}
                     >
-                        <Input allowClear></Input>
-                    </FieldContainer>
-                </Flex>
-                <Flex style={{ width: "33%" }}>
-                    <FieldContainer
-                        title="Подразделение"
-                        rules={[{ required: true, message: "" }]}
+                        <TextField isEditable={isEditable} />
+                    </Form.Item>
+                </FieldContainer>
+                <FieldContainer title="Подразделение">
+                    <Form.Item
                         name={[index, "bntuDepartmentPath"]}
+                        rules={[{ required: true, message: "" }]}
                     >
-                        <TreeSelect
-                            className="fixed-width-tree-select"
+                        <TreeSelectField
+                            isEditable={isEditable}
+                            treeData={treeData}
                             showSearch
-                            style={{
-                                width: "100%",
-                                textAlign: "left",
-                            }}
+                            style={{ width: "100%" }}
                             dropdownStyle={{
                                 maxHeight: 400,
                                 minWidth: 300,
                                 overflow: "auto",
                             }}
-                            treeData={transformPathToKey(tree)}
                             treeLine
-                            switcherIcon={<DownOutlined />}
+                            allowClear
                         />
-                    </FieldContainer>
-                </Flex>
-                <Flex style={{ width: "33%" }}>
-                    <FieldContainer
-                        title="Дата назначения"
+                    </Form.Item>
+                </FieldContainer>
+                <FieldContainer title="Дата назначения">
+                    <Form.Item
                         name={[index, "hiredAt"]}
                         rules={[{ required: true, message: "" }]}
                     >
-                        <DatePicker
-                            allowClear
+                        <DateTimeField
+                            isEditable={isEditable}
                             format="DD MMMM YYYY"
-                            style={{ width: "100%" }}
                         />
-                    </FieldContainer>
-                </Flex>
+                    </Form.Item>
+                </FieldContainer>
             </Flex>
 
             <Flex gap="small" style={{ width: "100%" }}>
-                <Flex style={{ width: "50%" }}>
-                    <FieldContainer
-                        title="Уволен"
-                        name={[index, "isDischarged"]}
-                    >
-                        <Checkbox />
-                    </FieldContainer>
-                </Flex>
-                <Flex style={{ width: "50%" }}>
-                    <FieldContainer
-                        title="По собственному желанию"
-                        name={[index, "isDischargedVoluntarily"]}
-                    >
-                        <Checkbox />
-                    </FieldContainer>
-                </Flex>
-                <Flex style={{ width: "50%" }}>
-                    <FieldContainer
-                        title="Дата увольнения"
-                        name={[index, "dischargedAt"]}
-                        rules={[{ required: true, message: "" }]}
-                    >
-                        <DatePicker
-                            allowClear
+                <FieldContainer title="Уволен">
+                    <Form.Item name={[index, "isDischarged"]}>
+                        <CheckboxField isEditable={isEditable} />
+                    </Form.Item>
+                </FieldContainer>
+                <FieldContainer title="По собств. желанию">
+                    <Form.Item name={[index, "isDischargedVoluntarily"]}>
+                        <CheckboxField isEditable={isEditable} />
+                    </Form.Item>
+                </FieldContainer>
+                <FieldContainer title="Дата увольнения">
+                    <Form.Item name={[index, "dischargedAt"]}>
+                        <DateTimeField
+                            isEditable={isEditable}
                             format="DD MMMM YYYY"
-                            style={{ width: "100%" }}
                         />
-                    </FieldContainer>
-                </Flex>
+                    </Form.Item>
+                </FieldContainer>
             </Flex>
 
             <Flex gap="small" style={{ width: "100%" }}>
-                <Flex style={{ width: "100%" }}>
-                    <FieldContainer
-                        title="Комментарий (причина увольнения)"
-                        name={[index, "comment"]}
-                        rules={[{ required: true, message: "" }]}
-                    >
-                        <Input allowClear></Input>
-                    </FieldContainer>
-                </Flex>
+                <FieldContainer title="Комментарий (причина увольнения)">
+                    <Form.Item name={[index, "comment"]}>
+                        <TextField isEditable={isEditable} />
+                    </Form.Item>
+                </FieldContainer>
             </Flex>
         </Flex>
     );
