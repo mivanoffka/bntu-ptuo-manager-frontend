@@ -2,6 +2,7 @@ import { IconButton } from "@/components/buttons";
 import { SelectableList } from "@/components/selectable-list";
 import { Palette } from "@/constants";
 import { useEmployees } from "@/contexts/employees";
+import { useEditMode } from "@/contexts/employees/edit-mode";
 import { EmployeesListItem } from "@/pages/employees/list/list-item";
 import { DownloadOutlined, PlusOutlined } from "@ant-design/icons";
 import { Flex } from "antd";
@@ -18,6 +19,8 @@ export function EmployeesList() {
     const handleLoadMore = () => {
         fetchNextEmployees();
     };
+
+    const { editModeEnabled } = useEditMode();
 
     const footer = (
         <Flex justify="space-around" align="center" style={{ height: "25px" }}>
