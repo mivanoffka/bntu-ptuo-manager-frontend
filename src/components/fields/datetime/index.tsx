@@ -19,7 +19,7 @@ export function DateTimeField(props: IDateTimeFieldProps) {
 
     const datePickerProps: DatePickerProps = {
         ...props,
-        allowClear: allowClear || false,
+        allowClear: allowClear || true,
         style: style || { width: "100%" },
         format: format || DEFAULT_FORMAT,
         value: datePickerValue,
