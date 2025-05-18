@@ -13,7 +13,7 @@ export interface ISelectableListProps<T> {
     footer?: ReactNode;
     RenderItem: React.FC<ISelectableListItemProps<T>>;
     getId: (item: any) => string | number;
-    height: string;
+    height?: string;
     isSelectable?: boolean;
 }
 

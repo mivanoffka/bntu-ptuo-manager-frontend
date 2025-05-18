@@ -1,5 +1,9 @@
-import { ENUMS_REFERENCES } from "@/pages/references/constants";
+import {
+    ENUMS_REFERENCES,
+    TREE_REFERENCES,
+} from "@/pages/references/constants";
 import { EnumerationList } from "@/pages/references/list";
+import { TreeList } from "@/pages/references/trees";
 import { Layout, Flex } from "antd";
 
 export function ReferencesPage() {
@@ -34,6 +38,12 @@ export function ReferencesPage() {
                         backgroundColor: "white",
                     }}
                 >
+                    {TREE_REFERENCES.map((item) => (
+                        <TreeList
+                            title={item.label}
+                            treeName={item.value}
+                        ></TreeList>
+                    ))}
                     {ENUMS_REFERENCES.map((item) => (
                         <EnumerationList
                             title={item.label}

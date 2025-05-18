@@ -1,3 +1,4 @@
+import { SelectField } from "@/components/fields/select";
 import { SecondaryLabel } from "@/components/labels";
 import { useEmployees } from "@/contexts/employees";
 import { useEditMode } from "@/contexts/employees/edit-mode";
@@ -32,7 +33,7 @@ export function EmployeeVersionSelect() {
     const options = selectedEmployee?.employeeVersionTimestamps
         .map((timestamp) => ({
             value: timestamp,
-            label: dayjs(timestamp).format("DD.MM.YYYY, HH:mm"),
+            label: dayjs(timestamp).format("D MMMM YYYY г. – HH:mm"),
             date: dayjs(timestamp).toDate(),
         }))
         .sort((a, b) => b.date.getTime() - a.date.getTime())
@@ -49,13 +50,13 @@ export function EmployeeVersionSelect() {
                 <SecondaryLabel>Версия</SecondaryLabel>
             </Flex>
             <Flex style={{ width: "80%" }}>
-                <Select
-                    disabled={editModeEnabled}
+                <SelectField
+                    isEditable={!editModeEnabled}
                     style={{ textAlign: "left", width: "100%" }}
                     value={displayedTimestamp}
                     onChange={selectTimestamp}
                     options={options}
-                ></Select>
+                ></SelectField>
             </Flex>
         </Flex>
     );

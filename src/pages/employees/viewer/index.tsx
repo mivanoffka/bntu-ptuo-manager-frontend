@@ -44,7 +44,7 @@ export function EmployeesViewer() {
     );
 
     const content = (
-        <Form form={form}>
+        <Form style={{ width: "100%", height: "100%" }} form={form}>
             <Flex
                 justify="space-between"
                 align="center"
@@ -62,7 +62,7 @@ export function EmployeesViewer() {
         <Flex
             vertical
             align="center"
-            justify="start"
+            justify="center"
             style={{ width: "100%", height: "100%" }}
         >
             {displayedEmployeeVersion ? content : emptyContent}
