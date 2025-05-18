@@ -1,13 +1,9 @@
 import { IconButton } from "@/components/buttons";
+import { FieldContainer } from "@/components/containers";
 import { FontSize, Palette } from "@/constants";
 import { useAuth } from "@/contexts/auth";
-import {
-    UsernameField,
-    PasswordConfirmationField,
-    PasswordField,
-} from "@/pages/auth/fields";
 import { CheckOutlined } from "@ant-design/icons";
-import { Flex, Typography } from "antd";
+import { Flex, Input, Typography } from "antd";
 import { useState } from "react";
 
 export function SignUp() {
@@ -63,12 +59,29 @@ export function SignUp() {
                 gap="small"
                 style={{ width: "100%" }}
             >
-                <UsernameField value={username} onChange={setUsername} />
-                <PasswordField value={password} onChange={setPassword} />
-                <PasswordConfirmationField
-                    value={passwordConfirmation}
-                    onChange={setPasswordConfirmation}
-                />
+                <FieldContainer title="Имя пользователя" name="username">
+                    <Input
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </FieldContainer>
+                <FieldContainer title="Пароль" name="password">
+                    <Input.Password
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </FieldContainer>
+                <FieldContainer
+                    title="Подтвердитe пароль"
+                    name="passwordConfirmation"
+                >
+                    <Input.Password
+                        value={password}
+                        onChange={(e) =>
+                            setPasswordConfirmation(e.target.value)
+                        }
+                    />
+                </FieldContainer>
             </Flex>
 
             <Flex align="center" justify="center" style={{ width: "75%" }}>

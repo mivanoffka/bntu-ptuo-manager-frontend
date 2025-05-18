@@ -1,5 +1,4 @@
 import { IconButton } from "@/components/buttons";
-import { TextField } from "@/components/fields/text";
 import { SecondaryLabel } from "@/components/labels";
 import { SelectableList } from "@/components/selectable-list";
 import { Palette } from "@/constants";
@@ -14,7 +13,8 @@ import {
     EditOutlined,
     DeleteOutlined,
 } from "@ant-design/icons";
-import { Flex } from "antd";
+import { Flex, Input } from "antd";
+import { E } from "node_modules/@faker-js/faker/dist/airline-CBNP41sR";
 import { useState, useEffect } from "react";
 
 export interface IEnumerationListProps {
@@ -84,13 +84,15 @@ export function EnumerationList(props: IEnumerationListProps) {
                 </div>
                 <Flex gap="small" style={{ width: "100%" }}>
                     <Flex gap="small" style={{ width: "60%" }}>
-                        <TextField
-                            editModeEnabled={editModeEnabled}
+                        <Input
                             value={selectedItem?.label!}
-                            onChange={(label) =>
-                                setSelectedItem({ ...selectedItem, label })
+                            onChange={(e) =>
+                                setSelectedItem({
+                                    ...selectedItem,
+                                    label: e.target.value,
+                                })
                             }
-                        ></TextField>
+                        ></Input>
                     </Flex>
 
                     <Flex

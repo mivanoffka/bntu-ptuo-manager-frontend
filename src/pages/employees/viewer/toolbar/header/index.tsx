@@ -9,11 +9,16 @@ import {
 } from "@/pages/employees/viewer/toolbar/buttons";
 import { EmployeeVersionRelevanceLabel } from "@/pages/employees/viewer/toolbar/header/version-relevance-label";
 import { EmployeeVersionSelect } from "@/pages/employees/viewer/toolbar/header/version-select";
-import { Flex } from "antd";
+import { Flex, FormInstance } from "antd";
 
-export function EmployeeHeaderToolbar() {
+export interface IEmployeeHeaderToolbarProps {
+    form: FormInstance;
+}
+
+export function EmployeeHeaderToolbar(props: IEmployeeHeaderToolbarProps) {
     const { isLatest } = useEmployees();
     const { editModeEnabled } = useEditMode();
+    const { form } = props;
 
     const toolBar = (
         <Flex
@@ -58,7 +63,7 @@ export function EmployeeHeaderToolbar() {
                         >
                             {editModeEnabled ? (
                                 <Flex>
-                                    <ApplyIconButton />
+                                    <ApplyIconButton form={form} />
                                     <CancelIconButton />
                                 </Flex>
                             ) : isLatest ? (

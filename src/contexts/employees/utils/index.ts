@@ -32,7 +32,7 @@ export function getNewEmployee(): IEmployeeVersion {
         emails: [],
         addresses: [],
 
-        educationInstitutions: [],
+        educationalInstitutions: [],
         academicDegreeId: null,
         educationLevelId: null,
 

@@ -11,13 +11,14 @@ import {
     useEffect,
     useState,
 } from "react";
+import { FormInstance } from "antd";
 
 export interface IEmployeeEditorContext {
     displayedEmployeeVersion: IEmployeeVersion | null;
     createNew: () => void;
     startEdit: () => void;
     cancelEdit: () => void;
-    applyEdit: () => void;
+    applyEdit: (form: FormInstance) => void;
     removeFromList: <T extends IPrimaryKeyed>(
         fieldName: string,
         value: T
@@ -100,7 +101,10 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         setNewImage(undefined);
     }
 
-    async function applyEdit() {
+    async function applyEdit(form: FormInstance) {
+        form.validateFields();
+        const formJson = form.getFieldsValue();
+
         if (!displayedEmployeeVersion) {
             return;
         }
@@ -115,7 +119,34 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
             }
         }
 
-        const newEmployeeVersion = { ...displayedEmployeeVersion, imagePath };
+        const newEmployeeVersion = {
+            ...formJson,
+            imagePath,
+            birthdate: formJson?.birthdate?.toISOString() || null,
+            educationalInstitutions: formJson?.educationalInstitutions?.map(
+                (ei) => ({
+                    ...ei,
+                    graduatedAt: ei?.graduatedAt.toISOString() || null,
+                })
+            ),
+            rewards: formJson?.rewards?.map((r) => ({
+                ...r,
+                grantedAt: r?.grantedAt?.toISOString() || null,
+            })),
+            relatives: formJson?.relatives?.map((r) => ({
+                ...r,
+                birthdate: r?.birthdate?.toISOString() || null,
+            })),
+            bntuPositions: formJson?.bntuPositions?.map((p) => ({
+                ...p,
+                hiredAt: p?.hiredAt?.toISOString() || null,
+                dischargedAt: p?.dischargedAt?.toISOString() || null,
+            })),
+            joinedAt: formJson?.joinedAt?.toISOString() || null,
+            recordedAt: formJson?.recordedAt?.toISOString() || null,
+            archivedAt: formJson?.archivedAt?.toISOString() || null,
+            retiredAt: formJson?.retiredAt?.toISOString() || null,
+        };
 
         const result = selectedEmployee
             ? await sendNewVersion(newEmployeeVersion)

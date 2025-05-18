@@ -12,6 +12,7 @@ import {
     StopOutlined,
     UserAddOutlined,
 } from "@ant-design/icons";
+import { FormInstance } from "antd";
 
 export function CloseIconButton() {
     const { selectId } = useEmployees();
@@ -91,13 +92,18 @@ export function ToLatestVersionIconButton() {
     );
 }
 
-export function ApplyIconButton() {
+export interface IApplyIconButtonProps {
+    form: FormInstance;
+}
+
+export function ApplyIconButton(props: IApplyIconButtonProps) {
     const { applyEdit } = useEmployeeEditor();
+    const { form } = props;
 
     return (
         <IconButton
             color={Palette.GREEN}
-            onClick={applyEdit}
+            onClick={() => applyEdit(form)}
             title={"Применить"}
             icon={<CheckOutlined />}
         />

@@ -1,24 +1,28 @@
+import { FieldContainer } from "@/components/containers";
 import {
     EmployeePhotoField,
     FullNameField,
     BirthplaceField,
     BirthdateField,
     GenderField,
-    BntuPositionsList,
     TradeUnionDepartmentField,
     WorkingGroupField,
-    TradeUnionInfoField,
-    PhoneNumbersList,
-    EmailsList,
-    AddressesList,
-    EducationalInstitutionsList,
+    PhoneNumberField,
+    EmailField,
+    AddressField,
+    EducationalInstitutionField,
     EducationLevelField,
     AcademicDegreeField,
-    RelativesList,
-    RewardsList,
-    CommentsList,
+    RelativeField,
+    RewardField,
+    CommentField,
+    BntuPositionField,
+    TradeUnionInfoField,
 } from "@/pages/employees/viewer/employee/fields";
-import { Tabs, Flex, Divider } from "antd";
+import { Tabs, Flex, Divider, Form, Input } from "antd";
+import { FormInstance } from "antd/lib";
+import "./style.css";
+import { Listed } from "@/components/listed";
 
 const { TabPane } = Tabs;
 
@@ -101,7 +105,11 @@ export function Employee() {
                             <div
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
-                                <BntuPositionsList />
+                                <Listed
+                                    name="bntuPositions"
+                                    title="Места работы"
+                                    FieldType={BntuPositionField}
+                                ></Listed>
                             </div>
                         </TabPane>
                         <TabPane tab="Профсоюз" key="union">
@@ -122,9 +130,21 @@ export function Employee() {
                             <div
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
-                                <PhoneNumbersList />
-                                <EmailsList />
-                                <AddressesList />
+                                <Listed
+                                    name="phoneNumbers"
+                                    title="Номера телефонов"
+                                    FieldType={PhoneNumberField}
+                                />
+                                <Listed
+                                    name="emails"
+                                    title="Электронная почта"
+                                    FieldType={EmailField}
+                                />
+                                <Listed
+                                    name="addresses"
+                                    title="Адреса проживания"
+                                    FieldType={AddressField}
+                                />
                             </div>
                         </TabPane>
                         <TabPane tab="Образование" key="education">
@@ -133,20 +153,39 @@ export function Employee() {
                                 vertical
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
-                                <EducationalInstitutionsList />
                                 <Flex gap="small" style={{ width: "100%" }}>
                                     <EducationLevelField />
                                     <AcademicDegreeField />
                                 </Flex>
+                                <Listed
+                                    name="educationalInstitutions"
+                                    title="Учрежднения образования"
+                                    FieldType={EducationalInstitutionField}
+                                />
                             </Flex>
                         </TabPane>
                         <TabPane tab="Прочее" key="other">
                             <div
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
-                                <RelativesList />
+                                <Listed
+                                    name="relatives"
+                                    title="Родственники"
+                                    FieldType={RelativeField}
+                                />
+                                <Listed
+                                    name="rewards"
+                                    title="Премии"
+                                    FieldType={RewardField}
+                                />
+                                <Listed
+                                    name="comments"
+                                    title="Комментарии"
+                                    FieldType={CommentField}
+                                />
+                                {/* <RelativesList />
                                 <RewardsList />
-                                <CommentsList />
+                                <CommentsList /> */}
                             </div>
                         </TabPane>
                     </Tabs>

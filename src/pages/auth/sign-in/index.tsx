@@ -1,15 +1,14 @@
 import { IconButton } from "@/components/buttons";
+import { FieldContainer } from "@/components/containers";
 import { useAuth } from "@/contexts/auth";
-import { PasswordField, UsernameField } from "@/pages/auth/fields";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { Flex } from "antd";
+import { Flex, Input } from "antd";
 import { useState } from "react";
 
 export function SignIn() {
     const { signIn } = useAuth();
-
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
     return (
         <Flex
@@ -26,8 +25,18 @@ export function SignIn() {
                 gap="small"
                 style={{ width: "100%" }}
             >
-                <UsernameField value={username} onChange={setUsername} />
-                <PasswordField value={password} onChange={setPassword} />
+                <FieldContainer title="Имя пользователя" name="username">
+                    <Input
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </FieldContainer>
+                <FieldContainer title="Пароль" name="password">
+                    <Input.Password
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </FieldContainer>
             </Flex>
 
             <Flex align="center" justify="center" style={{ width: "75%" }}>
@@ -36,7 +45,7 @@ export function SignIn() {
                     title="Выполнить вход"
                     icon={<ArrowRightOutlined />}
                     isPrimary
-                ></IconButton>
+                />
             </Flex>
         </Flex>
     );

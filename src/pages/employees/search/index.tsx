@@ -1,6 +1,4 @@
 import { FieldContainer } from "@/components/containers/field-container";
-import { SelectField } from "@/components/fields/select";
-import { TextField } from "@/components/fields/text";
 import { SecondaryLabel } from "@/components/labels";
 import { Palette } from "@/constants";
 import { useEmployees } from "@/contexts/employees";
@@ -10,7 +8,7 @@ import { EmployeesFilterField } from "@/model";
 import { EmployeesList } from "@/pages/employees/list";
 import { Toolbar } from "@/pages/employees/viewer/toolbar";
 import { SearchOutlined } from "@ant-design/icons";
-import { Flex, Space, Button, Divider } from "antd";
+import { Flex, Space, Button, Divider, Input, Select } from "antd";
 
 export function EmployeesSearch() {
     const { fetchAllEmployees, employeesListFilter, setEmployeesListFilter } =
@@ -20,11 +18,14 @@ export function EmployeesSearch() {
 
     const { getEnumeration } = useEnumerations();
 
-    function setSearchQuery(query: string | null) {
-        setEmployeesListFilter({ ...employeesListFilter, search: query });
+    function setSearchQuery(e) {
+        setEmployeesListFilter({
+            ...employeesListFilter,
+            search: e.target.value,
+        });
     }
 
-    function setSearchFields(fields: EmployeesFilterField[]) {
+    function setSearchFields(fields) {
         setEmployeesListFilter({
             ...employeesListFilter,
             searchFields: fields,
@@ -48,12 +49,11 @@ export function EmployeesSearch() {
         <Flex align="center" vertical style={{ width: "100%", height: "100%" }}>
             <Toolbar>
                 <Space.Compact style={{ width: "100%" }}>
-                    <TextField
-                        editModeEnabled
+                    <Input
                         value={searchQuery}
                         onChange={setSearchQuery}
                         placeholder="Поиск"
-                    ></TextField>
+                    ></Input>
                     <Button
                         onClick={fetchAllEmployees}
                         style={{ color: Palette.BLUE }}
@@ -81,13 +81,18 @@ export function EmployeesSearch() {
                     style={{ width: "90%", height: "50%" }}
                 >
                     <FieldContainer title="Искать по">
-                        <SelectField
-                            multiple
-                            editModeEnabled
-                            selectedIds={employeesListFilter.searchFields}
+                        <Select
+                            mode="multiple"
+                            allowClear
+                            style={{ width: "100%" }}
+                            placeholder="Выберите поля"
+                            value={employeesListFilter.searchFields}
                             onChange={setSearchFields}
-                            enumeration={searchFields}
-                        ></SelectField>
+                            options={searchFields.map((field) => ({
+                                label: field.label,
+                                value: field.id,
+                            }))}
+                        />
                     </FieldContainer>
                     <Flex
                         vertical
@@ -103,44 +108,57 @@ export function EmployeesSearch() {
                             gap="small"
                             style={{ width: "100%", overflow: "auto" }}
                         >
-                            <FieldContainer title="Пол">
-                                <SelectField
+                            <FieldContainer title="Пол" name="genderIds">
+                                <Select
+                                    mode="multiple"
+                                    allowClear
+                                    style={{ width: "100%", textAlign: "left" }}
                                     placeholder="Любой"
-                                    multiple
-                                    editModeEnabled
-                                    selectedIds={employeesListFilter.genderIds}
+                                    value={employeesListFilter.genderIds}
                                     onChange={(genderIds) =>
                                         setEmployeesListFilter({
                                             ...employeesListFilter,
                                             genderIds,
                                         })
                                     }
-                                    enumeration={genders}
-                                ></SelectField>
+                                    options={genders.map((gender) => ({
+                                        label: gender.label,
+                                        value: gender.id,
+                                    }))}
+                                />
                             </FieldContainer>
-                            <FieldContainer title="Профгруппа">
-                                <SelectField
+                            <FieldContainer
+                                title="Профгруппа"
+                                name="workingGroupIds"
+                            >
+                                <Select
+                                    mode="multiple"
+                                    allowClear
+                                    style={{ width: "100%", textAlign: "left" }}
                                     placeholder="Любая"
-                                    multiple
-                                    editModeEnabled
-                                    selectedIds={
-                                        employeesListFilter.workingGroupIds
-                                    }
+                                    value={employeesListFilter.workingGroupIds}
                                     onChange={(workingGroupIds) =>
                                         setEmployeesListFilter({
                                             ...employeesListFilter,
                                             workingGroupIds,
                                         })
                                     }
-                                    enumeration={workingGroups}
-                                ></SelectField>
+                                    options={workingGroups.map((group) => ({
+                                        label: group.label,
+                                        value: group.id,
+                                    }))}
+                                />
                             </FieldContainer>
-                            <FieldContainer title="Образование">
-                                <SelectField
+                            <FieldContainer
+                                title="Образование"
+                                name="educationLevelIds"
+                            >
+                                <Select
+                                    mode="multiple"
+                                    allowClear
+                                    style={{ width: "100%", textAlign: "left" }}
                                     placeholder="Любой"
-                                    multiple
-                                    editModeEnabled
-                                    selectedIds={
+                                    value={
                                         employeesListFilter.educationLevelIds
                                     }
                                     onChange={(educationLevelIds) =>
@@ -149,15 +167,22 @@ export function EmployeesSearch() {
                                             educationLevelIds,
                                         })
                                     }
-                                    enumeration={educationLevels}
+                                    options={educationLevels.map((level) => ({
+                                        label: level.label,
+                                        value: level.id,
+                                    }))}
                                 />
                             </FieldContainer>
-                            <FieldContainer title="Учёная степень">
-                                <SelectField
+                            <FieldContainer
+                                title="Учёная степень"
+                                name="academicDegreeIds"
+                            >
+                                <Select
+                                    mode="multiple"
+                                    allowClear
+                                    style={{ width: "100%", textAlign: "left" }}
                                     placeholder="Любая"
-                                    multiple
-                                    editModeEnabled
-                                    selectedIds={
+                                    value={
                                         employeesListFilter.academicDegreeIds
                                     }
                                     onChange={(academicDegreeIds) =>
@@ -166,7 +191,10 @@ export function EmployeesSearch() {
                                             academicDegreeIds,
                                         })
                                     }
-                                    enumeration={academicDegrees}
+                                    options={academicDegrees.map((degree) => ({
+                                        label: degree.label,
+                                        value: degree.id,
+                                    }))}
                                 />
                             </FieldContainer>
                         </Flex>

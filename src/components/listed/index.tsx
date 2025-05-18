@@ -2,34 +2,21 @@ import { IObjectFieldProps } from "@/components/fields/types";
 import { SecondaryLabel } from "@/components/labels";
 import { ListedItem } from "@/components/listed/listed-item";
 import { IPrimaryKeyed } from "@/model";
-import { Flex, Divider, Button } from "antd";
+import { Flex, Divider, Button, Form } from "antd";
 import { ReactNode } from "react";
 
-export interface IListedProps<T extends IPrimaryKeyed> {
-    editModeEnabled?: boolean;
-    items: T[];
-    FieldType: React.FC<IObjectFieldProps<T>>;
-    newItemGetter: () => T;
-    onChange: (item: T | null) => void;
-    onDelete: (item: T) => void;
-    title?: ReactNode;
+export interface IListedItemProps {
+    index: number;
 }
 
-export function Listed<T extends IPrimaryKeyed>(props: IListedProps<T>) {
-    const {
-        items,
-        FieldType,
-        newItemGetter,
-        onChange,
-        onDelete,
-        title: titleBase,
-        editModeEnabled = false,
-    } = props;
+export interface IListedProps {
+    FieldType: React.FC<IListedItemProps>;
+    title?: ReactNode;
+    name: string;
+}
 
-    const handleAddClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        onChange(newItemGetter());
-    };
+export function Listed(props: IListedProps) {
+    const { FieldType, title: titleBase, name } = props;
 
     const title = (
         <Flex justify="space-between" style={{ width: "100%" }}>
@@ -55,33 +42,42 @@ export function Listed<T extends IPrimaryKeyed>(props: IListedProps<T>) {
                     gap="small"
                     style={{ width: "100%" }}
                 >
-                    {items.map((item, index) => {
-                        const field = (
-                            <FieldType
-                                editModeEnabled={editModeEnabled}
-                                value={item}
-                                onChange={onChange}
-                            ></FieldType>
-                        );
-                        return (
-                            <ListedItem
-                                editModeEnabled={editModeEnabled}
-                                index={index}
-                                remove={() => onDelete(item)}
+                    <Form.List name={name}>
+                        {(items, { add, remove }) => (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    rowGap: 16,
+                                    flexDirection: "column",
+                                }}
                             >
-                                {field}
-                            </ListedItem>
-                        );
-                    })}
+                                {items.map((item, index) => {
+                                    return (
+                                        <ListedItem
+                                            editModeEnabled={true}
+                                            index={index}
+                                            remove={() => remove(item.name)}
+                                        >
+                                            <FieldType
+                                                index={index}
+                                            ></FieldType>
+                                        </ListedItem>
+                                    );
+                                })}
+                                <Divider orientation="right">
+                                    <Button
+                                        type="dashed"
+                                        onClick={() => add()}
+                                        block
+                                    >
+                                        + Add Item
+                                    </Button>
+                                </Divider>
+                            </div>
+                        )}
+                    </Form.List>
                 </Flex>
             </Flex>
-            <Divider orientation="right">
-                {editModeEnabled && (
-                    <Button size="small" onClick={handleAddClick}>
-                        Добавить
-                    </Button>
-                )}
-            </Divider>
         </Flex>
     );
 }

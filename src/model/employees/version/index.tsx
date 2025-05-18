@@ -52,7 +52,7 @@ export interface IEmployeeVersion extends IPrimaryKeyed, ITimeStamped {
 
     // Education
 
-    educationInstitutions: IEducationalInstitution[];
+    educationalInstitutions: IEducationalInstitution[];
     academicDegreeId: number | null;
     educationLevelId: number | null;
 
