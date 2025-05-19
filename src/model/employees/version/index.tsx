@@ -32,6 +32,7 @@ export interface IEmployeeVersion extends IPrimaryKeyed, ITimeStamped {
 
     // TradeUnion
 
+    tradeUnionMembershipNumber: string | null;
     tradeUnionPositions: ITradeUnionPosition[];
     tradeUnionDepartmentAuthenticLabel: string | null;
     tradeUnionDepartmentPath: string | null;

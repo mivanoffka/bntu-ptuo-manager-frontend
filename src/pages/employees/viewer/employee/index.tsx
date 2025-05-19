@@ -18,6 +18,7 @@ import {
     CommentField,
     BntuPositionField,
     TradeUnionInfoField,
+    TradeUnionMembershipNumberField,
 } from "@/pages/employees/viewer/employee/fields";
 import { Tabs, Flex, Divider, Form, Input } from "antd";
 import { FormInstance } from "antd/lib";
@@ -123,6 +124,9 @@ export function Employee() {
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
                                 <Flex gap="small" style={{ width: "100%" }}>
+                                    <TradeUnionMembershipNumberField
+                                        isEditable={isEditable}
+                                    />
                                     <TradeUnionDepartmentField
                                         isEditable={isEditable}
                                     />
@@ -130,6 +134,7 @@ export function Employee() {
                                         isEditable={isEditable}
                                     />
                                 </Flex>
+
                                 <Divider></Divider>
                                 <TradeUnionInfoField isEditable={isEditable} />
                             </Flex>

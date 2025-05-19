@@ -8,9 +8,21 @@ import { EnumerationName } from "@/contexts/enumerations/constants";
 import { useTrees } from "@/contexts/trees";
 import { TreeName } from "@/contexts/trees/constants";
 import { transformPathToKey } from "@/components/fields/tree-select/utils";
-import { useEditMode } from "@/contexts/employees/edit-mode";
 import { Flex, Form } from "antd";
-import { IFieldProps } from "@/components/fields/shared";
+import { IFieldProps, NOT_NULL_RULES } from "@/components/fields/shared";
+import { TextField } from "@/components/fields/text";
+
+export function TradeUnionMembershipNumberField(props: IFieldProps) {
+    const { isEditable } = props;
+
+    return (
+        <FieldContainer title="Номер профсоюзного билета">
+            <Form.Item name="tradeUnionMembershipNumber" rules={NOT_NULL_RULES}>
+                <TextField isEditable={isEditable}></TextField>
+            </Form.Item>
+        </FieldContainer>
+    );
+}
 
 export function TradeUnionDepartmentField(props: IFieldProps) {
     const { isEditable } = props;
