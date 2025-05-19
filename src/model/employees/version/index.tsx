@@ -1,7 +1,6 @@
 import { IPrimaryKeyed, ITimeStamped, DateTimeString } from "@/model/basics";
 import {
     IBntuPosition,
-    ITradeUnionPosition,
     IPhoneNumber,
     IEmail,
     IAddress,
@@ -33,7 +32,6 @@ export interface IEmployeeVersion extends IPrimaryKeyed, ITimeStamped {
     // TradeUnion
 
     tradeUnionMembershipNumber: string | null;
-    tradeUnionPositions: ITradeUnionPosition[];
     tradeUnionDepartmentAuthenticLabel: string | null;
     tradeUnionDepartmentPath: string | null;
     workingGroupId: number | null;
