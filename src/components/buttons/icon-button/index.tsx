@@ -11,6 +11,7 @@ export interface IIconButtonProps {
     color?: string;
     disabled?: boolean;
     isPrimary?: boolean;
+    isSubmit?: boolean;
 }
 
 export function IconButton(props: IIconButtonProps) {
@@ -31,6 +32,7 @@ export function IconButton(props: IIconButtonProps) {
 
     return (
         <Button
+            htmlType={props.isSubmit ? "submit" : "button"}
             className="icon-button"
             disabled={actuallyDisabled}
             type={isPrimary ? "primary" : "link"}

@@ -3,24 +3,22 @@ import { FieldContainer } from "@/components/containers";
 import { FontSize, Palette } from "@/constants";
 import { useAuth } from "@/contexts/auth";
 import { CheckOutlined } from "@ant-design/icons";
-import { Flex, Input, Typography } from "antd";
+import { Flex, Form, Input, Typography } from "antd";
 import { useState } from "react";
 
 export function SignUp() {
     const { signUp } = useAuth();
-
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [passwordConfirmation, setPasswordConfirmation] =
-        useState<string>("");
-
-    async function onClick() {
-        if (password !== passwordConfirmation) return;
-        await signUp(username, password);
-        setHasApplied(true);
-    }
-
+    const [form] = Form.useForm();
     const [hasApplied, setHasApplied] = useState<boolean>(false);
+
+    const onFinish = async (values: {
+        username: string;
+        password: string;
+        passwordConfirmation: string;
+    }) => {
+        await signUp(values.username, values.password);
+        setHasApplied(true);
+    };
 
     if (hasApplied) {
         return (
@@ -52,46 +50,105 @@ export function SignUp() {
             gap="large"
             style={{ width: "100%" }}
         >
-            <Flex
-                vertical
-                align="center"
-                justify="space-evenly"
-                gap="small"
+            <Form
+                form={form}
+                onFinish={onFinish}
+                layout="vertical"
                 style={{ width: "100%" }}
             >
-                <FieldContainer title="Имя пользователя" name="username">
-                    <Input
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </FieldContainer>
-                <FieldContainer title="Пароль" name="password">
-                    <Input.Password
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </FieldContainer>
-                <FieldContainer
-                    title="Подтвердитe пароль"
-                    name="passwordConfirmation"
+                <Flex
+                    vertical
+                    align="center"
+                    justify="space-evenly"
+                    gap="large"
+                    style={{ width: "100%" }}
                 >
-                    <Input.Password
-                        value={password}
-                        onChange={(e) =>
-                            setPasswordConfirmation(e.target.value)
-                        }
-                    />
-                </FieldContainer>
-            </Flex>
+                    <Flex
+                        vertical
+                        align="center"
+                        justify="space-evenly"
+                        gap="small"
+                        style={{ width: "100%" }}
+                    >
+                        <FieldContainer title="Имя пользователя">
+                            <Form.Item
+                                name="username"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message:
+                                            "Пожалуйста, введите имя пользователя",
+                                    },
+                                    {
+                                        min: 3,
+                                        message:
+                                            "Имя пользователя должно содержать минимум 3 символа",
+                                    },
+                                ]}
+                            >
+                                <Input />
+                            </Form.Item>
+                        </FieldContainer>
+                        <FieldContainer title="Пароль">
+                            <Form.Item
+                                name="password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Пожалуйста, введите пароль",
+                                    },
+                                    {
+                                        min: 6,
+                                        message:
+                                            "Пароль должен содержать минимум 6 символов",
+                                    },
+                                ]}
+                            >
+                                <Input.Password />
+                            </Form.Item>
+                        </FieldContainer>
+                        <FieldContainer title="Подтвердитe пароль">
+                            <Form.Item
+                                name="passwordConfirmation"
+                                dependencies={["password"]}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message:
+                                            "Пожалуйста, подтвердите пароль",
+                                    },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (
+                                                !value ||
+                                                getFieldValue("password") ===
+                                                    value
+                                            ) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(
+                                                new Error("Пароли не совпадают")
+                                            );
+                                        },
+                                    }),
+                                ]}
+                            >
+                                <Input.Password />
+                            </Form.Item>
+                        </FieldContainer>
+                    </Flex>
 
-            <Flex align="center" justify="center" style={{ width: "75%" }}>
-                <IconButton
-                    onClick={onClick}
-                    title="Подать заявку"
-                    icon={<CheckOutlined />}
-                    isPrimary
-                ></IconButton>
-            </Flex>
+                    <Form.Item style={{ width: "75%" }}>
+                        <IconButton
+                            isSubmit
+                            title="Подать заявку"
+                            icon={<CheckOutlined />}
+                            isPrimary
+                            onClick={() => {}}
+                        />
+                    </Form.Item>
+                </Flex>
+            </Form>
         </Flex>
     );
 }
