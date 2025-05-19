@@ -175,7 +175,7 @@ export function Employee() {
                                 <Listed
                                     isEditable={isEditable}
                                     name="educationalInstitutions"
-                                    title="Учрежднения образования"
+                                    title="Учреждения образования"
                                     FieldType={EducationalInstitutionField}
                                 />
                             </Flex>
@@ -193,7 +193,7 @@ export function Employee() {
                                 <Listed
                                     isEditable={isEditable}
                                     name="rewards"
-                                    title="Премии"
+                                    title="Награды"
                                     FieldType={RewardField}
                                 />
                                 <Listed

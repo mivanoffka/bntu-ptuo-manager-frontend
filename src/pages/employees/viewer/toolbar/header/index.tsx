@@ -40,21 +40,21 @@ export function EmployeeHeaderToolbar(props: IEmployeeHeaderToolbarProps) {
                     <Flex
                         align="center"
                         justify="left"
-                        style={{ width: "30%" }}
+                        style={{ width: "33%" }}
                     >
                         <EmployeeVersionSelect />
                     </Flex>
                     <Flex
                         align="center"
                         justify="center"
-                        style={{ width: "40%" }}
+                        style={{ width: "34%" }}
                     >
                         <EmployeeVersionRelevanceLabel />
                     </Flex>
                     <Flex
                         align="center"
                         justify="right"
-                        style={{ width: "30%" }}
+                        style={{ width: "33%" }}
                     >
                         <Flex
                             align="center"

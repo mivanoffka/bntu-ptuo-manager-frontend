@@ -5,12 +5,11 @@ import {
     CloseOutlined,
     DeleteOutlined,
     RedoOutlined,
-    RetweetOutlined,
-    UndoOutlined,
     UploadOutlined,
 } from "@ant-design/icons";
-import { Button, Flex } from "antd";
+import { Flex } from "antd";
 import { useState, useRef } from "react";
+import "./style.css"; // <-- import a CSS file
 
 export interface IImageEditFieldProps {
     baseImageUrl: string | null;
@@ -24,6 +23,7 @@ export function ImageEditField(props: IImageEditFieldProps) {
     const { baseImageUrl, newImage, setNewImage, width, height } = props;
 
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [imageUrl, setImageUrl] = useState<string | null>(baseImageUrl);
 
     const handleUploadClick = () => {
         fileInputRef.current?.click();
@@ -38,8 +38,6 @@ export function ImageEditField(props: IImageEditFieldProps) {
         }
     };
 
-    const [imageUrl, setImageUrl] = useState<string | null>(baseImageUrl);
-
     const resetImage = () => {
         setImageUrl(baseImageUrl);
         setNewImage(undefined);
@@ -51,7 +49,7 @@ export function ImageEditField(props: IImageEditFieldProps) {
     };
 
     return (
-        <div style={{ position: "relative", display: "inline-block" }}>
+        <div className="image-edit-wrapper">
             <ImageDisplayField
                 imageUrl={imageUrl}
                 width={width}
@@ -61,15 +59,7 @@ export function ImageEditField(props: IImageEditFieldProps) {
             <Flex
                 align="center"
                 justify="center"
-                style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    border: "1px solid #d9d9d9",
-                    borderRadius: "4px",
-                }}
+                className={`overlay ${imageUrl ? "with-image" : "no-image"}`}
             >
                 <input
                     type="file"

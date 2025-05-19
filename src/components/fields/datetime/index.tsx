@@ -14,7 +14,7 @@ export function DateTimeField(props: IDateTimeFieldProps) {
     const datePickerOnChange = (date: dayjs.Dayjs, dateString: string) => {
         if (!onChange) return;
         // @ts-ignore
-        onChange(date.toISOString(), dateString);
+        onChange(date?.toISOString(), dateString);
     };
 
     const datePickerProps: DatePickerProps = {

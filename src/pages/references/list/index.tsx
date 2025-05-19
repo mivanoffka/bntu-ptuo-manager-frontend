@@ -39,7 +39,7 @@ export function EnumerationList(props: IEnumerationListProps) {
     const enumeration = getEnumeration(enumerationName);
 
     const getNewItem = () => {
-        return { id: tempIds.generate(), label: "Новое значение" };
+        return { id: tempIds.generate(), label: null };
     };
 
     useEffect(() => {
@@ -83,23 +83,31 @@ export function EnumerationList(props: IEnumerationListProps) {
                     ></SelectableList>
                 </div>
                 <Flex gap="small" style={{ width: "100%" }}>
-                    <Flex gap="small" style={{ width: "60%" }}>
-                        <Input
-                            value={selectedItem?.label!}
-                            onChange={(e) =>
-                                setSelectedItem({
-                                    ...selectedItem,
-                                    label: e.target.value,
-                                })
-                            }
-                        ></Input>
-                    </Flex>
+                    {(selectedItem || editModeEnabled) && (
+                        <Flex gap="small" style={{ width: "50%" }}>
+                            <Input
+                                placeholder="Укажите значение"
+                                value={selectedItem?.label!}
+                                onChange={(e) =>
+                                    setSelectedItem({
+                                        ...selectedItem,
+                                        label: e.target.value,
+                                    })
+                                }
+                            ></Input>
+                        </Flex>
+                    )}
 
                     <Flex
                         gap="small"
                         align="center"
                         justify="space-evenly"
-                        style={{ width: "40%" }}
+                        style={{
+                            width:
+                                selectedItem || editModeEnabled
+                                    ? "50%"
+                                    : "100%",
+                        }}
                     >
                         {selectedItem === null ? (
                             <IconButton

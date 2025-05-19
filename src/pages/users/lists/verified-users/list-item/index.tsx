@@ -15,10 +15,10 @@ export function UsersListItem(props: ISelectableListItemProps<IUser>) {
         : "—";
 
     const roleOptions = [
-        { id: UserRole.VIEWER, label: "Просмотр" },
-        { id: UserRole.EDITOR, label: "Редактор" },
-        { id: UserRole.MANAGER, label: "Старший редактор" },
-        { id: UserRole.ADMIN, label: "Администратор" },
+        { value: UserRole.VIEWER, label: "Просмотр" },
+        { value: UserRole.EDITOR, label: "Редактор" },
+        { value: UserRole.MANAGER, label: "Старший редактор" },
+        { value: UserRole.ADMIN, label: "Администратор" },
     ];
 
     return (
@@ -27,6 +27,8 @@ export function UsersListItem(props: ISelectableListItemProps<IUser>) {
             <Flex style={{ width: "33%" }}>{registeredAt}</Flex>
             <Flex style={{ width: "33%" }}>
                 <Select
+                    disabled={user.id === authUser?.id}
+                    style={{ width: "100%", textAlign: "left" }}
                     options={roleOptions}
                     value={user.role}
                     onChange={(value) => updateUserRole(user.id, value)}

@@ -45,10 +45,7 @@ export function RewardField(props: IListedItemProps) {
                         name={[index, "grantedAt"]}
                         rules={[{ required: true, message: "" }]}
                     >
-                        <DateTimeField
-                            isEditable={isEditable}
-                            format="DD MMMM YYYY"
-                        ></DateTimeField>
+                        <DateTimeField isEditable={isEditable}></DateTimeField>
                     </Form.Item>
                 </FieldContainer>
             </Flex>
@@ -90,10 +87,7 @@ export function RelativeField(props: IListedItemProps) {
                             value?.toISOString()
                         }
                     >
-                        <DateTimeField
-                            isEditable={isEditable}
-                            format="DD MMMM YYYY"
-                        ></DateTimeField>
+                        <DateTimeField isEditable={isEditable}></DateTimeField>
                     </Form.Item>
                 </FieldContainer>
                 <FieldContainer title="Родство">

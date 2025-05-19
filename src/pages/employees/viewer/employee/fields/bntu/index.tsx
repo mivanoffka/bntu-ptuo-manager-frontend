@@ -52,10 +52,7 @@ export function BntuPositionField(props: IListedItemProps) {
                         name={[index, "hiredAt"]}
                         rules={[{ required: true, message: "" }]}
                     >
-                        <DateTimeField
-                            isEditable={isEditable}
-                            format="DD MMMM YYYY"
-                        />
+                        <DateTimeField isEditable={isEditable} />
                     </Form.Item>
                 </FieldContainer>
             </Flex>
@@ -73,10 +70,7 @@ export function BntuPositionField(props: IListedItemProps) {
                 </FieldContainer>
                 <FieldContainer title="Дата увольнения">
                     <Form.Item name={[index, "dischargedAt"]}>
-                        <DateTimeField
-                            isEditable={isEditable}
-                            format="DD MMMM YYYY"
-                        />
+                        <DateTimeField isEditable={isEditable} />
                     </Form.Item>
                 </FieldContainer>
             </Flex>

@@ -82,11 +82,7 @@ export function TradeUnionInfoField(props: IFieldProps) {
                             name="joinedAt"
                             rules={[{ required: true, message: "" }]}
                         >
-                            <DateTimeField
-                                isEditable={isEditable}
-                                format="DD MMMM YYYY"
-                                allowClear
-                            />
+                            <DateTimeField isEditable={isEditable} allowClear />
                         </Form.Item>
                     </FieldContainer>
                 </Flex>
@@ -96,11 +92,7 @@ export function TradeUnionInfoField(props: IFieldProps) {
                             name="recordedAt"
                             rules={[{ required: true, message: "" }]}
                         >
-                            <DateTimeField
-                                isEditable={isEditable}
-                                format="DD MMMM YYYY"
-                                allowClear
-                            />
+                            <DateTimeField isEditable={isEditable} />
                         </Form.Item>
                     </FieldContainer>
                 </Flex>
@@ -117,11 +109,7 @@ export function TradeUnionInfoField(props: IFieldProps) {
                 <Flex style={{ width: "50%" }}>
                     <FieldContainer title="Дата выхода на пенсию">
                         <Form.Item name="retiredAt">
-                            <DateTimeField
-                                isEditable={isEditable}
-                                format="DD MMMM YYYY"
-                                allowClear
-                            />
+                            <DateTimeField isEditable={isEditable} />
                         </Form.Item>
                     </FieldContainer>
                 </Flex>
@@ -138,11 +126,7 @@ export function TradeUnionInfoField(props: IFieldProps) {
                 <Flex style={{ width: "50%" }}>
                     <FieldContainer title="Дата снятия с учёта">
                         <Form.Item name="archivedAt">
-                            <DateTimeField
-                                isEditable={isEditable}
-                                format="DD MMMM YYYY"
-                                allowClear
-                            />
+                            <DateTimeField isEditable={isEditable} />
                         </Form.Item>
                     </FieldContainer>
                 </Flex>

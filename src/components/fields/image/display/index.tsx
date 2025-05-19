@@ -18,7 +18,6 @@ export function ImageDisplayField(props: IImageDisplayFieldProps) {
             style={{
                 width,
                 height,
-                borderRadius: "4px",
             }}
         />
     ) : (
@@ -28,8 +27,6 @@ export function ImageDisplayField(props: IImageDisplayFieldProps) {
             style={{
                 width,
                 height,
-                border: "1px solid #d9d9d9",
-                borderRadius: "4px",
             }}
         >
             <Typography.Text

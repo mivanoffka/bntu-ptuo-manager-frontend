@@ -35,7 +35,7 @@ export const ENUMS_REFERENCES = [
     },
     {
         value: EnumerationName.RELATIVE_TYPES,
-        label: "Подразделение",
+        label: "Родство",
         isTree: false,
     },
 ];

@@ -10,13 +10,15 @@ export function EmployeePhotoField(props: IFieldProps) {
     const baseImageUrl = imagePath ? `http://localhost:8000/${imagePath}` : "";
 
     return (
-        <ImageField
-            editModeEnabled={isEditable}
-            newImage={getNewImage()}
-            setNewImage={setNewImage}
-            baseImageUrl={baseImageUrl}
-            width={112}
-            height={150}
-        ></ImageField>
+        <div style={{ border: "1px solid #d9d9d9", borderRadius: "4px" }}>
+            <ImageField
+                editModeEnabled={isEditable}
+                newImage={getNewImage()}
+                setNewImage={setNewImage}
+                baseImageUrl={baseImageUrl}
+                width={112}
+                height={150}
+            ></ImageField>
+        </div>
     );
 }

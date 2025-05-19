@@ -65,7 +65,7 @@ export function TreeList({ title, treeName }: ITreeListProps) {
     // New node template with temp path
     const getNewNode = (): ITreeNode => ({
         path: `temp-${tempIds.generate()}`,
-        label: "Новое значение",
+        label: null,
         children: [],
     });
 
@@ -125,19 +125,27 @@ export function TreeList({ title, treeName }: ITreeListProps) {
                 </div>
 
                 <Flex gap="small" style={{ width: "100%" }}>
-                    <Flex gap="small" style={{ width: "60%" }}>
-                        <Input
-                            value={inputLabel}
-                            readOnly={!editModeEnabled}
-                            onChange={(e) => setInputLabel(e.target.value)}
-                        />
-                    </Flex>
+                    {(selectedNode || editModeEnabled) && (
+                        <Flex gap="small" style={{ width: "50%" }}>
+                            <Input
+                                placeholder="Укажите значение"
+                                value={inputLabel}
+                                readOnly={!editModeEnabled}
+                                onChange={(e) => setInputLabel(e.target.value)}
+                            />
+                        </Flex>
+                    )}
 
                     <Flex
                         gap="small"
                         align="center"
                         justify="space-evenly"
-                        style={{ width: "40%" }}
+                        style={{
+                            width:
+                                selectedNode || editModeEnabled
+                                    ? "50%"
+                                    : "100%",
+                        }}
                     >
                         {!editModeEnabled ? (
                             selectedNode ? (
@@ -146,7 +154,7 @@ export function TreeList({ title, treeName }: ITreeListProps) {
                                         icon={<PlusOutlined />}
                                         title="Добавить"
                                         onClick={() => {
-                                            setInputLabel("Новое значение");
+                                            setInputLabel(null);
                                             setEditModeEnabled(true);
                                             setInsertModeEnabled(true);
                                         }}
