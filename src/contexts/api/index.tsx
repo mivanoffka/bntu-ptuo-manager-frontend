@@ -4,6 +4,7 @@ import { createHook } from "@/contexts/utils";
 import { toSnakeCase } from "@/contexts/api/utils";
 import qs from "qs";
 import { message } from "antd"; // Импортируем message из antd
+import { VITE_BACKEND_URI } from "@/config";
 
 interface IApiContext {
     axiosInstance: AxiosInstance;
@@ -20,7 +21,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     const [accessToken, setAccessToken] = useState<string | null>(null);
 
     const axiosInstance = axios.create({
-        baseURL: "http://localhost:8000/",
+        baseURL: VITE_BACKEND_URI,
         paramsSerializer: (params) =>
             qs.stringify(params, { arrayFormat: "repeat" }),
     });
@@ -66,7 +67,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
         },
         (error) => {
             setLoading(false);
-            // Можно настроить более детализированное сообщение об ошибке
             const errorMessage =
                 error.response?.data?.message ||
                 error.message ||
