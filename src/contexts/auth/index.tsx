@@ -49,15 +49,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             .catch((err) => console.log(err));
     }
 
+    async function getUser() {
+        await axiosInstance
+            .get("/users/user")
+            .then((res) => {
+                const { data } = res;
+                setUser(data);
+            })
+            .catch((err) => console.log(err));
+    }
+
     async function signOut() {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("user");
         setUser(null);
     }
 
-    useEffect(() => {
+    async function restoreUser() {
         const userStr = localStorage.getItem("user");
-        setUser(userStr ? JSON.parse(userStr) : null);
+        const user = userStr ? JSON.parse(userStr) : null;
+
+        setUser(user);
+
+        if (user) {
+            await getUser();
+        }
+    }
+
+    useEffect(() => {
+        restoreUser();
     }, []);
 
     useEffect(() => {

@@ -1,5 +1,7 @@
+import { useAuth } from "@/contexts/auth";
 import { useEmployees } from "@/contexts/employees";
 import { useEditMode } from "@/contexts/employees/edit-mode";
+import { USER_GROUPS, UserRole } from "@/model";
 import {
     DeleteIconButton,
     RestoreVersionIconButton,
@@ -10,6 +12,8 @@ import { Flex } from "antd";
 export function EmployeeFooterToolbar() {
     const { isLatest } = useEmployees();
     const { editModeEnabled } = useEditMode();
+    const { user } = useAuth();
+    const userRole = user ? user.role : UserRole.UNAUTHORIZED;
 
     const toolBarLatest = editModeEnabled && (
         <Flex align="center" justify="center" gap="small">
@@ -19,7 +23,9 @@ export function EmployeeFooterToolbar() {
         </Flex>
     );
 
-    const toolBarNotLatest = (
+    const toolBarNotLatest = USER_GROUPS[UserRole.MANAGER].includes(
+        userRole
+    ) ? (
         <Flex style={{ width: "100%" }} justify="space-between" gap="small">
             <Flex justify="left" align="center" style={{ width: "30%" }}>
                 <RestoreVersionIconButton />
@@ -28,7 +34,7 @@ export function EmployeeFooterToolbar() {
                 <DeleteVersionIconButton />
             </Flex>
         </Flex>
-    );
+    ) : null;
 
     const toolBar = (
         <Flex

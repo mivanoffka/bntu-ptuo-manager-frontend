@@ -13,6 +13,7 @@ export function UsersPage() {
                     width: "45%",
                     height: "100%",
                     backgroundColor: "white",
+                    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
                 }}
             >
                 <Flex

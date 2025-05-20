@@ -5,6 +5,7 @@ export const enum UserRole {
     MANAGER = "manager",
     EDITOR = "editor",
     VIEWER = "viewer",
+    UNAUTHORIZED = "unauthorized",
 }
 
 export interface IUser {
@@ -20,3 +21,16 @@ export interface IUsersFilter {
     role?: string;
     isVerified?: boolean;
 }
+
+export const USER_GROUPS = {
+    [UserRole.ADMIN]: [UserRole.ADMIN],
+    [UserRole.MANAGER]: [UserRole.ADMIN, UserRole.MANAGER],
+    [UserRole.EDITOR]: [UserRole.ADMIN, UserRole.MANAGER, UserRole.EDITOR],
+    [UserRole.VIEWER]: [
+        UserRole.ADMIN,
+        UserRole.MANAGER,
+        UserRole.EDITOR,
+        UserRole.VIEWER,
+    ],
+    [UserRole.UNAUTHORIZED]: [],
+};

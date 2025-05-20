@@ -1,5 +1,7 @@
+import { useAuth } from "@/contexts/auth";
 import { useEmployees } from "@/contexts/employees";
 import { useEditMode } from "@/contexts/employees/edit-mode";
+import { USER_GROUPS, UserRole } from "@/model";
 import {
     ApplyIconButton,
     CancelIconButton,
@@ -19,6 +21,8 @@ export function EmployeeHeaderToolbar(props: IEmployeeHeaderToolbarProps) {
     const { isLatest } = useEmployees();
     const { editModeEnabled } = useEditMode();
     const { form } = props;
+    const { user } = useAuth();
+    const userRole = user ? user.role : UserRole.UNAUTHORIZED;
 
     const toolBar = (
         <Flex
@@ -68,7 +72,9 @@ export function EmployeeHeaderToolbar(props: IEmployeeHeaderToolbarProps) {
                                 </Flex>
                             ) : isLatest ? (
                                 <Flex>
-                                    <EditIconButton />
+                                    {USER_GROUPS[UserRole.EDITOR].includes(
+                                        userRole
+                                    ) && <EditIconButton />}
                                     <CloseIconButton />
                                 </Flex>
                             ) : (

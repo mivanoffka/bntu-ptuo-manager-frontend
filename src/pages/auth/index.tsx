@@ -38,14 +38,20 @@ export function AuthPage() {
             vertical
             align="center"
             justify="center"
-            style={{ width: "25%", backgroundColor: "white" }}
+            style={{
+                width: "25%",
+                backgroundColor: "white",
+                boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+            }}
         >
             <Flex
                 vertical
                 align="center"
                 justify="center"
                 gap="middle"
-                style={{ width: "75%" }}
+                style={{
+                    width: "75%",
+                }}
             >
                 <Tabs
                     centered

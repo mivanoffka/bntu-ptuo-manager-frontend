@@ -13,6 +13,7 @@ import { MenuProps, Flex, Typography, Menu } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+import { USER_GROUPS, UserRole } from "@/model";
 
 export interface ITopBar {
     children?: React.ReactNode;
@@ -20,6 +21,7 @@ export interface ITopBar {
 
 export function TopBar() {
     const { user } = useAuth();
+    const userRole = user ? user.role : UserRole.UNAUTHORIZED;
 
     if (!user) {
         return;
@@ -43,17 +45,23 @@ export function TopBar() {
             key: "/employees",
             icon: <AuditOutlined />,
         },
-        {
+    ];
+
+    if (USER_GROUPS[UserRole.MANAGER].includes(userRole)) {
+        items.push({
             label: "Справочные таблицы",
             key: "/references",
             icon: <DatabaseOutlined />,
-        },
-        {
+        });
+    }
+
+    if (USER_GROUPS[UserRole.ADMIN].includes(userRole)) {
+        items.push({
             label: "Пользователи",
             key: "/users",
             icon: <TeamOutlined />,
-        },
-    ];
+        });
+    }
 
     return (
         <div className="top-bar">
