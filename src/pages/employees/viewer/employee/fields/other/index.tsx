@@ -8,6 +8,10 @@ import { useEnumerations } from "@/contexts/enumerations";
 import { EnumerationName } from "@/contexts/enumerations/constants";
 import { Flex, Form } from "antd";
 import dayjs from "dayjs";
+import { useEmployees } from "@/contexts/employees";
+import Search from "antd/es/transfer/search";
+import { SearchField } from "@/components/fields/search";
+import { SearchSource } from "@/contexts/employees/constants";
 
 export function CommentField(props: IListedItemProps) {
     const { index, isEditable } = props;
@@ -29,6 +33,8 @@ export function CommentField(props: IListedItemProps) {
 export function RewardField(props: IListedItemProps) {
     const { index, isEditable } = props;
 
+    const { searchFor } = useEmployees();
+
     return (
         <Flex vertical gap="small" style={{ width: "100%" }}>
             <Flex gap="small" style={{ width: "100%" }}>
@@ -37,7 +43,12 @@ export function RewardField(props: IListedItemProps) {
                         name={[index, "label"]}
                         rules={[{ required: true, message: "" }]}
                     >
-                        <TextField isEditable={isEditable}></TextField>
+                        <SearchField
+                            isEditable={isEditable}
+                            onSearch={(search: string | null) =>
+                                searchFor(SearchSource.REWARDS, search)
+                            }
+                        />
                     </Form.Item>
                 </FieldContainer>
                 <FieldContainer title="Дата присуждения">
@@ -74,7 +85,7 @@ export function RelativeField(props: IListedItemProps) {
                         name={[index, "fullName"]}
                         rules={[{ required: true, message: "" }]}
                     >
-                        <TextField isEditable={isEditable}></TextField>
+                        <TextField isEditable={isEditable} />
                     </Form.Item>
                 </FieldContainer>
             </Flex>

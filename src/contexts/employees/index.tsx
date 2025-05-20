@@ -8,7 +8,10 @@ import {
     IEmployeeVersion,
 } from "@/model";
 import { useApi } from "@/contexts/api";
-import { EmployeesEndPoint } from "@/contexts/employees/constants";
+import {
+    EmployeesEndPoint,
+    SearchSource,
+} from "@/contexts/employees/constants";
 import dayjs from "dayjs";
 import { getLatestTimestamp } from "@/contexts/employees/utils";
 import { useNavigate, useParams } from "react-router-dom";
@@ -28,6 +31,11 @@ export interface IEmployeesContext {
     selectId: (id: number | null) => void;
     selectTimestamp: (timestamp: DateTimeString | null) => void;
     isLatest: boolean;
+
+    searchFor: (
+        source: SearchSource,
+        search: string | null
+    ) => Promise<string[]>;
 
     employeesListFilter: IEmployeesFilter;
     setEmployeesListFilter: (filter: IEmployeesFilter) => void;
@@ -60,6 +68,8 @@ export const EmployeesContext = createContext<IEmployeesContext>({
     selectTimestamp: () => {},
     latestTimestamp: null,
     isLatest: false,
+
+    searchFor: async () => [],
 
     employeesListFilter: DEFAULT_FILTER,
     setEmployeesListFilter: (filter: IEmployeesFilter) => {},
@@ -134,6 +144,37 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     const [totalItems, setTotalItems] = useState(0);
 
     // region Api
+
+    async function _searchFor(
+        source: SearchSource,
+        search: string,
+        page: number = 1,
+        limit: number = 25
+    ) {
+        const params = {
+            page,
+            limit,
+            search,
+            source,
+        };
+
+        const data = await axiosInstance
+            .get(
+                `${EmployeesEndPoint.PREFIX}/${EmployeesEndPoint.SEARCH_FOR}`,
+                {
+                    params,
+                }
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return undefined;
+            });
+
+        return data;
+    }
 
     async function _getManyEmployees(
         page: number,
@@ -507,6 +548,12 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         }
     }
 
+    async function searchFor(source: SearchSource, search: string | null) {
+        const { results } = await _searchFor(source, search || "");
+
+        return results;
+    }
+
     const context: IEmployeesContext = {
         selectId,
         selectTimestamp,
@@ -514,6 +561,8 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         selectedTimestamp,
         latestTimestamp,
         isLatest,
+
+        searchFor,
 
         employeesListFilter,
         setEmployeesListFilter,

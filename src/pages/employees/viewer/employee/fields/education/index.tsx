@@ -7,6 +7,9 @@ import { useEnumerations } from "@/contexts/enumerations";
 import { EnumerationName } from "@/contexts/enumerations/constants";
 import { Flex, Form } from "antd";
 import { IFieldProps } from "@/components/fields/shared";
+import { SearchSource } from "@/contexts/employees/constants";
+import { SearchField } from "@/components/fields/search";
+import { useEmployees } from "@/contexts/employees";
 
 export function AcademicDegreeField(props: IFieldProps) {
     const { isEditable } = props;
@@ -56,6 +59,7 @@ export function EducationLevelField(props: IFieldProps) {
 
 export function EducationalInstitutionField(props: IListedItemProps) {
     const { index, isEditable } = props;
+    const { searchFor } = useEmployees();
 
     return (
         <Flex vertical gap="small" style={{ width: "100%" }}>
@@ -66,7 +70,15 @@ export function EducationalInstitutionField(props: IListedItemProps) {
                             name={[index, "label"]}
                             rules={[{ required: true, message: "" }]}
                         >
-                            <TextField isEditable={isEditable}></TextField>
+                            <SearchField
+                                isEditable={isEditable}
+                                onSearch={(search: string | null) =>
+                                    searchFor(
+                                        SearchSource.EDUCATIONAL_INSTITUTIONS,
+                                        search
+                                    )
+                                }
+                            />
                         </Form.Item>
                     </FieldContainer>
                 </Flex>

@@ -8,10 +8,14 @@ import { TreeName } from "@/contexts/trees/constants";
 import { transformPathToKey } from "@/components/fields/tree-select/utils";
 import { Flex, Form } from "antd";
 import { CheckboxField } from "@/components/fields/checkbox";
+import { SearchField } from "@/components/fields/search";
+import { useEmployees } from "@/contexts/employees";
+import { SearchSource } from "@/contexts/employees/constants";
 
 export function BntuPositionField(props: IListedItemProps) {
     const { index, isEditable } = props;
     const { getTree } = useTrees();
+    const { searchFor } = useEmployees();
     const tree = getTree(TreeName.BNTU_DEPARTMENTS);
 
     const treeData = transformPathToKey(tree);
@@ -24,7 +28,12 @@ export function BntuPositionField(props: IListedItemProps) {
                         name={[index, "label"]}
                         rules={[{ required: true, message: "" }]}
                     >
-                        <TextField isEditable={isEditable} />
+                        <SearchField
+                            isEditable={isEditable}
+                            onSearch={(search: string | null) =>
+                                searchFor(SearchSource.BNTU_POSITIONS, search)
+                            }
+                        />
                     </Form.Item>
                 </FieldContainer>
                 <FieldContainer title="Подразделение">
