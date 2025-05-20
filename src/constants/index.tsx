@@ -28,7 +28,7 @@ export const ANTD_CONFIG: ConfigProviderProps = {
         },
     },
     componentSize: "small",
-    locale: { locale: "ru-RU" },
+    locale: ruRU,
     renderEmpty: () => (
         <Flex
             align="center"
