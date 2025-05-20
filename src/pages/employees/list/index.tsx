@@ -4,28 +4,35 @@ import { Palette } from "@/constants";
 import { useEmployees } from "@/contexts/employees";
 import { useEditMode } from "@/contexts/employees/edit-mode";
 import { EmployeesListItem } from "@/pages/employees/list/list-item";
-import { DownloadOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+    DownloadOutlined,
+    PlusOutlined,
+    ReloadOutlined,
+} from "@ant-design/icons";
 import { Flex } from "antd";
 
 export function EmployeesList() {
     const {
         employeesList,
         fetchNextEmployees,
+        fetchAllEmployees,
         selectedId,
         selectId,
         downloadAllEmployeesExcel,
+        employeesPagination,
     } = useEmployees();
 
-    const handleLoadMore = () => {
-        fetchNextEmployees();
-    };
-
-    const { editModeEnabled } = useEditMode();
+    const { next = false } = employeesPagination;
 
     const footer = (
-        <Flex justify="space-around" align="center" style={{ height: "25px" }}>
+        <Flex
+            justify="space-around"
+            align="center"
+            style={{ height: "25px", width: "100%" }}
+        >
             <Flex justify="center" align="center" style={{ width: "33%" }}>
                 <IconButton
+                    disabled={employeesList.length === 0}
                     color={Palette.GREEN}
                     onClick={downloadAllEmployeesExcel}
                     title="Экспорт"
@@ -37,17 +44,26 @@ export function EmployeesList() {
                 style={{
                     width: "1px",
                     height: "100%",
-                    backgroundColor: Palette.LIGHT_GRAY,
+                    backgroundColor: "#d9d9d9",
                 }}
             />
-
-            <Flex justify="center" align="center" style={{ width: "67%" }}>
-                <IconButton
-                    onClick={handleLoadMore}
-                    title="Больше..."
-                    icon={<PlusOutlined />}
-                />
-            </Flex>
+            {next ? (
+                <Flex justify="center" align="center" style={{ width: "67%" }}>
+                    <IconButton
+                        onClick={fetchNextEmployees}
+                        title="Больше"
+                        icon={<PlusOutlined />}
+                    />
+                </Flex>
+            ) : (
+                <Flex justify="center" align="center" style={{ width: "67%" }}>
+                    <IconButton
+                        onClick={fetchAllEmployees}
+                        title="Обновить"
+                        icon={<ReloadOutlined />}
+                    />
+                </Flex>
+            )}
         </Flex>
     );
 

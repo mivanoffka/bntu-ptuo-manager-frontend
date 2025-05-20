@@ -13,7 +13,7 @@ import {
     EditOutlined,
     DeleteOutlined,
 } from "@ant-design/icons";
-import { Flex, Input } from "antd";
+import { Divider, Flex, Input } from "antd";
 import { E } from "node_modules/@faker-js/faker/dist/airline-CBNP41sR";
 import { useState, useEffect } from "react";
 
@@ -61,6 +61,7 @@ export function EnumerationList(props: IEnumerationListProps) {
                 <div
                     style={{
                         maxHeight: "500px",
+                        minHeight: "50px",
                         width: "100%",
                         height: "100%",
                         border: "1px solid #d9d9d9",
@@ -193,6 +194,7 @@ export function EnumerationList(props: IEnumerationListProps) {
                     </Flex>
                 </Flex>
             </Flex>
+            <Divider></Divider>
         </Flex>
     );
 }

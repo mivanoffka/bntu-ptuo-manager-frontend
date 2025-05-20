@@ -12,7 +12,7 @@ import {
     DeleteOutlined,
     DownOutlined,
 } from "@ant-design/icons";
-import { Flex, Input, Tree } from "antd";
+import { Divider, Flex, Input, List, Tree } from "antd";
 import { useState, useEffect } from "react";
 
 export interface ITreeListProps {
@@ -90,38 +90,42 @@ export function TreeList({ title, treeName }: ITreeListProps) {
             <Flex gap="small" style={{ width: "100%" }} vertical>
                 <div
                     style={{
-                        maxHeight: 300,
+                        maxHeight: "500px",
+                        minHeight: "50px",
                         overflowY: "auto",
                         border: "1px solid #d9d9d9",
                         borderRadius: 4,
-                        padding: 8,
                         width: "100%",
                     }}
                 >
-                    <Tree
-                        autoExpandParent
-                        blockNode
-                        style={{ fontSize: 13, textAlign: "left" }}
-                        showLine
-                        switcherIcon={<DownOutlined />}
-                        treeData={convertToTreeData(treeData)}
-                        selectedKeys={selectedPath ? [selectedPath] : []}
-                        onSelect={(selectedKeys) => {
-                            if (selectedKeys.length === 0) {
-                                setSelectedPath(null);
-                            } else {
-                                const key = selectedKeys[0];
-                                if (key === selectedPath) {
+                    {treeData && treeData.length > 0 ? (
+                        <Tree
+                            autoExpandParent
+                            blockNode
+                            style={{ fontSize: 13, textAlign: "left" }}
+                            showLine
+                            switcherIcon={<DownOutlined />}
+                            treeData={convertToTreeData(treeData)}
+                            selectedKeys={selectedPath ? [selectedPath] : []}
+                            onSelect={(selectedKeys) => {
+                                if (selectedKeys.length === 0) {
                                     setSelectedPath(null);
                                 } else {
-                                    setSelectedPath(key);
-                                    setEditModeEnabled(false);
-                                    setInsertModeEnabled(false);
+                                    const key = selectedKeys[0];
+                                    if (key === selectedPath) {
+                                        setSelectedPath(null);
+                                    } else {
+                                        setSelectedPath(key);
+                                        setEditModeEnabled(false);
+                                        setInsertModeEnabled(false);
+                                    }
                                 }
-                            }
-                        }}
-                        defaultExpandAll
-                    />
+                            }}
+                            defaultExpandAll
+                        />
+                    ) : (
+                        <List />
+                    )}
                 </div>
 
                 <Flex gap="small" style={{ width: "100%" }}>
@@ -197,7 +201,7 @@ export function TreeList({ title, treeName }: ITreeListProps) {
                                     icon={<PlusOutlined />}
                                     title="Добавить новую запись"
                                     onClick={() => {
-                                        setInputLabel("Новое значение");
+                                        setInputLabel(null);
                                         setSelectedPath(null);
                                         setEditModeEnabled(true);
                                         setInsertModeEnabled(true);
@@ -273,6 +277,8 @@ export function TreeList({ title, treeName }: ITreeListProps) {
                     </Flex>
                 </Flex>
             </Flex>
+
+            <Divider></Divider>
         </Flex>
     );
 }

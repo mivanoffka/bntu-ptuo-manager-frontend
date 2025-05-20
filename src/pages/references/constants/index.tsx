@@ -9,6 +9,11 @@ export interface IReferenceInfo {
 
 export const ENUMS_REFERENCES = [
     {
+        value: EnumerationName.WORKING_GROUPS,
+        label: "Профгруппы",
+        isTree: false,
+    },
+    {
         value: EnumerationName.ACADEMIC_DEGREES,
         label: "Ученая степень",
         isTree: false,
@@ -19,18 +24,13 @@ export const ENUMS_REFERENCES = [
         isTree: false,
     },
     {
-        value: EnumerationName.WORKING_GROUPS,
-        label: "Профгруппа",
-        isTree: true,
-    },
-    {
         value: EnumerationName.GENDERS,
         label: "Пол",
         isTree: false,
     },
     {
         value: EnumerationName.PHONE_NUMBER_TYPES,
-        label: "Подразделение",
+        label: "Номера телефонов",
         isTree: false,
     },
     {

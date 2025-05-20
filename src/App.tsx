@@ -4,13 +4,11 @@ import { AuthProvider } from "@/contexts/auth";
 import { Navigate, Route, Routes, BrowserRouter } from "react-router-dom";
 import { EnumerationsProvider } from "@/contexts/enumerations";
 import { ConfigProvider } from "antd";
-import { THEME } from "@/constants";
 import { TreesProvider } from "@/contexts/trees";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import updateLocale from "dayjs/plugin/updateLocale";
-import ruRU from "antd/lib/locale/ru_RU";
 import { PageContainer } from "@/components/page";
 import { TopBar } from "@/components/page/top-bar";
 import { EditModeProvider } from "@/contexts/employees/edit-mode";
@@ -19,12 +17,13 @@ import { SignIn } from "@/pages/auth/sign-in";
 import { SignUp } from "@/pages/auth/sign-up";
 import { ReferencesPage } from "@/pages/references";
 import { UsersPage } from "@/pages/users";
+import { ANTD_CONFIG } from "@/constants";
 
 dayjs.locale("ru");
 dayjs.extend(localizedFormat);
 dayjs.extend(updateLocale);
 const App: React.FC = () => (
-    <ConfigProvider locale={ruRU} componentSize="small" theme={THEME}>
+    <ConfigProvider {...ANTD_CONFIG}>
         <BrowserRouter>
             <ApiProvider>
                 <AuthProvider>

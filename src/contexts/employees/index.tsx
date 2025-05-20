@@ -32,6 +32,7 @@ export interface IEmployeesContext {
     employeesListFilter: IEmployeesFilter;
     setEmployeesListFilter: (filter: IEmployeesFilter) => void;
     employeesList: IEmployee[];
+    employeesPagination: IPaginatedData<IEmployee>;
     selectedEmployee: IEmployee | null;
     setSelectedEmployee: (employee: IEmployee) => void;
     selectedEmployeeVersion: IEmployeeVersion | null;
@@ -63,6 +64,7 @@ export const EmployeesContext = createContext<IEmployeesContext>({
     employeesListFilter: DEFAULT_FILTER,
     setEmployeesListFilter: (filter: IEmployeesFilter) => {},
     employeesList: [],
+    employeesPagination: { results: [], count: 0, next: null, previous: null },
     selectedEmployee: null,
     setSelectedEmployee: () => {},
     selectedEmployeeVersion: null,
@@ -116,6 +118,9 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
     const { axiosInstance } = useApi();
     const [employeesList, setEmployeesList] = useState<IEmployee[]>([]);
+    const [employeesPagination, setEmployeesPagination] = useState<
+        IPaginatedData<IEmployee>
+    >({ results: [], count: 0, next: null, previous: null });
     const [employeesListFilter, setEmployeesListFilter] =
         useState<IEmployeesFilter>(DEFAULT_FILTER);
     const [selectedEmployee, setSelectedEmployee] = useState<IEmployee | null>(
@@ -342,6 +347,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
             setPagesLoaded(page);
             setTotalItems(count);
             setEmployeesList(results);
+            setEmployeesPagination(data);
         }
     }
 
@@ -392,6 +398,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
             setPagesLoaded(page);
             setTotalItems(count);
             setEmployeesList([...employeesList, ...results]);
+            setEmployeesPagination(data);
         }
     }
 
@@ -511,6 +518,7 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         employeesListFilter,
         setEmployeesListFilter,
         employeesList,
+        employeesPagination,
         selectedEmployee,
         selectedEmployeeVersion,
         pagesLoaded,

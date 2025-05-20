@@ -4,11 +4,11 @@
 }
 
 .employee-row.even {
-    background-color: #ffffff;
+    background-color: #f7f7f7;
 }
 
 .employee-row.odd {
-    background-color: #f7f7f7;
+    background-color: #ffffff;
 }
 
 .employee-row:hover {
