@@ -1,12 +1,23 @@
 import { EmployeesProvider } from "@/contexts/employees";
 import { useEditMode } from "@/contexts/employees/edit-mode";
 import { EmployeeEditorProvider } from "@/contexts/employees/editor";
+import { useEnumerations } from "@/contexts/enumerations";
+import { useTrees } from "@/contexts/trees";
 import { EmployeesSearch } from "@/pages/employees/search";
 import { EmployeesViewer } from "@/pages/employees/viewer";
 import { Layout, Flex } from "antd";
+import { useEffect } from "react";
 
 export function EmployeesPage() {
     const { editModeEnabled } = useEditMode();
+
+    const { reloadTrees } = useTrees();
+    const { reloadEnumerations } = useEnumerations();
+
+    useEffect(() => {
+        reloadTrees();
+        reloadEnumerations();
+    }, []);
 
     return (
         <EmployeesProvider>

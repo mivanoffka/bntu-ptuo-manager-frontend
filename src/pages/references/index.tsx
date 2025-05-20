@@ -1,3 +1,5 @@
+import { useEnumerations } from "@/contexts/enumerations";
+import { useTrees } from "@/contexts/trees";
 import {
     ENUMS_REFERENCES,
     TREE_REFERENCES,
@@ -5,8 +7,17 @@ import {
 import { EnumerationList } from "@/pages/references/list";
 import { TreeList } from "@/pages/references/trees";
 import { Layout, Flex } from "antd";
+import { useEffect } from "react";
 
 export function ReferencesPage() {
+    const { reloadTrees } = useTrees();
+    const { reloadEnumerations } = useEnumerations();
+
+    useEffect(() => {
+        reloadTrees();
+        reloadEnumerations();
+    }, []);
+
     return (
         <Flex
             align="center"
