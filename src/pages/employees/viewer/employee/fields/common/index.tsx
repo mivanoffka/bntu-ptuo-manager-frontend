@@ -41,7 +41,10 @@ export function FullNameField(props: IFieldProps) {
                     name="lastName"
                     rules={[{ required: true, message: "" }]}
                 >
-                    <TextField isEditable={isEditable}></TextField>
+                    <TextField
+                        placeholder="Фамилия"
+                        isEditable={isEditable}
+                    ></TextField>
                 </Form.Item>
             </FieldContainer>
             <FieldContainer title="Имя">
@@ -49,12 +52,18 @@ export function FullNameField(props: IFieldProps) {
                     name="firstName"
                     rules={[{ required: true, message: "" }]}
                 >
-                    <TextField isEditable={isEditable}></TextField>
+                    <TextField
+                        placeholder="Имя"
+                        isEditable={isEditable}
+                    ></TextField>
                 </Form.Item>
             </FieldContainer>
             <FieldContainer title="Отчество">
                 <Form.Item name="middleName">
-                    <TextField isEditable={isEditable}></TextField>
+                    <TextField
+                        placeholder="Отчество"
+                        isEditable={isEditable}
+                    ></TextField>
                 </Form.Item>
             </FieldContainer>
         </Flex>
@@ -74,6 +83,7 @@ export function GenderField(props: IFieldProps) {
                 rules={[{ required: true, message: "" }]}
             >
                 <SelectField
+                    placeholder="Выберите пол"
                     isEditable={isEditable}
                     options={genders.map((item) => ({
                         value: item.id,

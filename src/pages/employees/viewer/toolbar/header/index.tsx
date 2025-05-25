@@ -9,6 +9,7 @@ import {
     CloseIconButton,
     ToLatestVersionIconButton,
 } from "@/pages/employees/viewer/toolbar/buttons";
+import { EditModeLabel } from "@/pages/employees/viewer/toolbar/header/edit-mode-label";
 import { EmployeeVersionRelevanceLabel } from "@/pages/employees/viewer/toolbar/header/version-relevance-label";
 import { EmployeeVersionSelect } from "@/pages/employees/viewer/toolbar/header/version-select";
 import { Flex, FormInstance } from "antd";
@@ -53,7 +54,11 @@ export function EmployeeHeaderToolbar(props: IEmployeeHeaderToolbarProps) {
                         justify="center"
                         style={{ width: "34%" }}
                     >
-                        <EmployeeVersionRelevanceLabel />
+                        {editModeEnabled ? (
+                            <EditModeLabel />
+                        ) : (
+                            <EmployeeVersionRelevanceLabel />
+                        )}
                     </Flex>
                     <Flex
                         align="center"

@@ -1,4 +1,4 @@
-import { IFieldProps } from "@/components/fields/shared";
+import { IFieldProps, PLACEHOLDER } from "@/components/fields/shared";
 import { Input, Select, SelectProps } from "antd";
 
 export interface ISelectFieldProps extends SelectProps, IFieldProps {}
@@ -14,6 +14,7 @@ export function SelectField(props: ISelectFieldProps) {
             {...props}
             allowClear
             value={value}
+            placeholder={PLACEHOLDER}
         />
     ) : (
         <Input value={inputValue} readOnly></Input>

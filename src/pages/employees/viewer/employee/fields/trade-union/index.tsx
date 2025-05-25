@@ -18,7 +18,10 @@ export function TradeUnionMembershipNumberField(props: IFieldProps) {
     return (
         <FieldContainer title="Номер профсоюзного билета">
             <Form.Item name="tradeUnionMembershipNumber" rules={NOT_NULL_RULES}>
-                <TextField isEditable={isEditable}></TextField>
+                <TextField
+                    placeholder="012345"
+                    isEditable={isEditable}
+                ></TextField>
             </Form.Item>
         </FieldContainer>
     );

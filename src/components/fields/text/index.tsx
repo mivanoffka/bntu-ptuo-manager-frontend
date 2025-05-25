@@ -6,5 +6,12 @@ export interface ITextFieldProps extends InputProps, IFieldProps {}
 export function TextField(props: ITextFieldProps) {
     const { isEditable } = props;
 
-    return <Input {...props} readOnly={!isEditable} allowClear></Input>;
+    return (
+        <Input
+            {...props}
+            readOnly={!isEditable}
+            allowClear
+            placeholder="Не указано"
+        ></Input>
+    );
 }

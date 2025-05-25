@@ -10,7 +10,7 @@ import {
 import { Flex } from "antd";
 
 export function EmployeeFooterToolbar() {
-    const { isLatest } = useEmployees();
+    const { isLatest, selectedEmployee } = useEmployees();
     const { editModeEnabled } = useEditMode();
     const { user } = useAuth();
     const userRole = user ? user.role : UserRole.UNAUTHORIZED;
@@ -23,18 +23,17 @@ export function EmployeeFooterToolbar() {
         </Flex>
     );
 
-    const toolBarNotLatest = USER_GROUPS[UserRole.MANAGER].includes(
-        userRole
-    ) ? (
-        <Flex style={{ width: "100%" }} justify="space-between" gap="small">
-            <Flex justify="left" align="center" style={{ width: "30%" }}>
-                <RestoreVersionIconButton />
+    const toolBarNotLatest =
+        USER_GROUPS[UserRole.MANAGER].includes(userRole) && selectedEmployee ? (
+            <Flex style={{ width: "100%" }} justify="space-between" gap="small">
+                <Flex justify="left" align="center" style={{ width: "30%" }}>
+                    <RestoreVersionIconButton />
+                </Flex>
+                <Flex justify="right" align="center" style={{ width: "30%" }}>
+                    <DeleteVersionIconButton />
+                </Flex>
             </Flex>
-            <Flex justify="right" align="center" style={{ width: "30%" }}>
-                <DeleteVersionIconButton />
-            </Flex>
-        </Flex>
-    ) : null;
+        ) : null;
 
     const toolBar = (
         <Flex

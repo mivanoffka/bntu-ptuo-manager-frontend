@@ -15,6 +15,7 @@ export function getNewEmployee(): IEmployeeVersion {
 
         bntuPositions: [],
 
+        tradeUnionMembershipNumber: null,
         tradeUnionPositions: [],
         tradeUnionDepartmentAuthenticLabel: null,
         tradeUnionDepartmentPath: null,

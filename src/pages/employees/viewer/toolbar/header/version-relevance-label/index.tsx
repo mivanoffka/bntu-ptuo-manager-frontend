@@ -5,19 +5,10 @@ import { Flex, Typography } from "antd";
 
 export function EmployeeVersionRelevanceLabel() {
     const { isLatest } = useEmployees();
-    const { editModeEnabled } = useEditMode();
 
-    const label = editModeEnabled
-        ? "РЕДАКТИРОВАНИE"
-        : isLatest
-        ? "АКТУАЛЬНАЯ ВЕРСИЯ"
-        : "НЕАКТУАЛЬНАЯ ВЕРСИЯ";
+    const label = isLatest ? "АКТУАЛЬНАЯ ВЕРСИЯ" : "НЕАКТУАЛЬНАЯ ВЕРСИЯ";
 
-    const color = editModeEnabled
-        ? Palette.BLUE
-        : isLatest
-        ? Palette.GRAY
-        : Palette.RED;
+    const color = isLatest ? Palette.GRAY : Palette.RED;
 
     return (
         <Flex align="center" justify="center">

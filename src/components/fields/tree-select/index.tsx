@@ -1,4 +1,4 @@
-import { IFieldProps } from "@/components/fields/shared";
+import { IFieldProps, PLACEHOLDER } from "@/components/fields/shared";
 import { Input, TreeSelect, TreeSelectProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
@@ -26,19 +26,22 @@ export function TreeSelectField(props: ITreeSelectFieldProps) {
             showSearch
             style={{
                 width: "100%",
+                maxWidth: "100%",
                 textAlign: "left",
+                overflow: "hidden",
             }}
             dropdownStyle={{
-                maxHeight: 400,
-                minWidth: 300,
                 overflow: "auto",
             }}
+            labelInValue
+            popupMatchSelectWidth={true}
             treeData={treeData}
             treeLine
             switcherIcon={<DownOutlined />}
             allowClear
             value={value}
             onChange={onChange}
+            placeholder={PLACEHOLDER}
         />
     ) : (
         <Input value={inputValue} readOnly />

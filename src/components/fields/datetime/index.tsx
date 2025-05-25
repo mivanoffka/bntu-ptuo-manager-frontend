@@ -1,4 +1,4 @@
-import { IFieldProps } from "@/components/fields/shared";
+import { IFieldProps, PLACEHOLDER } from "@/components/fields/shared";
 import { DatePicker, DatePickerProps, Input } from "antd";
 import dayjs from "dayjs";
 
@@ -35,8 +35,8 @@ export function DateTimeField(props: IDateTimeFieldProps) {
     const inputValue = value ? dayjs(value).format(inputFormat) : "";
 
     return isEditable ? (
-        <DatePicker {...datePickerProps} />
+        <DatePicker {...datePickerProps} placeholder={PLACEHOLDER} />
     ) : (
-        <Input value={inputValue} readOnly></Input>
+        <Input value={inputValue} readOnly placeholder={PLACEHOLDER}></Input>
     );
 }

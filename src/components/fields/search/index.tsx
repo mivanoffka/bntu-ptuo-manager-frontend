@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { AutoComplete, AutoCompleteProps, Input } from "antd";
 import debounce from "lodash/debounce";
-import { IFieldProps } from "@/components/fields/shared";
+import { IFieldProps, PLACEHOLDER } from "@/components/fields/shared";
 
 export interface ISearchFieldProps
     extends Omit<AutoCompleteProps, "options">,
@@ -43,6 +43,8 @@ export function SearchField(props: ISearchFieldProps) {
             onSearch={handleSearch}
             options={options}
             allowClear
+            placeholder={PLACEHOLDER}
+            style={{ textAlign: "left" }}
         />
     );
 }
