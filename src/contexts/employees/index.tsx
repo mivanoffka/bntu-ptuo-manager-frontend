@@ -515,28 +515,45 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     }
 
     async function restoreToSelectedVersion() {
-        if (selectedId && timestamp) {
-            await _restoreEmployeeVersion(
-                selectedId,
-                timestamp as DateTimeString
-            );
-            if (latestTimestamp) {
-                selectTimestamp(latestTimestamp);
-            }
+        if (selectedId && selectedTimestamp) {
+            await _restoreEmployeeVersion(selectedId, selectedTimestamp);
+            selectTimestamp(null);
             await fetchSelectedEmployee();
+            selectTimestamp(selectedTimestamp);
         }
     }
 
     async function deleteSelectedVersion() {
-        if (selectedId && timestamp) {
-            await _deleteEmployeeVersion(
-                selectedId,
-                timestamp as DateTimeString
-            );
-            if (latestTimestamp) {
-                selectTimestamp(latestTimestamp);
+        if (selectedId && selectedTimestamp) {
+            const selectedTimestampId =
+                selectedEmployee?.employeeVersionTimestamps.indexOf(
+                    selectedTimestamp
+                );
+
+            let newTimestamp = null;
+
+            const len = selectedEmployee?.employeeVersionTimestamps.length;
+
+            if ((selectedTimestampId || selectedTimestampId === 0) && len) {
+                if (selectedTimestampId === len - 1) {
+                    newTimestamp =
+                        selectedEmployee?.employeeVersionTimestamps[len - 2];
+                } else {
+                    newTimestamp =
+                        selectedEmployee?.employeeVersionTimestamps[
+                            selectedTimestampId + 1
+                        ];
+                }
             }
+
+            await _deleteEmployeeVersion(selectedId, selectedTimestamp);
+            selectTimestamp(null);
+
             await fetchSelectedEmployee();
+
+            selectTimestamp(newTimestamp);
+
+            disableEditMode();
         }
     }
 
@@ -545,6 +562,8 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
             await _deleteEmployee(selectedId);
             selectId(null);
             await fetchAllEmployees();
+
+            disableEditMode();
         }
     }
 
