@@ -5,7 +5,15 @@ import { DownOutlined } from "@ant-design/icons";
 export interface ITreeSelectFieldProps extends TreeSelectProps, IFieldProps {}
 
 export function TreeSelectField(props: ITreeSelectFieldProps) {
-    const { isEditable, value, onChange, treeData } = props;
+    const { isEditable, value, onChange: onChangeBase, treeData } = props;
+
+    const onChange: TreeSelectProps["onChange"] = (value, _, __) => {
+        if (!onChangeBase) return;
+
+        if (value && typeof value === "object" && "value" in value) {
+            onChangeBase(value.value, _, __);
+        }
+    };
 
     const findLabel = (data: any[], val: any): string | undefined => {
         for (const item of data) {
