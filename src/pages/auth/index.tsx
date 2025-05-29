@@ -1,7 +1,8 @@
-import { FontSize } from "@/constants";
+import { Logo } from "@/components/page/top-bar/logo";
+import { FontSize, Palette } from "@/constants";
 import { SignIn } from "@/pages/auth/sign-in";
 import { SignUp } from "@/pages/auth/sign-up";
-import { Flex, Layout, Tabs, Typography } from "antd";
+import { Divider, Flex, Layout, Tabs, Typography } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export function AuthPage() {
@@ -48,11 +49,53 @@ export function AuthPage() {
                 vertical
                 align="center"
                 justify="center"
-                gap="middle"
                 style={{
                     width: "75%",
                 }}
             >
+                <Flex gap="20px" align="center">
+                    <Logo size={40}></Logo>
+                    <Flex vertical gap="0px">
+                        <Typography.Text
+                            style={{
+                                fontSize: "18px",
+                                margin: "0",
+                                padding: "0",
+                                letterSpacing: "1px",
+                            }}
+                        >
+                            РАБОТНИКОВ БНТУ
+                        </Typography.Text>
+                        <Flex gap="3px">
+                            <Typography.Text
+                                style={{
+                                    filter: "brightness(90%)",
+                                    color: Palette.GREEN,
+                                    fontSize: "10px",
+                                    margin: "0",
+                                    padding: "0",
+                                    letterSpacing: "1px",
+                                }}
+                            >
+                                ИНФОРМАЦИОННАЯ
+                            </Typography.Text>
+                            <Typography.Text
+                                style={{
+                                    filter: "brightness(90%)",
+
+                                    color: Palette.BLUE,
+                                    fontSize: "10px",
+                                    margin: "0",
+                                    padding: "0",
+                                    letterSpacing: "1px",
+                                }}
+                            >
+                                СИСТЕМА
+                            </Typography.Text>
+                        </Flex>
+                    </Flex>
+                </Flex>
+                <Divider />
                 <Tabs
                     centered
                     activeKey={tabKey}
@@ -60,6 +103,7 @@ export function AuthPage() {
                     style={{ width: "100%" }}
                     items={items}
                 />
+                <Divider />
             </Flex>
         </Flex>
     );
