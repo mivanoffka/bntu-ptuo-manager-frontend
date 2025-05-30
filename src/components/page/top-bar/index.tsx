@@ -69,6 +69,7 @@ export function TopBar() {
             style={{
                 pointerEvents: editModeEnabled ? "none" : "auto",
                 opacity: editModeEnabled ? 0.65 : 1,
+                zIndex: 1000,
             }}
         >
             <div className="top-bar">
