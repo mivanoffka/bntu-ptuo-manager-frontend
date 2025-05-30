@@ -122,7 +122,7 @@ export function EnumerationList(props: IEnumerationListProps) {
                         ) : editModeEnabled ? (
                             <>
                                 <IconButton
-                                    color={Palette.GREEN}
+                                    iconColor={Palette.GREEN}
                                     icon={<CheckOutlined />}
                                     title="Применить"
                                     onClick={async () => {
@@ -146,7 +146,7 @@ export function EnumerationList(props: IEnumerationListProps) {
                                     }}
                                 ></IconButton>
                                 <IconButton
-                                    color={Palette.RED}
+                                    iconColor={Palette.RED}
                                     icon={<StopOutlined />}
                                     title="Отменить"
                                     onClick={async () => {

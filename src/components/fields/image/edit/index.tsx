@@ -82,21 +82,21 @@ export function ImageEditField(props: IImageEditFieldProps) {
                         }}
                     >
                         <IconButton
-                            color={Palette.GREEN}
+                            iconColor={Palette.GREEN}
                             icon={<RedoOutlined />}
                             onClick={handleUploadClick}
                             title="Заменить"
                         />
                         {newImage ? (
                             <IconButton
-                                color={Palette.RED}
+                                iconColor={Palette.RED}
                                 icon={<CloseOutlined />}
                                 onClick={resetImage}
                                 title="Сбросить"
                             />
                         ) : (
                             <IconButton
-                                color={Palette.RED}
+                                iconColor={Palette.RED}
                                 icon={<DeleteOutlined />}
                                 onClick={deleteImage}
                                 title="Удалить"
@@ -105,7 +105,7 @@ export function ImageEditField(props: IImageEditFieldProps) {
                     </Flex>
                 ) : (
                     <IconButton
-                        color={Palette.GREEN}
+                        iconColor={Palette.GREEN}
                         icon={<UploadOutlined />}
                         onClick={handleUploadClick}
                         title="Загрузить"

@@ -20,7 +20,7 @@ export function CloseIconButton() {
 
     return (
         <IconButton
-            color={Palette.BLUE}
+            iconColor={Palette.BLUE}
             onClick={() => selectId(null)}
             title={"Закрыть"}
             icon={<CloseOutlined />}
@@ -33,7 +33,7 @@ export function EditIconButton() {
 
     return (
         <IconButton
-            color={Palette.BLUE}
+            iconColor={Palette.BLUE}
             onClick={startEdit}
             title={"Редактировать"}
             icon={<EditOutlined />}
@@ -46,7 +46,7 @@ export function DeleteIconButton() {
 
     return (
         <IconButton
-            color={Palette.RED}
+            iconColor={Palette.RED}
             onClick={deleteSelectedEmployee}
             title={"Удалить запись"}
             icon={<DeleteOutlined />}
@@ -71,7 +71,7 @@ export function DeleteVersionIconButton() {
 
     return (
         <IconButton
-            color={Palette.RED}
+            iconColor={Palette.RED}
             onClick={deleteSelectedVersion}
             title={"Удалить версию из истории"}
             icon={<DeleteOutlined />}
@@ -85,7 +85,7 @@ export function ToLatestVersionIconButton() {
 
     return (
         <IconButton
-            color={Palette.GREEN}
+            iconColor={Palette.GREEN}
             onClick={() => selectTimestamp(latestTimestamp)}
             title={"К актуальной версии"}
             icon={<ArrowUpOutlined />}
@@ -104,7 +104,7 @@ export function ApplyIconButton(props: IApplyIconButtonProps) {
     return (
         <IconButton
             disabled={!isValid}
-            color={Palette.GREEN}
+            iconColor={Palette.GREEN}
             onClick={() => applyEdit(form)}
             title={"Применить"}
             icon={<CheckOutlined />}
@@ -117,7 +117,7 @@ export function CancelIconButton() {
 
     return (
         <IconButton
-            color={Palette.RED}
+            iconColor={Palette.RED}
             onClick={cancelEdit}
             title={"Отменить"}
             icon={<StopOutlined />}
@@ -130,7 +130,7 @@ export function CreateIconButton() {
 
     return (
         <IconButton
-            color={Palette.BLUE}
+            iconColor={Palette.BLUE}
             onClick={createNew}
             title={"Добавить учётную карточку"}
             icon={<UserAddOutlined />}

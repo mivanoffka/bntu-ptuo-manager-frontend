@@ -3,15 +3,14 @@ import { Button, Flex, Typography } from "antd";
 import "./style.css";
 
 import React from "react";
+import { IconLabel, IIconLabel } from "@/components/labels";
 
-export interface IIconButtonProps {
+export interface IIconButtonProps extends IIconLabel {
     onClick: (() => any) | null;
-    title: React.ReactNode;
-    icon: React.ReactNode;
-    color?: string;
     disabled?: boolean;
     isPrimary?: boolean;
     isSubmit?: boolean;
+    backgroundColor?: string;
 }
 
 export function IconButton(props: IIconButtonProps) {
@@ -19,44 +18,36 @@ export function IconButton(props: IIconButtonProps) {
         onClick,
         title,
         icon,
-        color,
-        disabled = false,
+        textColor: textColorBase = Palette.GRAY,
+        iconColor: iconColorBase,
+        disabled: disabled = false,
         isPrimary = false,
     } = props;
 
-    const actuallyDisabled =
-        onClick !== undefined && onClick !== null ? disabled : true;
+    let textColor = textColorBase;
+    let iconColor = iconColorBase;
 
-    const textColor = actuallyDisabled ? Palette.LIGHT_GRAY : Palette.GRAY;
-    const iconColor = actuallyDisabled ? Palette.GRAY : color;
+    if (disabled) {
+        textColor = Palette.LIGHT_GRAY;
+        iconColor = Palette.GRAY;
+    }
 
     return (
         <Button
             htmlType={props.isSubmit ? "submit" : "button"}
             className="icon-button"
-            disabled={actuallyDisabled}
+            disabled={disabled}
             type={isPrimary ? "primary" : "link"}
             onClick={onClick}
-            color={color}
-            style={{ width: "100%" }}
+            color={textColor}
+            style={{ width: "100%", height: "100%" }}
         >
-            <Flex
-                align="center"
-                justify="center"
-                style={{ width: "100%", color: iconColor }}
-                gap="small"
-            >
-                <Typography.Text
-                    className="toolbar-text"
-                    style={{
-                        color: isPrimary ? "white" : textColor,
-                        fontSize: FontSize.SMALL,
-                    }}
-                >
-                    {title}
-                </Typography.Text>
-                {icon}
-            </Flex>
+            <IconLabel
+                title={title}
+                icon={icon}
+                iconColor={iconColor}
+                textColor={textColor}
+            ></IconLabel>
         </Button>
     );
 }

@@ -33,7 +33,7 @@ export function EmployeesList() {
             <Flex justify="center" align="center" style={{ width: "33%" }}>
                 <IconButton
                     disabled={employeesList?.length === 0}
-                    color={Palette.GREEN}
+                    iconColor={Palette.GREEN}
                     onClick={downloadAllEmployeesExcel}
                     title="Экспорт"
                     icon={<DownloadOutlined />}

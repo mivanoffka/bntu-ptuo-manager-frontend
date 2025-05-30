@@ -1,3 +1,4 @@
+import { FontSize } from "@/constants";
 import { Flex, Typography } from "antd";
 import { ReactNode } from "react";
 
@@ -32,5 +33,46 @@ export function LabelField(props: ILabelFieldProps) {
         <Typography.Text style={{ textAlign: "left" }}>
             {value ?? placeholder}
         </Typography.Text>
+    );
+}
+
+export interface IIconLabel {
+    title: React.ReactNode;
+    icon: React.ReactNode;
+    textColor?: string;
+    disabled?: boolean;
+    isPrimary?: boolean;
+    isSubmit?: boolean;
+    fontSize?: number;
+    iconColor?: string;
+}
+
+export function IconLabel(props: IIconLabel) {
+    const {
+        title,
+        fontSize = FontSize.SMALL,
+        textColor,
+        icon,
+        iconColor,
+    } = props;
+
+    return (
+        <Flex
+            align="center"
+            justify="center"
+            style={{ width: "100%", color: iconColor, height: "100%" }}
+            gap="small"
+        >
+            <Typography.Text
+                className="toolbar-text"
+                style={{
+                    color: textColor,
+                    fontSize,
+                }}
+            >
+                {title}
+            </Typography.Text>
+            {icon}
+        </Flex>
     );
 }

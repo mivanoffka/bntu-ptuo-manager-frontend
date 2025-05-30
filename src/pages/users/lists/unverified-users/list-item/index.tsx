@@ -23,7 +23,7 @@ export function UnverifiedUserListItem(props: ISelectableListItemProps<IUser>) {
                 <IconButton
                     title="Одобрить"
                     icon={<CheckOutlined />}
-                    color={Palette.GREEN}
+                    iconColor={Palette.GREEN}
                     onClick={async () => {
                         await verifyUser(user.id);
                     }}
@@ -31,7 +31,7 @@ export function UnverifiedUserListItem(props: ISelectableListItemProps<IUser>) {
                 <IconButton
                     title="Отклонить"
                     icon={<CloseOutlined />}
-                    color={Palette.RED}
+                    iconColor={Palette.RED}
                     onClick={async () => {
                         await declineUser(user.id);
                     }}

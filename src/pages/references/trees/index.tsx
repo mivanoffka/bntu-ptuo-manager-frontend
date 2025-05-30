@@ -211,7 +211,7 @@ export function TreeList({ title, treeName }: ITreeListProps) {
                         ) : (
                             <>
                                 <IconButton
-                                    color={Palette.GREEN}
+                                    iconColor={Palette.GREEN}
                                     icon={<CheckOutlined />}
                                     title="Применить"
                                     onClick={async () => {
@@ -253,7 +253,7 @@ export function TreeList({ title, treeName }: ITreeListProps) {
                                     }}
                                 />
                                 <IconButton
-                                    color={Palette.RED}
+                                    iconColor={Palette.RED}
                                     icon={<StopOutlined />}
                                     title="Отменить"
                                     onClick={() => {
