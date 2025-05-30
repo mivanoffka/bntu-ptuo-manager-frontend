@@ -7,10 +7,11 @@ export interface IExpandableProps {
     content?: ReactNode;
     icon?: ReactNode;
     placement?: DropdownProps["placement"];
+    disabled?: boolean;
 }
 
 export function Expandable(props: IExpandableProps) {
-    const { children, content, icon, placement } = props;
+    const { children, content, icon, placement, disabled } = props;
 
     const items: MenuProps["items"] = [
         {
@@ -25,6 +26,7 @@ export function Expandable(props: IExpandableProps) {
 
     return (
         <Dropdown
+            disabled={disabled}
             placement={placement || "bottom"}
             trigger={["click"]}
             menu={{ items }}

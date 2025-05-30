@@ -377,6 +377,10 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
         console.log("latestTimestamp", latestTimestamp);
     }, [selectedEmployeeVersion]);
 
+    useEffect(() => {
+        disableEditMode();
+    }, [selectedEmployee]);
+
     async function fetchAllEmployees() {
         const page = 1;
 

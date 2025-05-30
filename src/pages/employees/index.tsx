@@ -41,7 +41,6 @@ export function EmployeesPage() {
                         style={{
                             width: "30%",
                             height: "100%",
-                            filter: editModeEnabled ? "grayscale(75%)" : "none",
                             pointerEvents: editModeEnabled ? "none" : "auto",
                             opacity: editModeEnabled ? 0.65 : 1,
                             position: "relative",

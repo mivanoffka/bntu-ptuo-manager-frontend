@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
 import { USER_GROUPS, UserRole } from "@/model";
+import { useEditMode } from "@/contexts/employees/edit-mode";
 
 export interface ITopBar {
     children?: React.ReactNode;
@@ -21,18 +22,24 @@ export interface ITopBar {
 
 export function TopBar() {
     const { user } = useAuth();
+    const { editModeEnabled } = useEditMode();
     const userRole = user ? user.role : UserRole.UNAUTHORIZED;
+
     if (!user) {
         return;
     }
+
     const navigate = useNavigate();
     const [current, setCurrent] = useState("/employees");
+
     useEffect(() => {
         navigate(current);
     }, [current]);
+
     const onClick: MenuProps["onClick"] = (e) => {
         setCurrent(e.key);
     };
+
     const items = [
         {
             label: "Учётные карточки",
@@ -40,6 +47,7 @@ export function TopBar() {
             icon: <AuditOutlined />,
         },
     ];
+
     if (USER_GROUPS[UserRole.MANAGER].includes(userRole)) {
         items.push({
             label: "Справочные таблицы",
@@ -47,6 +55,7 @@ export function TopBar() {
             icon: <DatabaseOutlined />,
         });
     }
+
     if (USER_GROUPS[UserRole.ADMIN].includes(userRole)) {
         items.push({
             label: "Пользователи",
@@ -54,54 +63,74 @@ export function TopBar() {
             icon: <TeamOutlined />,
         });
     }
+
     return (
-        <div className="top-bar">
-            <div className="top-bar-menu">
-                <Flex
-                    gap="middle"
-                    align="center"
-                    justify="center"
-                    style={{ width: "20%" }}
-                >
-                    <Logo></Logo>
-                    <Typography.Text
+        <div
+            style={{
+                pointerEvents: editModeEnabled ? "none" : "auto",
+                opacity: editModeEnabled ? 0.65 : 1,
+            }}
+        >
+            <div className="top-bar">
+                <div className="top-bar-menu">
+                    <Flex
+                        gap="middle"
+                        align="center"
+                        justify="center"
                         style={{
-                            margin: 0,
-                            padding: 0,
-                            color: Palette.GRAY,
-                            fontSize: 12,
+                            width: "20%",
                         }}
                     >
-                        РАБОТНИКОВ БНТУ
-                    </Typography.Text>
-                </Flex>
-                <Flex align="center" justify="center" style={{ width: "60%" }}>
-                    <Menu
-                        style={{ width: "100%" }}
-                        onClick={onClick}
-                        selectedKeys={[current]}
-                        mode="horizontal"
-                        items={items}
-                    />
-                </Flex>
-                <Flex align="center" justify="center" style={{ width: "20%" }}>
-                    <Expandable
-                        content={
-                            <Flex align="center" justify="center">
-                                <SignOutButton></SignOutButton>
-                            </Flex>
-                        }
-                        icon={
-                            <UserOutlined
-                                style={{ color: Palette.BLUE }}
-                            ></UserOutlined>
-                        }
+                        <Logo></Logo>
+                        <Typography.Text
+                            style={{
+                                margin: 0,
+                                padding: 0,
+                                color: Palette.GRAY,
+                                fontSize: 12,
+                            }}
+                        >
+                            РАБОТНИКОВ БНТУ
+                        </Typography.Text>
+                    </Flex>
+                    <Flex
+                        align="center"
+                        justify="center"
+                        style={{ width: "60%" }}
                     >
-                        <Flex gap="small" align="center" justify="center">
-                            <Typography.Text>{user.username}</Typography.Text>
-                        </Flex>
-                    </Expandable>
-                </Flex>
+                        <Menu
+                            style={{ width: "100%" }}
+                            onClick={onClick}
+                            selectedKeys={[current]}
+                            mode="horizontal"
+                            items={items}
+                        />
+                    </Flex>
+                    <Flex
+                        align="center"
+                        justify="center"
+                        style={{ width: "20%" }}
+                    >
+                        <Expandable
+                            content={
+                                <Flex align="center" justify="center">
+                                    <SignOutButton></SignOutButton>
+                                </Flex>
+                            }
+                            icon={
+                                <UserOutlined
+                                    style={{ color: Palette.BLUE }}
+                                ></UserOutlined>
+                            }
+                        >
+                            <Flex gap="small" align="center" justify="center">
+                                <Typography.Text>
+                                    {user.username}
+                                </Typography.Text>
+                            </Flex>
+                        </Expandable>
+                    </Flex>
+                </div>
             </div>
         </div>
     );

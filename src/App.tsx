@@ -29,12 +29,12 @@ const App: React.FC = () => (
             <BrowserRouter>
                 <ApiProvider>
                     <AuthProvider>
-                        <Routes>
-                            <Route
-                                path="*"
-                                element={
-                                    <PageContainer>
-                                        <EditModeProvider>
+                        <EditModeProvider>
+                            <Routes>
+                                <Route
+                                    path="*"
+                                    element={
+                                        <PageContainer>
                                             <TreesProvider>
                                                 <EnumerationsProvider>
                                                     <Routes>
@@ -85,11 +85,11 @@ const App: React.FC = () => (
                                                     </Routes>
                                                 </EnumerationsProvider>
                                             </TreesProvider>
-                                        </EditModeProvider>
-                                    </PageContainer>
-                                }
-                            />
-                        </Routes>
+                                        </PageContainer>
+                                    }
+                                />
+                            </Routes>
+                        </EditModeProvider>
                     </AuthProvider>
                 </ApiProvider>
             </BrowserRouter>
