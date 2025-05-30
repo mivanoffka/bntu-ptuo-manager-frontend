@@ -18,10 +18,7 @@ export function AcademicDegreeField(props: IFieldProps) {
 
     return (
         <FieldContainer title="Ученая степень">
-            <Form.Item
-                name="academicDegreeId"
-                rules={[{ required: true, message: "" }]}
-            >
+            <Form.Item name="academicDegreeId">
                 <SelectField
                     isEditable={isEditable}
                     options={academicDegrees.map((item) => ({
@@ -41,10 +38,7 @@ export function EducationLevelField(props: IFieldProps) {
 
     return (
         <FieldContainer title="Уровень образования">
-            <Form.Item
-                name="educationLevelId"
-                rules={[{ required: true, message: "" }]}
-            >
+            <Form.Item name="educationLevelId">
                 <SelectField
                     isEditable={isEditable}
                     options={educationLevels.map((item) => ({
