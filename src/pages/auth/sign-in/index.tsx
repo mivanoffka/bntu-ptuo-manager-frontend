@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/auth";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Flex, Input } from "antd";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 export function SignIn() {
     const { signIn } = useAuth();
@@ -18,6 +19,7 @@ export function SignIn() {
             gap="large"
             style={{ width: "100%" }}
         >
+            <Helmet title="Вход – ИС ППО работников БНТУ" />
             <Flex
                 vertical
                 align="center"
@@ -25,13 +27,13 @@ export function SignIn() {
                 gap="small"
                 style={{ width: "100%" }}
             >
-                <FieldContainer title="Имя пользователя" name="username">
+                <FieldContainer title="Имя пользователя">
                     <Input
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </FieldContainer>
-                <FieldContainer title="Пароль" name="password">
+                <FieldContainer title="Пароль">
                     <Input.Password
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

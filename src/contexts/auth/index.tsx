@@ -24,6 +24,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<IUser | null>(null);
 
     async function signIn(username: string, password: string) {
+        await signOut();
+
         const body = { username, password };
         await axiosInstance
             .post("/auth/sign-in/", body)

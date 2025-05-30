@@ -22,23 +22,17 @@ export interface ITopBar {
 export function TopBar() {
     const { user } = useAuth();
     const userRole = user ? user.role : UserRole.UNAUTHORIZED;
-
     if (!user) {
         return;
     }
-
     const navigate = useNavigate();
-
     const [current, setCurrent] = useState("/employees");
-
     useEffect(() => {
         navigate(current);
     }, [current]);
-
     const onClick: MenuProps["onClick"] = (e) => {
         setCurrent(e.key);
     };
-
     const items = [
         {
             label: "Учётные карточки",
@@ -46,7 +40,6 @@ export function TopBar() {
             icon: <AuditOutlined />,
         },
     ];
-
     if (USER_GROUPS[UserRole.MANAGER].includes(userRole)) {
         items.push({
             label: "Справочные таблицы",
@@ -54,7 +47,6 @@ export function TopBar() {
             icon: <DatabaseOutlined />,
         });
     }
-
     if (USER_GROUPS[UserRole.ADMIN].includes(userRole)) {
         items.push({
             label: "Пользователи",
@@ -62,7 +54,6 @@ export function TopBar() {
             icon: <TeamOutlined />,
         });
     }
-
     return (
         <div className="top-bar">
             <div className="top-bar-menu">

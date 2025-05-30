@@ -4,6 +4,7 @@ import { useApi } from "@/contexts/api";
 import { TreesEndPoint } from "@/contexts/trees/constants";
 import { toSnakeCase } from "@/contexts/api/utils";
 import { ITreeNode } from "@/model";
+import { useAuth } from "@/contexts/auth";
 
 interface ITreesContext {
     getTree: (name: string) => ITreeNode[];
@@ -30,6 +31,7 @@ export const TreesProvider = ({ children }: { children: ReactNode }) => {
     const [trees, setTrees] = useState<Record<string, ITreeNode[]>>({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const { user } = useAuth();
 
     const fetchTrees = async () => {
         setLoading(true);
@@ -142,6 +144,10 @@ export const TreesProvider = ({ children }: { children: ReactNode }) => {
     };
 
     useEffect(() => {
+        if (!user) {
+            return;
+        }
+
         fetchTrees();
     }, []);
 

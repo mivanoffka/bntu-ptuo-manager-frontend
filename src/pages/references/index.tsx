@@ -8,6 +8,7 @@ import { EnumerationList } from "@/pages/references/list";
 import { TreeList } from "@/pages/references/trees";
 import { Layout, Flex } from "antd";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 export function ReferencesPage() {
     const { reloadTrees } = useTrees();
@@ -29,6 +30,7 @@ export function ReferencesPage() {
                 boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
             }}
         >
+            <Helmet title="Справочные таблицы – ИС ППО работников БНТУ" />
             <Flex
                 align="center"
                 justify="center"

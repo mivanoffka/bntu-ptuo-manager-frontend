@@ -3,6 +3,7 @@ import { createHook } from "@/contexts/utils";
 import { useApi } from "@/contexts/api";
 import { EnumerationsEndPoint } from "@/contexts/enumerations/constants";
 import { toSnakeCase } from "@/contexts/api/utils";
+import { useAuth } from "@/contexts/auth";
 
 interface IEnumerationsContext {
     getEnumeration: (name: string) => { id: number; label: string }[];
@@ -27,6 +28,7 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
     >({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const { user } = useAuth();
 
     async function fetchEnumerations() {
         setLoading(true);
@@ -127,6 +129,10 @@ export const EnumerationsProvider = ({ children }: { children: ReactNode }) => {
     };
 
     useEffect(() => {
+        if (!user) {
+            return;
+        }
+
         fetchEnumerations();
     }, []);
 

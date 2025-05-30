@@ -7,6 +7,7 @@ import { EmployeesSearch } from "@/pages/employees/search";
 import { EmployeesViewer } from "@/pages/employees/viewer";
 import { Layout, Flex } from "antd";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 export function EmployeesPage() {
     const { editModeEnabled } = useEditMode();
@@ -32,6 +33,7 @@ export function EmployeesPage() {
                         boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
                     }}
                 >
+                    <Helmet title="Учётные карточки – ИС ППО работников БНТУ" />
                     <Flex
                         vertical
                         align="center"

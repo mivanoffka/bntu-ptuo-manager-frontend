@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/auth";
 import { CheckOutlined } from "@ant-design/icons";
 import { Flex, Form, Input, Typography } from "antd";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 export function SignUp() {
     const { signUp } = useAuth();
@@ -29,6 +30,7 @@ export function SignUp() {
                 gap="large"
                 style={{ width: "100%" }}
             >
+                <Helmet title="Регистрация – ИС ППО работников БНТУ" />
                 <Typography.Text
                     style={{
                         fontSize: FontSize.SMALL,
@@ -50,6 +52,7 @@ export function SignUp() {
             gap="large"
             style={{ width: "100%" }}
         >
+            <Helmet title="Регистрация – ИС ППО работников БНТУ" />
             <Form
                 form={form}
                 onFinish={onFinish}

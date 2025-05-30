@@ -10,7 +10,6 @@ import "dayjs/locale/ru";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import updateLocale from "dayjs/plugin/updateLocale";
 import { PageContainer } from "@/components/page";
-import { TopBar } from "@/components/page/top-bar";
 import { EditModeProvider } from "@/contexts/employees/edit-mode";
 import { AuthPage, EmployeesPage } from "@/pages";
 import { SignIn } from "@/pages/auth/sign-in";
@@ -18,72 +17,84 @@ import { SignUp } from "@/pages/auth/sign-up";
 import { ReferencesPage } from "@/pages/references";
 import { UsersPage } from "@/pages/users";
 import { ANTD_CONFIG } from "@/constants";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 dayjs.locale("ru");
 dayjs.extend(localizedFormat);
 dayjs.extend(updateLocale);
 const App: React.FC = () => (
-    <ConfigProvider {...ANTD_CONFIG}>
-        <BrowserRouter>
-            <ApiProvider>
-                <AuthProvider>
-                    <Routes>
-                        <Route
-                            path="*"
-                            element={
-                                <PageContainer>
-                                    <EditModeProvider>
-                                        <TreesProvider>
-                                            <EnumerationsProvider>
-                                                <Routes>
-                                                    <Route
-                                                        path="/auth/*"
-                                                        element={<AuthPage />}
-                                                    >
+    <HelmetProvider>
+        <Helmet title="ИС ППО работников БНТУ "></Helmet>
+        <ConfigProvider {...ANTD_CONFIG}>
+            <BrowserRouter>
+                <ApiProvider>
+                    <AuthProvider>
+                        <Routes>
+                            <Route
+                                path="*"
+                                element={
+                                    <PageContainer>
+                                        <EditModeProvider>
+                                            <TreesProvider>
+                                                <EnumerationsProvider>
+                                                    <Routes>
                                                         <Route
-                                                            path="sign-in"
-                                                            element={<SignIn />}
-                                                        />
-                                                        <Route
-                                                            path="sign-up"
-                                                            element={<SignUp />}
-                                                        />
-                                                    </Route>
+                                                            path="/auth/*"
+                                                            element={
+                                                                <AuthPage />
+                                                            }
+                                                        >
+                                                            <Route
+                                                                path="sign-in"
+                                                                element={
+                                                                    <SignIn />
+                                                                }
+                                                            />
+                                                            <Route
+                                                                path="sign-up"
+                                                                element={
+                                                                    <SignUp />
+                                                                }
+                                                            />
+                                                        </Route>
 
-                                                    <Route
-                                                        path="/employees/:id?/:timestamp?"
-                                                        element={
-                                                            <EmployeesPage />
-                                                        }
-                                                    />
-                                                    <Route
-                                                        path="/references"
-                                                        element={
-                                                            <ReferencesPage />
-                                                        }
-                                                    />
-                                                    <Route
-                                                        path="/users"
-                                                        element={<UsersPage />}
-                                                    />
-                                                    <Route
-                                                        path="*"
-                                                        element={
-                                                            <Navigate to="/employees" />
-                                                        }
-                                                    />
-                                                </Routes>
-                                            </EnumerationsProvider>
-                                        </TreesProvider>
-                                    </EditModeProvider>
-                                </PageContainer>
-                            }
-                        />
-                    </Routes>
-                </AuthProvider>
-            </ApiProvider>
-        </BrowserRouter>
-    </ConfigProvider>
+                                                        <Route
+                                                            path="/employees/:id?/:timestamp?"
+                                                            element={
+                                                                <EmployeesPage />
+                                                            }
+                                                        />
+                                                        <Route
+                                                            path="/references"
+                                                            element={
+                                                                <ReferencesPage />
+                                                            }
+                                                        />
+                                                        <Route
+                                                            path="/users"
+                                                            element={
+                                                                <UsersPage />
+                                                            }
+                                                        />
+                                                        <Route
+                                                            path="*"
+                                                            element={
+                                                                <Navigate to="/employees" />
+                                                            }
+                                                        />
+                                                    </Routes>
+                                                </EnumerationsProvider>
+                                            </TreesProvider>
+                                        </EditModeProvider>
+                                    </PageContainer>
+                                }
+                            />
+                        </Routes>
+                    </AuthProvider>
+                </ApiProvider>
+            </BrowserRouter>
+        </ConfigProvider>
+    </HelmetProvider>
 );
 
 export default App;
