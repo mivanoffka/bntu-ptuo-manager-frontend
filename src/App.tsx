@@ -18,6 +18,7 @@ import { ReferencesPage } from "@/pages/references";
 import { UsersPage } from "@/pages/users";
 import { ANTD_CONFIG } from "@/constants";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import "./App.css";
 
 dayjs.locale("ru");
 dayjs.extend(localizedFormat);

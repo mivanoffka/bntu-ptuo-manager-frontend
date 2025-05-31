@@ -17,6 +17,6 @@ export function SelectField(props: ISelectFieldProps) {
             placeholder={PLACEHOLDER}
         />
     ) : (
-        <Input value={inputValue} readOnly></Input>
+        <Input value={inputValue} readOnly placeholder={PLACEHOLDER}></Input>
     );
 }

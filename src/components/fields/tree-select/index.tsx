@@ -52,6 +52,6 @@ export function TreeSelectField(props: ITreeSelectFieldProps) {
             placeholder={PLACEHOLDER}
         />
     ) : (
-        <Input value={inputValue} readOnly />
+        <Input value={inputValue} readOnly placeholder={PLACEHOLDER} />
     );
 }

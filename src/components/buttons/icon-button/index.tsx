@@ -32,6 +32,11 @@ export function IconButton(props: IIconButtonProps) {
         iconColor = Palette.GRAY;
     }
 
+    if (isPrimary) {
+        textColor = Palette.WHITE;
+        iconColor = Palette.WHITE;
+    }
+
     return (
         <Button
             htmlType={props.isSubmit ? "submit" : "button"}

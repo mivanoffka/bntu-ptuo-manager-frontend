@@ -8,6 +8,7 @@ export const enum Palette {
 
     LIGHT_GRAY = "#c0c0c0",
     GRAY = "#858585",
+    WHITE = "ffffff",
 }
 
 export const enum FontSize {
