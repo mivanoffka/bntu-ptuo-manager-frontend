@@ -19,6 +19,7 @@ import {
     BntuPositionField,
     TradeUnionInfoField,
     TradeUnionMembershipNumberField,
+    ExemptionsField,
 } from "@/pages/employees/viewer/employee/fields";
 import { Tabs, Flex, Divider, Form, Input } from "antd";
 import { FormInstance } from "antd/lib";
@@ -189,6 +190,10 @@ export function Employee() {
                             <div
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
+                                <ExemptionsField
+                                    index={0}
+                                    isEditable={isEditable}
+                                ></ExemptionsField>
                                 <Listed
                                     isEditable={isEditable}
                                     name="relatives"

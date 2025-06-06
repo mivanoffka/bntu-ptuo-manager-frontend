@@ -64,7 +64,6 @@ export function IconLabel(props: IIconLabel) {
             gap="small"
         >
             <Typography.Text
-                className="toolbar-text"
                 style={{
                     color: textColor,
                     fontSize,

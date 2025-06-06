@@ -9,4 +9,5 @@ export enum EnumerationName {
     ACADEMIC_DEGREES = "academicDegrees",
     WORKING_GROUPS = "workingGroups",
     RELATIVE_TYPES = "relativeTypes",
+    EXEMPTIONS = "exemptions",
 }

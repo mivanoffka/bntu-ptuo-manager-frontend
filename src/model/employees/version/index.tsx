@@ -60,4 +60,5 @@ export interface IEmployeeVersion extends IPrimaryKeyed, ITimeStamped {
     relatives: IRelative[];
     rewards: IReward[];
     comments: IComment[];
+    exemptionIds: number[];
 }

@@ -44,7 +44,6 @@ export function IconButton(props: IIconButtonProps) {
             disabled={disabled}
             type={isPrimary ? "primary" : "link"}
             onClick={onClick}
-            color={textColor}
             style={{ width: "100%", height: "100%" }}
         >
             <IconLabel

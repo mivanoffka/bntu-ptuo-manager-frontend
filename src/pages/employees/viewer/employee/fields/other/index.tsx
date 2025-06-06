@@ -12,6 +12,7 @@ import { useEmployees } from "@/contexts/employees";
 import Search from "antd/es/transfer/search";
 import { SearchField } from "@/components/fields/search";
 import { SearchSource } from "@/contexts/employees/constants";
+import { IFieldProps } from "@/components/fields/shared";
 
 export function CommentField(props: IListedItemProps) {
     const { index, isEditable } = props;
@@ -24,6 +25,30 @@ export function CommentField(props: IListedItemProps) {
                     rules={[{ required: true, message: "" }]}
                 >
                     <TextField isEditable={isEditable}></TextField>
+                </Form.Item>
+            </FieldContainer>
+        </Flex>
+    );
+}
+
+export function ExemptionsField(props: IFieldProps) {
+    const { isEditable } = props;
+
+    const { getEnumeration } = useEnumerations();
+    const exemptions = getEnumeration(EnumerationName.EXEMPTIONS);
+
+    return (
+        <Flex gap="small" style={{ width: "100%" }}>
+            <FieldContainer title="Льготы">
+                <Form.Item name={"exemptionIds"}>
+                    <SelectField
+                        isEditable={isEditable}
+                        isMultiple
+                        options={exemptions.map((item) => ({
+                            value: item.id,
+                            label: item.label,
+                        }))}
+                    />
                 </Form.Item>
             </FieldContainer>
         </Flex>

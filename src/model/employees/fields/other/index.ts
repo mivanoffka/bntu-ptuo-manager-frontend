@@ -18,3 +18,5 @@ export interface IReward extends IPrimaryKeyed {
     grantedAt: DateTimeString | null;
     comment: string | null;
 }
+
+export interface IExemption extends IEnumerated {}

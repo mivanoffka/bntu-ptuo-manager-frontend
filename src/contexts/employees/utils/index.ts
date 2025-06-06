@@ -40,6 +40,7 @@ export function getNewEmployee(): IEmployeeVersion {
         relatives: [],
         rewards: [],
         comments: [],
+        exemptionIds: [],
 
         createdAt: null,
         updatedAt: null,

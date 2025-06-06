@@ -14,6 +14,11 @@ export const ENUMS_REFERENCES = [
         isTree: false,
     },
     {
+        value: EnumerationName.EXEMPTIONS,
+        label: "Льготы",
+        isTree: false,
+    },
+    {
         value: EnumerationName.ACADEMIC_DEGREES,
         label: "Ученая степень",
         isTree: false,
