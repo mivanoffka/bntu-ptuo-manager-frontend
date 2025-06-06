@@ -12,7 +12,7 @@ import {
     useState,
 } from "react";
 import { FormInstance } from "antd";
-import { VITE_BACKEND_URI } from "@/config";
+import { API_URI } from "@/config";
 
 export interface IEmployeeEditorContext {
     displayedEmployeeVersion: IEmployeeVersion | null;
@@ -215,6 +215,14 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
         });
     }
 
+    function stripHostAndProtocol(url: string) {
+        const parsedUrl = new URL(url);
+
+        return parsedUrl.pathname.startsWith("/")
+            ? parsedUrl.pathname.slice(1)
+            : parsedUrl.pathname;
+    }
+
     async function uploadImage(file: File) {
         try {
             const formData = new FormData();
@@ -232,16 +240,7 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
 
             const { file: pathBase } = response.data;
 
-            const path = pathBase
-                .replace("https://", "")
-                .replace("http://", "")
-                .replace(
-                    VITE_BACKEND_URI.replace("https://", "").replace(
-                        "http://",
-                        ""
-                    ),
-                    ""
-                );
+            const path = stripHostAndProtocol(pathBase);
 
             console.log(path);
 

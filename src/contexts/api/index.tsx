@@ -4,7 +4,7 @@ import { createHook } from "@/contexts/utils";
 import { toSnakeCase } from "@/contexts/api/utils";
 import qs from "qs";
 import { message } from "antd"; // Импортируем message из antd
-import { VITE_BACKEND_URI } from "@/config";
+import { API_URI } from "@/config";
 
 interface IApiContext {
     axiosInstance: AxiosInstance;
@@ -20,8 +20,10 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState(false);
     const [accessToken, setAccessToken] = useState<string | null>(null);
 
+    console.log(API_URI);
+
     const axiosInstance = axios.create({
-        baseURL: VITE_BACKEND_URI,
+        baseURL: API_URI,
         paramsSerializer: (params) =>
             qs.stringify(params, { arrayFormat: "repeat" }),
     });
