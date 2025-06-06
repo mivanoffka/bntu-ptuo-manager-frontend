@@ -232,7 +232,16 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
 
             const { file: pathBase } = response.data;
 
-            const path = pathBase.replace(VITE_BACKEND_URI, "");
+            const path = pathBase
+                .replace("https://", "")
+                .replace("http://", "")
+                .replace(
+                    VITE_BACKEND_URI.replace("https://", "").replace(
+                        "http://",
+                        ""
+                    ),
+                    ""
+                );
 
             console.log(path);
 
