@@ -12,6 +12,7 @@ import {
     useState,
 } from "react";
 import { FormInstance } from "antd";
+import { VITE_BACKEND_URI } from "@/config";
 
 export interface IEmployeeEditorContext {
     displayedEmployeeVersion: IEmployeeVersion | null;
@@ -231,7 +232,7 @@ export function EmployeeEditorProvider({ children }: { children: ReactNode }) {
 
             const { file: pathBase } = response.data;
 
-            const path = pathBase.replace("http://localhost:8000", "");
+            const path = pathBase.replace(VITE_BACKEND_URI, "");
 
             console.log(path);
 
