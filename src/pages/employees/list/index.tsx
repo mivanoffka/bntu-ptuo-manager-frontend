@@ -81,7 +81,9 @@ export function EmployeesList() {
             <SelectableList
                 data={employeesList}
                 selectedId={selectedId}
-                onSelect={(id) => selectId(id)}
+                onSelect={(id) =>
+                    selectedId === id ? selectId(null) : selectId(id)
+                }
                 footer={footer}
                 RenderItem={EmployeesListItem}
                 getId={(employee) => employee.id}

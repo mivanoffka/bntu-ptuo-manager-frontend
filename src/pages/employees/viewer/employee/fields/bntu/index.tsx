@@ -17,8 +17,24 @@ export function BntuPositionField(props: IListedItemProps) {
     const { getTree } = useTrees();
     const { searchFor } = useEmployees();
     const tree = getTree(TreeName.BNTU_DEPARTMENTS);
+    const form = Form.useFormInstance();
 
     const treeData = transformPathToKey(tree);
+
+    const isDischarged = Form.useWatch(
+        ["bntuPositions", index, "isDischarged"],
+        form
+    );
+    const isDischargedVoluntarily = Form.useWatch(
+        ["bntuPositions", index, "isDischargedVoluntarily"],
+        form
+    );
+
+    const isCommentVisible = isDischarged === true && !isDischargedVoluntarily;
+    const isDischargementDateVisible = isDischarged === true;
+    const isDischargedVoluntarilyVisible = isDischarged === true;
+
+    console.log(isDischarged);
 
     return (
         <Flex vertical gap="small" style={{ width: "100%" }}>
@@ -66,31 +82,65 @@ export function BntuPositionField(props: IListedItemProps) {
                 </FieldContainer>
             </Flex>
 
-            <Flex gap="small" style={{ width: "100%" }}>
-                <FieldContainer title="Уволен">
-                    <Form.Item name={[index, "isDischarged"]}>
-                        <CheckboxField isEditable={isEditable} />
-                    </Form.Item>
-                </FieldContainer>
-                <FieldContainer title="По собств. желанию">
-                    <Form.Item name={[index, "isDischargedVoluntarily"]}>
-                        <CheckboxField isEditable={isEditable} />
-                    </Form.Item>
-                </FieldContainer>
-                <FieldContainer title="Дата увольнения">
-                    <Form.Item name={[index, "dischargedAt"]}>
-                        <DateTimeField isEditable={isEditable} />
-                    </Form.Item>
-                </FieldContainer>
-            </Flex>
-
-            <Flex gap="small" style={{ width: "100%" }}>
-                <FieldContainer title="Комментарий (причина увольнения)">
-                    <Form.Item name={[index, "comment"]}>
-                        <TextField isEditable={isEditable} />
-                    </Form.Item>
-                </FieldContainer>
-            </Flex>
+            {(isEditable || isDischarged) && (
+                <Flex vertical>
+                    <Flex gap="small" style={{ width: "100%" }}>
+                        <FieldContainer title="Уволен">
+                            <Form.Item
+                                name={[index, "isDischarged"]}
+                                valuePropName="checked"
+                            >
+                                <CheckboxField isEditable={isEditable} />
+                            </Form.Item>
+                        </FieldContainer>
+                        {isDischargedVoluntarilyVisible && (
+                            <FieldContainer title="По собств. желанию">
+                                <Form.Item
+                                    name={[index, "isDischargedVoluntarily"]}
+                                    valuePropName="checked"
+                                >
+                                    <CheckboxField isEditable={isEditable} />
+                                </Form.Item>
+                            </FieldContainer>
+                        )}
+                        {isDischargementDateVisible && (
+                            <FieldContainer title="Дата увольнения">
+                                <Form.Item
+                                    name={[index, "dischargedAt"]}
+                                    rules={[
+                                        {
+                                            required: isDischarged,
+                                            message: "",
+                                        },
+                                    ]}
+                                >
+                                    <DateTimeField
+                                        disabled={!isDischarged}
+                                        isEditable={isEditable}
+                                    />
+                                </Form.Item>
+                            </FieldContainer>
+                        )}
+                    </Flex>
+                    {isCommentVisible && (
+                        <Flex gap="small" style={{ width: "100%" }}>
+                            <FieldContainer title="Комментарий (причина увольнения)">
+                                <Form.Item
+                                    name={[index, "dischargementComment"]}
+                                    rules={[
+                                        {
+                                            required: isCommentVisible,
+                                            message: "",
+                                        },
+                                    ]}
+                                >
+                                    <TextField isEditable={isEditable} />
+                                </Form.Item>
+                            </FieldContainer>
+                        </Flex>
+                    )}
+                </Flex>
+            )}
         </Flex>
     );
 }
