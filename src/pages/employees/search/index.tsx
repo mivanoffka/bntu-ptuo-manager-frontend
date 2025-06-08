@@ -1,23 +1,45 @@
 import { FieldContainer } from "@/components/containers/field-container";
 import { DateTimeField } from "@/components/fields/datetime";
+import { MultipleSearchField } from "@/components/fields/multiple-search";
+import { SearchField } from "@/components/fields/search";
+import { transformPathToKey } from "@/components/fields/tree-select/utils";
 import { SecondaryLabel } from "@/components/labels";
 import { Palette } from "@/constants";
 import { useEmployees } from "@/contexts/employees";
+import { SearchSource } from "@/contexts/employees/constants";
 import { useEnumerations } from "@/contexts/enumerations";
 import { EnumerationName } from "@/contexts/enumerations/constants";
+import { useTrees } from "@/contexts/trees";
+import { TreeName } from "@/contexts/trees/constants";
 import { EmployeesSearchField } from "@/model";
 import { EmployeesList } from "@/pages/employees/list";
 import { Toolbar } from "@/pages/employees/viewer/toolbar";
 import { SearchOutlined } from "@ant-design/icons";
-import { Flex, Space, Button, Divider, Input, Select, DatePicker } from "antd";
+import {
+    Flex,
+    Space,
+    Button,
+    Divider,
+    Input,
+    Select,
+    DatePicker,
+    TreeSelect,
+    Checkbox,
+} from "antd";
+import { useEffect, useState } from "react";
 
 export function EmployeesSearch() {
-    const { fetchAllEmployees, employeesListFilter, setEmployeesListFilter } =
-        useEmployees();
+    const {
+        fetchAllEmployees,
+        employeesListFilter,
+        setEmployeesListFilter,
+        searchFor,
+    } = useEmployees();
 
     const { search: searchQuery } = employeesListFilter;
 
     const { getEnumeration } = useEnumerations();
+    const { getTree } = useTrees();
 
     function setSearchQuery(e) {
         setEmployeesListFilter({
@@ -38,6 +60,36 @@ export function EmployeesSearch() {
     const academicDegrees = getEnumeration(EnumerationName.ACADEMIC_DEGREES);
     const genders = getEnumeration(EnumerationName.GENDERS);
 
+    const bntuDepartments = getTree(TreeName.BNTU_DEPARTMENTS);
+    const tradeUnionDepartments = getTree(TreeName.TRADE_UNION_DEPARTMENTS);
+
+    const [includeNotArchived, setIncludeNotArchived] = useState(true);
+    const [includeArchived, setIncludeArchived] = useState(false);
+
+    const [includeRetired, setIncludeRetired] = useState(false);
+    const [includeNotRetired, setIncludeNotRetired] = useState(true);
+
+    useEffect(() => {
+        if (includeArchived && includeNotArchived) {
+            setEmployeesListFilter({
+                ...employeesListFilter,
+                isArchived: null,
+            });
+        } else {
+            if (includeArchived) {
+                setEmployeesListFilter({
+                    ...employeesListFilter,
+                    isArchived: true,
+                });
+            } else if (includeNotArchived) {
+                setEmployeesListFilter({
+                    ...employeesListFilter,
+                    isArchived: false,
+                });
+            }
+        }
+    }, [includeArchived, includeNotArchived]);
+
     const searchFields = [
         { label: "Имя", id: "first_name" },
         { label: "Фамилия", id: "last_name" },
@@ -49,13 +101,13 @@ export function EmployeesSearch() {
     const isArchivedOptions = [
         { label: "На учёте", id: false },
         { label: "Снятые с учёта", id: true },
-        { label: "Все", id: null },
+        { label: "Любые", id: null },
     ];
 
     const isRetiredOptions = [
-        { label: "Нет", id: false },
-        { label: "Да", id: true },
-        { label: "Все", id: null },
+        { label: "Не входят", id: false },
+        { label: "Входят", id: true },
+        { label: "Любые", id: null },
     ];
 
     return (
@@ -93,7 +145,7 @@ export function EmployeesSearch() {
                     vertical
                     style={{ width: "90%", height: "50%" }}
                 >
-                    <FieldContainer title="Искать по">
+                    {/* <FieldContainer title="Искать по">
                         <Select
                             mode="multiple"
                             allowClear
@@ -106,7 +158,7 @@ export function EmployeesSearch() {
                                 value: field.id,
                             }))}
                         />
-                    </FieldContainer>
+                    </FieldContainer> */}
                     <Flex
                         vertical
                         align="center"
@@ -121,23 +173,104 @@ export function EmployeesSearch() {
                             gap="small"
                             style={{ width: "100%", overflow: "auto" }}
                         >
-                            <FieldContainer title="Пол">
-                                <Select
-                                    mode="multiple"
-                                    allowClear
-                                    style={{ width: "100%", textAlign: "left" }}
-                                    placeholder="Любой"
-                                    value={employeesListFilter.genderIds}
-                                    onChange={(genderIds) =>
+                            <FieldContainer title="Структура БНТУ">
+                                <TreeSelect
+                                    multiple
+                                    treeData={transformPathToKey(
+                                        bntuDepartments
+                                    )}
+                                    value={
+                                        employeesListFilter.bntuDepartmentPaths
+                                    }
+                                    onChange={(bntuDepartmentPaths) =>
                                         setEmployeesListFilter({
                                             ...employeesListFilter,
-                                            genderIds,
+                                            bntuDepartmentPaths,
                                         })
                                     }
-                                    options={genders.map((gender) => ({
-                                        label: gender.label,
-                                        value: gender.id,
-                                    }))}
+                                    treeCheckable={true}
+                                    placeholder="Не выбрано"
+                                    style={{ width: "100%", textAlign: "left" }}
+                                    allowClear
+                                />
+                            </FieldContainer>
+                            <FieldContainer title="Должность">
+                                <MultipleSearchField
+                                    isEditable
+                                    value={
+                                        employeesListFilter.bntuPositionLabels
+                                    }
+                                    onChange={(e) => {
+                                        setEmployeesListFilter({
+                                            ...employeesListFilter,
+                                            bntuPositionLabels: e,
+                                        });
+                                    }}
+                                    onSearch={(search: string | null) =>
+                                        searchFor(
+                                            SearchSource.BNTU_POSITIONS,
+                                            search
+                                        )
+                                    }
+                                />
+                            </FieldContainer>
+                            <Flex style={{ width: "100%" }} gap="small">
+                                <FieldContainer title="На профсоюзном учёте">
+                                    <Checkbox
+                                        checked={includeNotArchived}
+                                        onChange={(e) => {
+                                            if (
+                                                !e.target.checked &&
+                                                !includeArchived
+                                            ) {
+                                                setIncludeArchived(true);
+                                            }
+
+                                            setIncludeNotArchived(
+                                                e.target.checked
+                                            );
+                                        }}
+                                    ></Checkbox>
+                                </FieldContainer>
+
+                                <FieldContainer title="Снятые с учёта">
+                                    <Checkbox
+                                        checked={includeArchived}
+                                        onChange={(e) => {
+                                            if (
+                                                !e.target.checked &&
+                                                !includeNotArchived
+                                            ) {
+                                                setIncludeNotArchived(true);
+                                            }
+
+                                            setIncludeArchived(
+                                                e.target.checked
+                                            );
+                                        }}
+                                    ></Checkbox>
+                                </FieldContainer>
+                            </Flex>
+
+                            <FieldContainer title="Структура ЦПО">
+                                <TreeSelect
+                                    multiple
+                                    treeData={transformPathToKey(
+                                        tradeUnionDepartments
+                                    )}
+                                    value={
+                                        employeesListFilter.tradeUnionDepartmentPaths
+                                    }
+                                    onChange={(tradeUnionDepartmentPaths) =>
+                                        setEmployeesListFilter({
+                                            ...employeesListFilter,
+                                            tradeUnionDepartmentPaths,
+                                        })
+                                    }
+                                    treeCheckable={true}
+                                    placeholder="Не выбрано"
+                                    style={{ width: "100%", textAlign: "left" }}
+                                    allowClear
                                 />
                             </FieldContainer>
                             <FieldContainer title="Профгруппа">
@@ -159,6 +292,97 @@ export function EmployeesSearch() {
                                     }))}
                                 />
                             </FieldContainer>
+                            <Flex
+                                align="left"
+                                style={{ width: "100%" }}
+                                gap="small"
+                            >
+                                <FieldContainer horizontal title="Трудящиеся">
+                                    <Checkbox
+                                        checked={includeNotRetired}
+                                        onChange={(e) => {
+                                            if (
+                                                !e.target.checked &&
+                                                !includeRetired
+                                            ) {
+                                                setIncludeRetired(true);
+                                            }
+
+                                            setIncludeNotRetired(
+                                                e.target.checked
+                                            );
+                                        }}
+                                    ></Checkbox>
+                                </FieldContainer>
+                                <FieldContainer
+                                    horizontal
+                                    title="Неработающие пенсионеры"
+                                >
+                                    <Checkbox
+                                        checked={includeRetired}
+                                        onChange={(e) => {
+                                            if (
+                                                !e.target.checked &&
+                                                !includeNotRetired
+                                            ) {
+                                                setIncludeNotRetired(true);
+                                            }
+
+                                            setIncludeRetired(e.target.checked);
+                                        }}
+                                    ></Checkbox>
+                                </FieldContainer>
+                            </Flex>
+
+                            <Flex style={{ width: "100%" }} gap="small">
+                                <FieldContainer title="Дата рождения (от)">
+                                    <DateTimeField
+                                        isEditable
+                                        allowClear
+                                        value={employeesListFilter.birthdateMin}
+                                        onChange={(value) =>
+                                            setEmployeesListFilter({
+                                                ...employeesListFilter,
+                                                birthdateMin: value,
+                                            })
+                                        }
+                                    ></DateTimeField>
+                                </FieldContainer>
+                                <FieldContainer title="Дата рождения (до)">
+                                    <DateTimeField
+                                        isEditable
+                                        allowClear
+                                        value={employeesListFilter.birthdateMax}
+                                        onChange={(value) =>
+                                            setEmployeesListFilter({
+                                                ...employeesListFilter,
+                                                birthdateMax: value,
+                                            })
+                                        }
+                                    ></DateTimeField>
+                                </FieldContainer>
+                            </Flex>
+
+                            <FieldContainer title="Пол">
+                                <Select
+                                    mode="multiple"
+                                    allowClear
+                                    style={{ width: "100%", textAlign: "left" }}
+                                    placeholder="Любой"
+                                    value={employeesListFilter.genderIds}
+                                    onChange={(genderIds) =>
+                                        setEmployeesListFilter({
+                                            ...employeesListFilter,
+                                            genderIds,
+                                        })
+                                    }
+                                    options={genders.map((gender) => ({
+                                        label: gender.label,
+                                        value: gender.id,
+                                    }))}
+                                />
+                            </FieldContainer>
+
                             <FieldContainer title="Образование">
                                 <Select
                                     mode="multiple"
@@ -201,98 +425,6 @@ export function EmployeesSearch() {
                                     }))}
                                 />
                             </FieldContainer>
-                            <FieldContainer title="Дата рождения">
-                                <Flex style={{ width: "100%" }} gap="small">
-                                    <Flex style={{ width: "50%" }}>
-                                        <DateTimeField
-                                            isEditable
-                                            allowClear
-                                            value={
-                                                employeesListFilter.birthdateMin
-                                            }
-                                            onChange={(value) =>
-                                                setEmployeesListFilter({
-                                                    ...employeesListFilter,
-                                                    birthdateMin: value,
-                                                })
-                                            }
-                                            placeholder="От"
-                                        ></DateTimeField>
-                                    </Flex>
-                                    <Flex style={{ width: "50%" }}>
-                                        <DateTimeField
-                                            isEditable
-                                            allowClear
-                                            value={
-                                                employeesListFilter.birthdateMax
-                                            }
-                                            onChange={(value) =>
-                                                setEmployeesListFilter({
-                                                    ...employeesListFilter,
-                                                    birthdateMax: value,
-                                                })
-                                            }
-                                            placeholder="До"
-                                        ></DateTimeField>
-                                    </Flex>
-                                </Flex>
-                            </FieldContainer>
-                            <Flex style={{ width: "100%" }} gap="small">
-                                <Flex style={{ width: "50%" }}>
-                                    <FieldContainer title="Профсоюзный учёт">
-                                        <Select
-                                            style={{
-                                                width: "100%",
-                                                textAlign: "left",
-                                            }}
-                                            placeholder="Все"
-                                            allowClear
-                                            value={
-                                                employeesListFilter.isArchived
-                                            }
-                                            onChange={(isArchived) =>
-                                                setEmployeesListFilter({
-                                                    ...employeesListFilter,
-                                                    isArchived,
-                                                })
-                                            }
-                                            options={isArchivedOptions.map(
-                                                (isArchived) => ({
-                                                    label: isArchived.label,
-                                                    value: isArchived.id,
-                                                })
-                                            )}
-                                        ></Select>
-                                    </FieldContainer>
-                                </Flex>
-                                <Flex style={{ width: "50%" }}>
-                                    <FieldContainer title="Неработающие пенсионеры">
-                                        <Select
-                                            style={{
-                                                width: "100%",
-                                                textAlign: "left",
-                                            }}
-                                            placeholder="Все"
-                                            allowClear
-                                            value={
-                                                employeesListFilter.isRetired
-                                            }
-                                            onChange={(isRetired) =>
-                                                setEmployeesListFilter({
-                                                    ...employeesListFilter,
-                                                    isRetired,
-                                                })
-                                            }
-                                            options={isRetiredOptions.map(
-                                                (isRetired) => ({
-                                                    label: isRetired.label,
-                                                    value: isRetired.id,
-                                                })
-                                            )}
-                                        ></Select>
-                                    </FieldContainer>
-                                </Flex>
-                            </Flex>
                         </Flex>
 
                         <Divider />
