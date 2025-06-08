@@ -1,14 +1,15 @@
 import { FieldContainer } from "@/components/containers/field-container";
+import { DateTimeField } from "@/components/fields/datetime";
 import { SecondaryLabel } from "@/components/labels";
 import { Palette } from "@/constants";
 import { useEmployees } from "@/contexts/employees";
 import { useEnumerations } from "@/contexts/enumerations";
 import { EnumerationName } from "@/contexts/enumerations/constants";
-import { EmployeesFilterField } from "@/model";
+import { EmployeesSearchField } from "@/model";
 import { EmployeesList } from "@/pages/employees/list";
 import { Toolbar } from "@/pages/employees/viewer/toolbar";
 import { SearchOutlined } from "@ant-design/icons";
-import { Flex, Space, Button, Divider, Input, Select } from "antd";
+import { Flex, Space, Button, Divider, Input, Select, DatePicker } from "antd";
 
 export function EmployeesSearch() {
     const { fetchAllEmployees, employeesListFilter, setEmployeesListFilter } =
@@ -43,6 +44,18 @@ export function EmployeesSearch() {
         { label: "Отчество", id: "middle_name" },
         { label: "Место рождения", id: "birthplace" },
         { label: "Должность", id: "bntu_positions__label" },
+    ];
+
+    const isArchivedOptions = [
+        { label: "На учёте", id: false },
+        { label: "Снятые с учёта", id: true },
+        { label: "Все", id: null },
+    ];
+
+    const isRetiredOptions = [
+        { label: "Нет", id: false },
+        { label: "Да", id: true },
+        { label: "Все", id: null },
     ];
 
     return (
@@ -108,7 +121,7 @@ export function EmployeesSearch() {
                             gap="small"
                             style={{ width: "100%", overflow: "auto" }}
                         >
-                            <FieldContainer title="Пол" name="genderIds">
+                            <FieldContainer title="Пол">
                                 <Select
                                     mode="multiple"
                                     allowClear
@@ -127,10 +140,7 @@ export function EmployeesSearch() {
                                     }))}
                                 />
                             </FieldContainer>
-                            <FieldContainer
-                                title="Профгруппа"
-                                name="workingGroupIds"
-                            >
+                            <FieldContainer title="Профгруппа">
                                 <Select
                                     mode="multiple"
                                     allowClear
@@ -149,10 +159,7 @@ export function EmployeesSearch() {
                                     }))}
                                 />
                             </FieldContainer>
-                            <FieldContainer
-                                title="Образование"
-                                name="educationLevelIds"
-                            >
+                            <FieldContainer title="Образование">
                                 <Select
                                     mode="multiple"
                                     allowClear
@@ -173,10 +180,7 @@ export function EmployeesSearch() {
                                     }))}
                                 />
                             </FieldContainer>
-                            <FieldContainer
-                                title="Учёная степень"
-                                name="academicDegreeIds"
-                            >
+                            <FieldContainer title="Учёная степень">
                                 <Select
                                     mode="multiple"
                                     allowClear
@@ -197,6 +201,98 @@ export function EmployeesSearch() {
                                     }))}
                                 />
                             </FieldContainer>
+                            <FieldContainer title="Дата рождения">
+                                <Flex style={{ width: "100%" }} gap="small">
+                                    <Flex style={{ width: "50%" }}>
+                                        <DateTimeField
+                                            isEditable
+                                            allowClear
+                                            value={
+                                                employeesListFilter.birthdateMin
+                                            }
+                                            onChange={(value) =>
+                                                setEmployeesListFilter({
+                                                    ...employeesListFilter,
+                                                    birthdateMin: value,
+                                                })
+                                            }
+                                            placeholder="От"
+                                        ></DateTimeField>
+                                    </Flex>
+                                    <Flex style={{ width: "50%" }}>
+                                        <DateTimeField
+                                            isEditable
+                                            allowClear
+                                            value={
+                                                employeesListFilter.birthdateMax
+                                            }
+                                            onChange={(value) =>
+                                                setEmployeesListFilter({
+                                                    ...employeesListFilter,
+                                                    birthdateMax: value,
+                                                })
+                                            }
+                                            placeholder="До"
+                                        ></DateTimeField>
+                                    </Flex>
+                                </Flex>
+                            </FieldContainer>
+                            <Flex style={{ width: "100%" }} gap="small">
+                                <Flex style={{ width: "50%" }}>
+                                    <FieldContainer title="Профсоюзный учёт">
+                                        <Select
+                                            style={{
+                                                width: "100%",
+                                                textAlign: "left",
+                                            }}
+                                            placeholder="Все"
+                                            allowClear
+                                            value={
+                                                employeesListFilter.isArchived
+                                            }
+                                            onChange={(isArchived) =>
+                                                setEmployeesListFilter({
+                                                    ...employeesListFilter,
+                                                    isArchived,
+                                                })
+                                            }
+                                            options={isArchivedOptions.map(
+                                                (isArchived) => ({
+                                                    label: isArchived.label,
+                                                    value: isArchived.id,
+                                                })
+                                            )}
+                                        ></Select>
+                                    </FieldContainer>
+                                </Flex>
+                                <Flex style={{ width: "50%" }}>
+                                    <FieldContainer title="Неработающие пенсионеры">
+                                        <Select
+                                            style={{
+                                                width: "100%",
+                                                textAlign: "left",
+                                            }}
+                                            placeholder="Все"
+                                            allowClear
+                                            value={
+                                                employeesListFilter.isRetired
+                                            }
+                                            onChange={(isRetired) =>
+                                                setEmployeesListFilter({
+                                                    ...employeesListFilter,
+                                                    isRetired,
+                                                })
+                                            }
+                                            options={isRetiredOptions.map(
+                                                (isRetired) => ({
+                                                    label: isRetired.label,
+                                                    value: isRetired.id,
+                                                })
+                                            )}
+                                        ></Select>
+                                    </FieldContainer>
+                                </Flex>
+                            </Flex>
                         </Flex>
 
                         <Divider />

@@ -7,7 +7,15 @@ const DEFAULT_FORMAT = "D MMMM YYYY г.";
 export interface IDateTimeFieldProps extends DatePickerProps, IFieldProps {}
 
 export function DateTimeField(props: IDateTimeFieldProps) {
-    const { isEditable, value, onChange, format, allowClear, style } = props;
+    const {
+        isEditable,
+        value,
+        onChange,
+        format,
+        allowClear,
+        style,
+        placeholder,
+    } = props;
 
     const datePickerValue = value ? dayjs(value) : null;
 
@@ -35,7 +43,10 @@ export function DateTimeField(props: IDateTimeFieldProps) {
     const inputValue = value ? dayjs(value).format(inputFormat) : "";
 
     return isEditable ? (
-        <DatePicker {...datePickerProps} placeholder={PLACEHOLDER} />
+        <DatePicker
+            {...datePickerProps}
+            placeholder={placeholder || PLACEHOLDER}
+        />
     ) : (
         <Input value={inputValue} readOnly placeholder={PLACEHOLDER}></Input>
     );

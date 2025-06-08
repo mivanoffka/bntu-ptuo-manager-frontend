@@ -382,12 +382,21 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
     }, [selectedEmployee]);
 
     async function fetchAllEmployees() {
+        const backupSelectedId = selectedId;
+        selectId(null);
+
         const page = 1;
 
         const data = await _getManyEmployees(page, limit, employeesListFilter);
 
         if (data) {
             const { results, count } = data;
+
+            if (backupSelectedId) {
+                if (results.find((e) => e.id === backupSelectedId)) {
+                    selectId(backupSelectedId);
+                }
+            }
 
             setPagesLoaded(page);
             setTotalItems(count);
@@ -510,9 +519,13 @@ export function EmployeesProvider({ children }: { children: ReactNode }) {
 
         if (employee) {
             setEmployeesList([employee, ...employeesList]);
-            navigate(
-                `/employees/${employee.id}/${employee.latestEmployeeVersion.createdAt}`
-            );
+            selectId(employee.id);
+
+            // await fetchSelectedEmployee();
+
+            // navigate(
+            //     `/employees/${employee.id}/${employee.latestEmployeeVersion.createdAt}`
+            // );
         }
 
         return employee;

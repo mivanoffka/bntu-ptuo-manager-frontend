@@ -20,6 +20,10 @@ export class NameUtility {
             return onNull ?? "–";
         }
 
+        if (!middleName) {
+            return `${lastName} ${firstName}`;
+        }
+
         return `${lastName} ${firstName} ${middleName}`;
     }
 

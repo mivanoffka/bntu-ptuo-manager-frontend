@@ -87,6 +87,9 @@ export function WorkingGroupField(props: IFieldProps) {
 
 export function TradeUnionInfoField(props: IFieldProps) {
     const { isEditable } = props;
+    const form = Form.useFormInstance();
+    const isRetired = Form.useWatch("isRetired", form);
+    const isArchived = Form.useWatch("isArchived", form);
 
     return (
         <Flex vertical gap="small" align="center" style={{ width: "100%" }}>
@@ -95,7 +98,12 @@ export function TradeUnionInfoField(props: IFieldProps) {
                     <FieldContainer title="Дата вступления">
                         <Form.Item
                             name="joinedAt"
-                            rules={[{ required: true, message: "" }]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "",
+                                },
+                            ]}
                         >
                             <DateTimeField isEditable={isEditable} allowClear />
                         </Form.Item>
@@ -105,7 +113,12 @@ export function TradeUnionInfoField(props: IFieldProps) {
                     <FieldContainer title="Дата постановки на учёт">
                         <Form.Item
                             name="recordedAt"
-                            rules={[{ required: true, message: "" }]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "",
+                                },
+                            ]}
                         >
                             <DateTimeField isEditable={isEditable} />
                         </Form.Item>
@@ -114,36 +127,61 @@ export function TradeUnionInfoField(props: IFieldProps) {
             </Flex>
 
             <Flex gap="small" style={{ width: "100%" }}>
-                <Flex style={{ width: "50%" }}>
-                    <FieldContainer title="Неработающий пенсионер">
-                        <Form.Item name="isRetired">
-                            <CheckboxField isEditable={isEditable} />
-                        </Form.Item>
-                    </FieldContainer>
+                <Flex vertical gap="small" style={{ width: "50%" }}>
+                    <Flex style={{ width: "100%" }}>
+                        <FieldContainer title="Неработающий пенсионер">
+                            <Form.Item name="isRetired" valuePropName="checked">
+                                <CheckboxField isEditable={isEditable} />
+                            </Form.Item>
+                        </FieldContainer>
+                    </Flex>
+                    {isRetired && (
+                        <Flex style={{ width: "100%" }}>
+                            <FieldContainer title="Дата перевода в группу">
+                                <Form.Item
+                                    name="retiredAt"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "",
+                                        },
+                                    ]}
+                                >
+                                    <DateTimeField isEditable={isEditable} />
+                                </Form.Item>
+                            </FieldContainer>
+                        </Flex>
+                    )}
                 </Flex>
-                <Flex style={{ width: "50%" }}>
-                    <FieldContainer title="Дата выхода на пенсию">
-                        <Form.Item name="retiredAt">
-                            <DateTimeField isEditable={isEditable} />
-                        </Form.Item>
-                    </FieldContainer>
-                </Flex>
-            </Flex>
 
-            <Flex gap="small" style={{ width: "100%" }}>
-                <Flex style={{ width: "50%" }}>
-                    <FieldContainer title="Снят(а) с учёта">
-                        <Form.Item name="isArchived">
-                            <CheckboxField isEditable={isEditable} />
-                        </Form.Item>
-                    </FieldContainer>
-                </Flex>
-                <Flex style={{ width: "50%" }}>
-                    <FieldContainer title="Дата снятия с учёта">
-                        <Form.Item name="archivedAt">
-                            <DateTimeField isEditable={isEditable} />
-                        </Form.Item>
-                    </FieldContainer>
+                <Flex vertical gap="small" style={{ width: "50%" }}>
+                    <Flex style={{ width: "100%" }}>
+                        <FieldContainer title="Снят(а) с учёта">
+                            <Form.Item
+                                name="isArchived"
+                                valuePropName="checked"
+                            >
+                                <CheckboxField isEditable={isEditable} />
+                            </Form.Item>
+                        </FieldContainer>
+                    </Flex>
+                    {isArchived && (
+                        <Flex style={{ width: "100%" }}>
+                            <FieldContainer title="Дата снятия с учёта">
+                                <Form.Item
+                                    name="archivedAt"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "",
+                                        },
+                                    ]}
+                                >
+                                    <DateTimeField isEditable={isEditable} />
+                                </Form.Item>
+                            </FieldContainer>
+                        </Flex>
+                    )}
                 </Flex>
             </Flex>
         </Flex>
