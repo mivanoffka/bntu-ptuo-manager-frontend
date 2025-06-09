@@ -59,6 +59,7 @@ export function EmployeesSearch() {
     const educationLevels = getEnumeration(EnumerationName.EDUCATION_LEVELS);
     const academicDegrees = getEnumeration(EnumerationName.ACADEMIC_DEGREES);
     const genders = getEnumeration(EnumerationName.GENDERS);
+    const exemptions = getEnumeration(EnumerationName.EXEMPTIONS);
 
     const bntuDepartments = getTree(TreeName.BNTU_DEPARTMENTS);
     const tradeUnionDepartments = getTree(TreeName.TRADE_UNION_DEPARTMENTS);
@@ -422,6 +423,25 @@ export function EmployeesSearch() {
                                     options={academicDegrees.map((degree) => ({
                                         label: degree.label,
                                         value: degree.id,
+                                    }))}
+                                />
+                            </FieldContainer>
+                            <FieldContainer title="Льготы">
+                                <Select
+                                    mode="multiple"
+                                    allowClear
+                                    style={{ width: "100%", textAlign: "left" }}
+                                    placeholder="Не указаны"
+                                    value={employeesListFilter.exemptionIds}
+                                    onChange={(exemptionIds) =>
+                                        setEmployeesListFilter({
+                                            ...employeesListFilter,
+                                            exemptionIds,
+                                        })
+                                    }
+                                    options={exemptions.map((level) => ({
+                                        label: level.label,
+                                        value: level.id,
                                     }))}
                                 />
                             </FieldContainer>

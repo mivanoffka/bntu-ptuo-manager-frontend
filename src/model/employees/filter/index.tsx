@@ -21,6 +21,7 @@ export interface IEmployeesFilter {
     tradeUnionDepartmentPaths: string[];
     bntuDepartmentPaths: string[];
     bntuPositionLabels: string[];
+    exemptionIds: number[];
 }
 
 export const DEFAULT_FILTER: IEmployeesFilter = {
@@ -42,4 +43,5 @@ export const DEFAULT_FILTER: IEmployeesFilter = {
     tradeUnionDepartmentPaths: [],
     bntuDepartmentPaths: [],
     bntuPositionLabels: [],
+    exemptionIds: [],
 };
