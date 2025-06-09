@@ -18,14 +18,18 @@ export interface IEmployeesFilter {
     birthdateMax: DateTimeString | null;
     isArchived: boolean | null;
     isRetired: boolean | null;
+    tradeUnionDepartmentPaths: string[];
+    bntuDepartmentPaths: string[];
+    bntuPositionLabels: string[];
 }
 
-export const DEFAULT_FILTER = {
+export const DEFAULT_FILTER: IEmployeesFilter = {
     search: null,
     searchFields: [
         EmployeesSearchField.LAST_NAME,
         EmployeesSearchField.FIRST_NAME,
         EmployeesSearchField.MIDDLE_NAME,
+        EmployeesSearchField.BIRTHPLACE,
     ],
     genderIds: [],
     workingGroupIds: [],
@@ -35,4 +39,7 @@ export const DEFAULT_FILTER = {
     birthdateMax: null,
     isArchived: false,
     isRetired: null,
+    tradeUnionDepartmentPaths: [],
+    bntuDepartmentPaths: [],
+    bntuPositionLabels: [],
 };
