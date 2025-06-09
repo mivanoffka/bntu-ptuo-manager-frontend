@@ -106,7 +106,7 @@ export function Employee() {
                         style={{ width: "100%", height: "100%" }}
                         defaultActiveKey="bntu"
                     >
-                        <TabPane tab="БНТУ" key="bntu">
+                        <TabPane tab="БНТУ" key="bntu" forceRender>
                             <div
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
@@ -118,7 +118,7 @@ export function Employee() {
                                 ></Listed>
                             </div>
                         </TabPane>
-                        <TabPane tab="Профсоюз" key="union">
+                        <TabPane tab="Профсоюз" key="union" forceRender>
                             <Flex
                                 // gap="middle"
                                 vertical
@@ -140,7 +140,7 @@ export function Employee() {
                                 <TradeUnionInfoField isEditable={isEditable} />
                             </Flex>
                         </TabPane>
-                        <TabPane tab="Контакты" key="contacts">
+                        <TabPane tab="Контакты" key="contacts" forceRender>
                             <div
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
@@ -164,7 +164,7 @@ export function Employee() {
                                 />
                             </div>
                         </TabPane>
-                        <TabPane tab="Образование" key="education">
+                        <TabPane tab="Образование" key="education" forceRender>
                             <Flex
                                 gap="small"
                                 vertical
@@ -186,7 +186,7 @@ export function Employee() {
                                 />
                             </Flex>
                         </TabPane>
-                        <TabPane tab="Прочее" key="other">
+                        <TabPane tab="Прочее" key="other" forceRender>
                             <div
                                 style={{ maxHeight: "100%", overflow: "auto" }}
                             >
